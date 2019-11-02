@@ -79,7 +79,7 @@
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (mode-line-bell helm-projectile markdown-mode helm-ag evil-lisp-state ws-butler evil-smartparens use-package smartparens evil-leader evil))))
+    (lsp-mode mode-line-bell helm-projectile markdown-mode helm-ag evil-lisp-state ws-butler evil-smartparens use-package smartparens evil-leader evil))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -156,6 +156,20 @@
 
 (add-hook 'visual-line-mode-hook 'visual-fill-column-mode)
 (add-hook 'text-mode-hook 'turn-on-visual-line-mode)
+
+;; lsp
+
+(use-package lsp-mode
+  :ensure t
+  :commands lsp
+  :config
+  (add-to-list 'lsp-language-id-configuration '(clojure-mode . "clojure-mode"))
+  :init
+  (setq lsp-enable-indentation nil)
+  (setq lsp-enable-snippet nil)
+  (add-hook 'clojure-mode-hook #'lsp)
+  (add-hook 'clojurec-mode-hook #'lsp)
+  (add-hook 'clojurescript-mode-hook #'lsp))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; keyboard
