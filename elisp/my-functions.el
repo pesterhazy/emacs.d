@@ -80,6 +80,10 @@
   (interactive)
   (find-file "~/pitch/pitch-app/README.md"))
 
+(defun find-init-el ()
+  (interactive)
+  (find-file "~/.emacs.d/init.el"))
+
 (defun find-work ()
   (interactive)
   (find-file "~/Dropbox/zettel/work.org"))

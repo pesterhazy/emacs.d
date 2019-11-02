@@ -6,7 +6,7 @@
 ;;
 ;; TODO
 ;;
-;; - ugly visual bell
+;; - cider
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; package configuration
@@ -190,6 +190,7 @@
         (evil-global-set-key state (kbd "SPC r l") 'helm-resume)
         (evil-global-set-key state (kbd "SPC r y") 'helm-show-kill-ring)
         (evil-global-set-key state (kbd "SPC p f") 'helm-projectile)
+        (evil-global-set-key state (kbd "SPC f e d") 'find-init-el)
         (evil-global-set-key state (kbd "SPC c l") 'comment-line))
       '(normal visual))
 
