@@ -17,6 +17,7 @@
                      solarized-theme
                      aggressive-indent
                      clojure-mode
+                     flycheck-joker
                      cider
                      markdown-mode
                      use-package
@@ -80,7 +81,7 @@
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (cider aggressive-indent dumb-jump lsp-mode mode-line-bell helm-projectile markdown-mode helm-ag evil-lisp-state ws-butler evil-smartparens use-package smartparens evil-leader evil))))
+    (flycheck-joker cider aggressive-indent dumb-jump lsp-mode mode-line-bell helm-projectile markdown-mode helm-ag evil-lisp-state ws-butler evil-smartparens use-package smartparens evil-leader evil))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -109,7 +110,10 @@
 
 ;; backups
 
-(setq backup-directory-alist '(("." . (expand-file-name "~/.emacs.d/backup"))))
+(setq backup-directory-alist
+      `((".*" . ,temporary-file-directory)))
+(setq auto-save-file-name-transforms
+      `((".*" ,temporary-file-directory t)))
 
 ;; misc
 
@@ -158,6 +162,9 @@
 
 (add-hook 'clojure-mode-hook #'(lambda () (modify-syntax-entry ?- "w")))
 
+(require 'flycheck-joker)
+(global-flycheck-mode)
+
 ;; javascript
 
 (setq-default js2-basic-offset 2)
@@ -170,19 +177,21 @@
 
 ;; lsp
 
-(use-package lsp-mode
-  :ensure t
-  :commands lsp
-  :config
-  (add-to-list 'lsp-language-id-configuration '(clojure-mode . "clojure-mode"))
-  (add-to-list 'lsp-language-id-configuration '(clojurec-mode . "clojurec-mode"))
-  (add-to-list 'lsp-language-id-configuration '(clojurescript-mode . "clojurescript-mode"))
-  :init
-  (setq lsp-enable-indentation nil)
-  (setq lsp-enable-snippet nil)
-  (add-hook 'clojure-mode-hook #'lsp)
-  (add-hook 'clojurec-mode-hook #'lsp)
-  (add-hook 'clojurescript-mode-hook #'lsp))
+;; ** disabled for now **
+;;
+;; (use-package lsp-mode
+;;   :ensure t
+;;   :commands lsp
+;;   :config
+;;   (add-to-list 'lsp-language-id-configuration '(clojure-mode . "clojure-mode"))
+;;   (add-to-list 'lsp-language-id-configuration '(clojurec-mode . "clojurec-mode"))
+;;   (add-to-list 'lsp-language-id-configuration '(clojurescript-mode . "clojurescript-mode"))
+;;   :init
+;;   (setq lsp-enable-indentation nil)
+;;   (setq lsp-enable-snippet nil)
+;;   (add-hook 'clojure-mode-hook #'lsp)
+;;   (add-hook 'clojurec-mode-hook #'lsp)
+;;   (add-hook 'clojurescript-mode-hook #'lsp))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; keyboard
