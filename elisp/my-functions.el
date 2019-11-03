@@ -82,7 +82,7 @@
 
 (defun find-init-el ()
   (interactive)
-  (find-file "~/.emacs.d/init.el"))
+  (find-file "~/emacs.d/init.el"))
 
 (defun find-work ()
   (interactive)

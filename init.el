@@ -1,8 +1,7 @@
 ;; My Emacs config
 ;;
-;; No Spacesmacs but imitates its keybindings just enough
-;; to keep my muscle memory alive.
-;;
+;; No Spacesmacs but we imitate its keybindings just enough
+;; to keep our muscle memory alive.
 ;;
 ;; TODO
 ;;
@@ -17,7 +16,9 @@
 (setq package-list '(evil
                      evil-leader
                      solarized-theme
+                     aggressive-indent
                      clojure-mode
+                     cider
                      markdown-mode
                      use-package
                      exec-path-from-shell
@@ -46,7 +47,7 @@
 ;; perennial SSL problems
 
 (setq package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
-                         ("melpa" . "http://melpa.org/packages/")))
+                         ("melpa" . "http://stable.melpa.org/packages/")))
 
 ; Activate all the packages (in particular autoloads)
 (package-initialize)
@@ -80,7 +81,7 @@
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (dumb-jump lsp-mode mode-line-bell helm-projectile markdown-mode helm-ag evil-lisp-state ws-butler evil-smartparens use-package smartparens evil-leader evil))))
+    (cider aggressive-indent dumb-jump lsp-mode mode-line-bell helm-projectile markdown-mode helm-ag evil-lisp-state ws-butler evil-smartparens use-package smartparens evil-leader evil))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -109,9 +110,7 @@
 
 ;; backups
 
-(setq backup-directory-alist
-      (cons (cons "\\.*$" (expand-file-name "~/.emacs.d/backup"))
-            backup-directory-alist))
+(setq backup-directory-alist '(("." . (expand-file-name "~/.emacs.d/backup"))))
 
 ;; misc
 
@@ -136,6 +135,12 @@
 
 (setq expand-region-contract-fast-key "V")
 
+;; aggressive-indent
+
+(mapc (lambda (hook)
+        (add-hook hook 'aggressive-indent-mode))
+      '(clojure-mode-hook))
+
 ;; lisp
 
 (use-package smartparens-config
@@ -147,6 +152,9 @@
 (add-hook 'smartparens-enabled-hook #'evil-smartparens-mode)
 
 (require 'evil-lisp-state)
+
+(require 'cider)
+(setq cider-repl-pop-to-buffer-on-connect nil)
 
 ;; javascript
 
@@ -206,6 +214,9 @@
         (evil-global-set-key state (kbd "SPC r y") 'helm-show-kill-ring)
         (evil-global-set-key state (kbd "SPC p f") 'helm-projectile)
         (evil-global-set-key state (kbd "SPC f e d") 'find-init-el)
+        (evil-global-set-key state (kbd "SPC m c") 'cider-force-connect)
+        (evil-global-set-key state (kbd "SPC m k") 'cider-force-eval-buffer)
+        (evil-global-set-key state (kbd "SPC s c") 'evil-ex-nohighlight)
         (evil-global-set-key state (kbd "SPC c l") 'comment-line))
       '(normal visual))
 
