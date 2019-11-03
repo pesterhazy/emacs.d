@@ -5,14 +5,13 @@
 ;;
 ;; TODO
 ;;
-;; - cider
+;; - Javascript setup
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; package configuration
 
 (require 'package)
 
-;; List the packages you want
 (setq package-list '(evil
                      evil-leader
                      solarized-theme
@@ -157,6 +156,8 @@
 (require 'cider)
 (setq cider-repl-pop-to-buffer-on-connect nil)
 
+(add-hook 'clojure-mode-hook #'(lambda () (modify-syntax-entry ?- "w")))
+
 ;; javascript
 
 (setq-default js2-basic-offset 2)
@@ -174,6 +175,8 @@
   :commands lsp
   :config
   (add-to-list 'lsp-language-id-configuration '(clojure-mode . "clojure-mode"))
+  (add-to-list 'lsp-language-id-configuration '(clojurec-mode . "clojurec-mode"))
+  (add-to-list 'lsp-language-id-configuration '(clojurescript-mode . "clojurescript-mode"))
   :init
   (setq lsp-enable-indentation nil)
   (setq lsp-enable-snippet nil)
