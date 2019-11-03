@@ -15,6 +15,9 @@
 (progn
   (setq package-list '(evil
                        evil-leader
+                       evil-lisp-state ;; do we still need this?
+                       evil-visualstar
+                       evil-smartparens
                        solarized-theme
                        aggressive-indent
                        clojure-mode
@@ -31,8 +34,6 @@
                        helm-ag
                        smart-mode-line
                        mode-line-bell
-                       evil-lisp-state
-                       evil-smartparens
                        expand-region
                        projectile
                        visual-fill-column
@@ -73,7 +74,7 @@
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (js2-mode deadgrep smart-mode-line flycheck-jokeryy flycheck-joker cider aggressive-indent dumb-jump lsp-mode mode-line-bell helm-projectile markdown-mode helm-ag evil-lisp-state ws-butler evil-smartparens use-package smartparens evil-leader evil))))
+    (evil-visualstar js2-mode deadgrep smart-mode-line flycheck-jokeryy flycheck-joker cider aggressive-indent dumb-jump lsp-mode mode-line-bell helm-projectile markdown-mode helm-ag evil-lisp-state ws-butler evil-smartparens use-package smartparens evil-leader evil))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -157,6 +158,7 @@
 (setq cider-repl-pop-to-buffer-on-connect nil)
 
 (add-hook 'clojure-mode-hook #'(lambda () (modify-syntax-entry ?- "w")))
+(add-hook 'emacs-lisp-mode-hook #'(lambda () (modify-syntax-entry ?- "w")))
 
 (require 'flycheck-joker)
 (global-flycheck-mode)
@@ -198,6 +200,7 @@
 
 (require 'evil)
 (evil-mode t)
+(global-evil-visualstar-mode)
 
 (require 'evil-leader)
 (global-evil-leader-mode)
