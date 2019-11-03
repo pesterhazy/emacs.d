@@ -12,55 +12,45 @@
 
 (require 'package)
 
-(setq package-list '(evil
-                     evil-leader
-                     solarized-theme
-                     aggressive-indent
-                     clojure-mode
-                     flycheck-joker
-                     cider
-                     markdown-mode
-                     use-package
-                     exec-path-from-shell
-                     ws-butler
-                     dumb-jump
-                     helm
-                     helm-projectile
-                     helm-ag
-                     smart-mode-line
-                     mode-line-bell
-                     evil-lisp-state
-                     evil-smartparens
-                     expand-region
-                     projectile
-                     visual-fill-column
-                     smooth-scrolling
-                     smartparens
-                     simpleclip))
+(progn
+  (setq package-list '(evil
+                       evil-leader
+                       solarized-theme
+                       aggressive-indent
+                       clojure-mode
+                       flycheck-joker
+                       cider
+                       markdown-mode
+                       use-package
+                       exec-path-from-shell
+                       ws-butler
+                       dumb-jump
+                       helm
+                       helm-projectile
+                       helm-ag
+                       smart-mode-line
+                       mode-line-bell
+                       evil-lisp-state
+                       evil-smartparens
+                       expand-region
+                       projectile
+                       visual-fill-column
+                       smooth-scrolling
+                       smartparens
+                       simpleclip))
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; load packages
+  (setq package-check-signature nil) ;; FIXME: do we need this?
 
-;; FIXME: do we need this?
-(setq package-check-signature nil)
+  (setq package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
+                           ("melpa" . "http://stable.melpa.org/packages/")))
 
-;; using http here instead of https, because of
-;; perennial SSL problems
-
-(setq package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
-                         ("melpa" . "http://stable.melpa.org/packages/")))
-
-; Activate all the packages (in particular autoloads)
-(package-initialize)
-
-; Update your local package index
-(unless package-archive-contents
-  (package-refresh-contents))
-
-; Install all missing packages
-(dolist (package package-list)
-  (unless (package-installed-p package)
-    (package-install package)))
+  ;; Activate all the packages (in particular autoloads)
+  (package-initialize)
+  (unless package-archive-contents
+    (package-refresh-contents))
+  (dolist (package package-list)
+    (unless (package-installed-p package)
+      (package-install package))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; load extra files
@@ -82,7 +72,7 @@
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (smart-mode-line flycheck-jokeryy flycheck-joker cider aggressive-indent dumb-jump lsp-mode mode-line-bell helm-projectile markdown-mode helm-ag evil-lisp-state ws-butler evil-smartparens use-package smartparens evil-leader evil))))
+    (deadgrep smart-mode-line flycheck-jokeryy flycheck-joker cider aggressive-indent dumb-jump lsp-mode mode-line-bell helm-projectile markdown-mode helm-ag evil-lisp-state ws-butler evil-smartparens use-package smartparens evil-leader evil))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -119,6 +109,7 @@
 
 ;; misc
 
+(fset 'yes-or-no-p 'y-or-n-p)
 (global-auto-revert-mode 1)
 (require 'better-defaults)
 (require 'simpleclip)

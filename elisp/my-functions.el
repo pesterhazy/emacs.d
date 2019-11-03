@@ -119,3 +119,7 @@ npm i -g sql-formatter-cli"
   (save-excursion
     (asdfcount)
     (save-buffer)))
+
+(defun my-changes ()
+  (interactive)
+  (diff-buffer-with-file))
