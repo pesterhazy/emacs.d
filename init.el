@@ -139,7 +139,8 @@
 
 (mapc (lambda (hook)
         (add-hook hook 'aggressive-indent-mode))
-      '(clojure-mode-hook))
+      '(clojure-mode-hook
+        emacs-lisp-mode-hook))
 
 ;; lisp
 
