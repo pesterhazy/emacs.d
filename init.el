@@ -115,6 +115,7 @@
 (require 'simpleclip)
 (simpleclip-mode 1)
 (mode-line-bell-mode)
+(setq vc-follow-symlinks t) ;; avoid annoying prompt
 
 ;; scrolling
 
@@ -140,12 +141,10 @@
 
 ;; lisp
 
-(use-package smartparens-config
-  :ensure smartparens
-  :config (progn (show-smartparens-global-mode t)))
+(require 'smartparens-config)
 
-;; FIXME: should we turn this on only for lisp modes?
-(add-hook 'prog-mode-hook 'turn-on-smartparens-strict-mode)
+(dolist (hook '(clojure-mode-hook emacs-lisp-hook))
+  (add-hook hook 'turn-on-smartparens-strict-mode))
 (add-hook 'smartparens-enabled-hook #'evil-smartparens-mode)
 
 (require 'evil-lisp-state)
