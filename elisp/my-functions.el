@@ -123,3 +123,7 @@ npm i -g sql-formatter-cli"
 (defun my-changes ()
   (interactive)
   (diff-buffer-with-file))
+
+(defun em-dash ()
+  (interactive)
+  (insert "\u2014"))

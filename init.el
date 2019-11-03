@@ -148,7 +148,7 @@
 
 (require 'smartparens-config)
 
-(dolist (hook '(clojure-mode-hook emacs-lisp-hook))
+(dolist (hook '(clojure-mode-hook emacs-lisp-mode-hook))
   (add-hook hook 'turn-on-smartparens-strict-mode))
 (add-hook 'smartparens-enabled-hook #'evil-smartparens-mode)
 
@@ -233,6 +233,7 @@
         (evil-global-set-key state (kbd "SPC m c") 'cider-force-connect)
         (evil-global-set-key state (kbd "SPC m k") 'cider-force-eval-buffer)
         (evil-global-set-key state (kbd "SPC s c") 'evil-ex-nohighlight)
+        (evil-global-set-key state (kbd "SPC i e") 'em-dash)
         (evil-global-set-key state (kbd "SPC c l") 'comment-line))
       '(normal visual))
 
