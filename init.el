@@ -228,7 +228,8 @@
 
 (mapc (lambda (state)
         (evil-global-set-key state (kbd "SPC v") 'er/expand-region)
-        (evil-global-set-key state (kbd "SPC k s") 'evil-lisp-state-sp-forward-slurp-sexp))
+        (evil-global-set-key state (kbd "SPC k s") 'sp-forward-slurp-sexp)
+        (evil-global-set-key state (kbd "SPC k r") 'raise-sexp))
       '(normal))
 
 (evil-define-minor-mode-key 'motion 'visual-line-mode "j" 'evil-next-visual-line)
