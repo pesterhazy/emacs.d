@@ -176,7 +176,15 @@
 (require 'cider)
 (setq cider-repl-pop-to-buffer-on-connect nil)
 
-(add-hook 'clojure-mode-hook #'(lambda () (modify-syntax-entry ?- "w")))
+;; lispy word characters
+
+(defun clojure-word-chars ()
+  (modify-syntax-entry ?+ "w")
+  (modify-syntax-entry ?- "w")
+  (modify-syntax-entry ?< "w")
+  (modify-syntax-entry ?> "w"))
+
+(add-hook 'clojure-mode-hook 'clojure-word-chars)
 (add-hook 'emacs-lisp-mode-hook #'(lambda () (modify-syntax-entry ?- "w")))
 
 (require 'flycheck-joker)
