@@ -5,7 +5,8 @@
 ;;
 ;; TODO
 ;;
-;; - Javascript setup
+;; - ISSUE: rg defaults to case-sensitive search
+;; - ISSUE: rg output unreadable with long lines
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; package configuration
@@ -22,6 +23,7 @@
                        aggressive-indent
                        clojure-mode
                        flycheck-joker
+                       git-link
                        cider
                        markdown-mode
                        use-package
@@ -74,7 +76,20 @@
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (evil-visualstar js2-mode deadgrep smart-mode-line flycheck-jokeryy flycheck-joker cider aggressive-indent dumb-jump lsp-mode mode-line-bell helm-projectile markdown-mode helm-ag evil-lisp-state ws-butler evil-smartparens use-package smartparens evil-leader evil))))
+    (git-link evil-visualstar js2-mode deadgrep smart-mode-line flycheck-jokeryy flycheck-joker cider aggressive-indent dumb-jump lsp-mode mode-line-bell helm-projectile markdown-mode helm-ag evil-lisp-state ws-butler evil-smartparens use-package smartparens evil-leader evil)))
+ '(safe-local-variable-values
+   (quote
+    ((eval define-clojure-indent
+           (reg-cofx :defn)
+           (reg-event-db :defn)
+           (reg-event-fx :defn)
+           (reg-fx :defn)
+           (reg-sub :defn)
+           (reg-event-domain :defn)
+           (reg-block-event-fx :defn)
+           (reg-event-domain-fx :defn)
+           (reg-event-persistent-db :defn)
+           (this-as 0))))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -104,6 +119,10 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; behavior
+
+;; git
+
+(setq git-link-open-in-browser t)
 
 ;; backups
 
@@ -177,23 +196,23 @@
 
 ;; lsp
 
-(use-package lsp-mode
-  :ensure t
-  :commands lsp
-  :config
+;; (use-package lsp-mode
+;;   :ensure t
+;;   :commands lsp
+;;   :config
 
-  (add-to-list 'lsp-language-id-configuration '(js2-mode . "js2-mode"))
+;;   (add-to-list 'lsp-language-id-configuration '(js2-mode . "js2-mode"))
 
-  ;; (add-to-list 'lsp-language-id-configuration '(clojure-mode . "clojure-mode"))
-  ;; (add-to-list 'lsp-language-id-configuration '(clojurec-mode . "clojurec-mode"))
-  ;; (add-to-list 'lsp-language-id-configuration '(clojurescript-mode . "clojurescript-mode"))
+;;   ;; (add-to-list 'lsp-language-id-configuration '(clojure-mode . "clojure-mode"))
+;;   ;; (add-to-list 'lsp-language-id-configuration '(clojurec-mode . "clojurec-mode"))
+;;   ;; (add-to-list 'lsp-language-id-configuration '(clojurescript-mode . "clojurescript-mode"))
 
-  :init
-  (setq lsp-enable-indentation nil)
-  (setq lsp-enable-snippet nil)
-  (add-hook 'clojure-mode-hook #'lsp)
-  (add-hook 'clojurec-mode-hook #'lsp)
-  (add-hook 'clojurescript-mode-hook #'lsp))
+;;   :init
+;;   (setq lsp-enable-indentation nil)
+;;   (setq lsp-enable-snippet nil)
+;;   (add-hook 'clojure-mode-hook #'lsp)
+;;   (add-hook 'clojurec-mode-hook #'lsp)
+;;   (add-hook 'clojurescript-mode-hook #'lsp))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; keyboard
@@ -234,6 +253,7 @@
         (evil-global-set-key state (kbd "SPC m k") 'cider-force-eval-buffer)
         (evil-global-set-key state (kbd "SPC s c") 'evil-ex-nohighlight)
         (evil-global-set-key state (kbd "SPC i e") 'em-dash)
+        (evil-global-set-key state (kbd "SPC g l l") 'git-link)
         (evil-global-set-key state (kbd "SPC c l") 'comment-line))
       '(normal visual))
 
