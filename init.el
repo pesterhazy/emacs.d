@@ -200,6 +200,7 @@
 ;; text
 
 (add-hook 'visual-line-mode-hook 'visual-fill-column-mode)
+(add-hook 'visual-line-mode-hook (lambda () (setq fill-column 90)))
 (add-hook 'text-mode-hook 'turn-on-visual-line-mode)
 
 ;; lsp
@@ -240,7 +241,7 @@
 (mapc (lambda (state)
         (evil-global-set-key state (kbd "SPC SPC") 'helm-M-x)
         (evil-global-set-key state (kbd "SPC b b") 'helm-mini)
-        (evil-global-set-key state (kbd "SPC b d") 'kill-current-buffer)
+        (evil-global-set-key state (kbd "SPC b d") 'kill-this-buffer)
         (evil-global-set-key state (kbd "SPC w m") 'delete-other-windows)
         (evil-global-set-key state (kbd "SPC f f") 'helm-find-files)
         (evil-global-set-key state (kbd "SPC /") 'helm-do-ag-project-root)
@@ -251,6 +252,7 @@
         (evil-global-set-key state ";" 'mark-sexp)
         (evil-global-set-key state (kbd "SPC o f") 'fill-paragraph)
         (evil-global-set-key state (kbd "SPC o o") 'find-primary-proj)
+        (evil-global-set-key state (kbd "SPC o c") 'find-compose)
         (evil-global-set-key state (kbd "SPC j j") 'dumb-jump-go)
         (evil-global-set-key state (kbd "SPC j t") 'dumb-jump-go-prompt)
         (evil-global-set-key state (kbd "SPC r l") 'helm-resume)
