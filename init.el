@@ -28,6 +28,7 @@
                        markdown-mode
                        use-package
                        exec-path-from-shell
+                       git-timemachine
                        js2-mode
                        ws-butler
                        dumb-jump
@@ -76,7 +77,7 @@
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (git-link evil-visualstar js2-mode deadgrep smart-mode-line flycheck-jokeryy flycheck-joker cider aggressive-indent dumb-jump lsp-mode mode-line-bell helm-projectile markdown-mode helm-ag evil-lisp-state ws-butler evil-smartparens use-package smartparens evil-leader evil)))
+    (git-timemachine git-link evil-visualstar js2-mode deadgrep smart-mode-line flycheck-jokeryy flycheck-joker cider aggressive-indent dumb-jump lsp-mode mode-line-bell helm-projectile markdown-mode helm-ag evil-lisp-state ws-butler evil-smartparens use-package smartparens evil-leader evil)))
  '(safe-local-variable-values
    (quote
     ((eval define-clojure-indent
@@ -197,6 +198,15 @@
 (setq-default js2-basic-offset 2)
 (setq-default js-indent-level 2)
 
+;; git-timemachine
+
+(defadvice git-timemachine-mode (after git-timemachine-change-to-emacs-state activate compile)
+  (if (evil-normal-state-p)
+      (evil-emacs-state)
+    (evil-normal-state)))
+
+(ad-activate 'git-timemachine-mode)
+
 ;; text
 
 (add-hook 'visual-line-mode-hook 'visual-fill-column-mode)
@@ -264,6 +274,7 @@
         (evil-global-set-key state (kbd "SPC s c") 'evil-ex-nohighlight)
         (evil-global-set-key state (kbd "SPC i e") 'em-dash)
         (evil-global-set-key state (kbd "SPC g l l") 'git-link)
+        (evil-global-set-key state (kbd "SPC g t m") 'git-timemachine)
         (evil-global-set-key state (kbd "SPC c l") 'comment-line))
       '(normal visual))
 
