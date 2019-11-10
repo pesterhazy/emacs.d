@@ -90,7 +90,7 @@
 
 (require 'helm-ag)
 (require 'helm-command)
-(setq helm-ag-base-command "rg --no-heading")
+(setq helm-ag-base-command "rg --no-heading --smart-case")
 (setq helm-M-x-fuzzy-match t)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -121,6 +121,7 @@
 (setq git-link-open-in-browser t)
 
 (defadvice git-timemachine-mode (after git-timemachine-change-to-emacs-state activate compile)
+  "Enable time traveling in git."
   (if (evil-normal-state-p)
       (evil-emacs-state)
     (evil-normal-state)))
@@ -168,6 +169,8 @@
 
 ;; lisp
 
+(setq flycheck-emacs-lisp-load-path 'inherit)
+
 (require 'smartparens-config)
 
 (dolist (hook '(clojure-mode-hook emacs-lisp-mode-hook))
@@ -182,6 +185,7 @@
 ;; lispy word characters
 
 (defun clojure-word-chars ()
+  "Add more special charcaters for Clojure."
   (modify-syntax-entry ?+ "w")
   (modify-syntax-entry ?- "w")
   (modify-syntax-entry ?< "w")
@@ -283,3 +287,6 @@
 (evil-define-minor-mode-key 'motion 'visual-line-mode (kbd "<up>") 'evil-previous-visual-line)
 (evil-define-minor-mode-key 'motion 'visual-line-mode "0" 'evil-beginning-of-visual-line)
 (evil-define-minor-mode-key 'motion 'visual-line-mode "$" 'evil-end-of-visual-line)
+
+(provide 'init)
+;;; init.el ends here.
