@@ -75,7 +75,7 @@
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (git-timemachine git-link diff-hl evil-visualstar js2-mode deadgrep smart-mode-line flycheck-jokeryy flycheck-joker cider aggressive-indent dumb-jump lsp-mode mode-line-bell helm-projectile markdown-mode helm-ag evil-lisp-state ws-butler evil-smartparens use-package smartparens evil-leader evil))))
+    (helm-chrome-control git-timemachine git-link diff-hl evil-visualstar js2-mode deadgrep smart-mode-line flycheck-jokeryy flycheck-joker cider aggressive-indent dumb-jump lsp-mode mode-line-bell helm-projectile markdown-mode helm-ag evil-lisp-state ws-butler evil-smartparens use-package smartparens evil-leader evil))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -107,6 +107,15 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; behavior
+
+;; remember how things used to be
+
+(desktop-save-mode 1)
+(save-place-mode 1)
+
+;; chrome
+
+(require 'helm-chrome-control)
 
 ;; git
 
@@ -256,6 +265,8 @@
         (evil-global-set-key state (kbd "SPC o f") 'fill-paragraph)
         (evil-global-set-key state (kbd "SPC o o") 'find-primary-proj)
         (evil-global-set-key state (kbd "SPC o c") 'find-compose)
+        (evil-global-set-key state (kbd "SPC t t") 'iterm-open-new-tab)
+        (evil-global-set-key state (kbd "SPC t r") 'iterm-repeat-last-command)
         (evil-global-set-key state (kbd "SPC j j") 'dumb-jump-go)
         (evil-global-set-key state (kbd "SPC j t") 'dumb-jump-go-prompt)
         (evil-global-set-key state (kbd "SPC r l") 'helm-resume)
