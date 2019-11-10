@@ -4,11 +4,6 @@
 ;;;
 ;;; No Spacesmacs but we imitate its keybindings just enough
 ;;; to keep our muscle memory alive.
-;;;
-;;; TODO
-;;;
-;;; - ISSUE: rg defaults to case-sensitive search
-;;; - ISSUE: rg output unreadable with long lines
 
 ;;; Code:
 
@@ -90,7 +85,7 @@
 
 (require 'helm-ag)
 (require 'helm-command)
-(setq helm-ag-base-command "rg --no-heading --smart-case")
+(setq helm-ag-base-command "rg --no-heading --smart-case -M100")
 (setq helm-M-x-fuzzy-match t)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -169,6 +164,7 @@
 
 ;; lisp
 
+(require 'flycheck)
 (setq flycheck-emacs-lisp-load-path 'inherit)
 
 (require 'smartparens-config)
@@ -289,4 +285,4 @@
 (evil-define-minor-mode-key 'motion 'visual-line-mode "$" 'evil-end-of-visual-line)
 
 (provide 'init)
-;;; init.el ends here.
+;;; init.el ends here
