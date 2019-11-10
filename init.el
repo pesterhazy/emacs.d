@@ -19,6 +19,7 @@
                        evil-lisp-state ;; do we still need this?
                        evil-visualstar
                        evil-smartparens
+                       diff-hl
                        solarized-theme
                        aggressive-indent
                        clojure-mode
@@ -77,20 +78,7 @@
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (git-timemachine git-link evil-visualstar js2-mode deadgrep smart-mode-line flycheck-jokeryy flycheck-joker cider aggressive-indent dumb-jump lsp-mode mode-line-bell helm-projectile markdown-mode helm-ag evil-lisp-state ws-butler evil-smartparens use-package smartparens evil-leader evil)))
- '(safe-local-variable-values
-   (quote
-    ((eval define-clojure-indent
-           (reg-cofx :defn)
-           (reg-event-db :defn)
-           (reg-event-fx :defn)
-           (reg-fx :defn)
-           (reg-sub :defn)
-           (reg-event-domain :defn)
-           (reg-block-event-fx :defn)
-           (reg-event-domain-fx :defn)
-           (reg-event-persistent-db :defn)
-           (this-as 0))))))
+    (git-timemachine git-link diff-hl evil-visualstar js2-mode deadgrep smart-mode-line flycheck-jokeryy flycheck-joker cider aggressive-indent dumb-jump lsp-mode mode-line-bell helm-projectile markdown-mode helm-ag evil-lisp-state ws-butler evil-smartparens use-package smartparens evil-leader evil))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -123,7 +111,16 @@
 
 ;; git
 
+(global-diff-hl-mode)
+(diff-hl-flydiff-mode)
 (setq git-link-open-in-browser t)
+
+(defadvice git-timemachine-mode (after git-timemachine-change-to-emacs-state activate compile)
+  (if (evil-normal-state-p)
+      (evil-emacs-state)
+    (evil-normal-state)))
+
+(ad-activate 'git-timemachine-mode)
 
 ;; backups
 
@@ -197,15 +194,6 @@
 (add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
 (setq-default js2-basic-offset 2)
 (setq-default js-indent-level 2)
-
-;; git-timemachine
-
-(defadvice git-timemachine-mode (after git-timemachine-change-to-emacs-state activate compile)
-  (if (evil-normal-state-p)
-      (evil-emacs-state)
-    (evil-normal-state)))
-
-(ad-activate 'git-timemachine-mode)
 
 ;; text
 
