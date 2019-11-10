@@ -1,50 +1,52 @@
-;; My Emacs config
-;;
-;; No Spacesmacs but we imitate its keybindings just enough
-;; to keep our muscle memory alive.
-;;
-;; TODO
-;;
-;; - ISSUE: rg defaults to case-sensitive search
-;; - ISSUE: rg output unreadable with long lines
+;;; init.el --- Initialization file for Emacs
+;;; Commentary:
+;;; Emacs Startup File --- initialization for Emacs
+;;;
+;;; No Spacesmacs but we imitate its keybindings just enough
+;;; to keep our muscle memory alive.
+;;;
+;;; TODO
+;;;
+;;; - ISSUE: rg defaults to case-sensitive search
+;;; - ISSUE: rg output unreadable with long lines
+
+;;; Code:
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; package configuration
 
 (require 'package)
 
-(progn
-  (setq package-list '(evil
-                       evil-leader
-                       evil-lisp-state ;; do we still need this?
-                       evil-visualstar
-                       evil-smartparens
-                       diff-hl
-                       solarized-theme
-                       aggressive-indent
-                       clojure-mode
-                       flycheck-joker
-                       git-link
-                       cider
-                       markdown-mode
-                       use-package
-                       exec-path-from-shell
-                       git-timemachine
-                       js2-mode
-                       ws-butler
-                       dumb-jump
-                       helm
-                       helm-projectile
-                       helm-ag
-                       smart-mode-line
-                       mode-line-bell
-                       expand-region
-                       projectile
-                       visual-fill-column
-                       smooth-scrolling
-                       smartparens
-                       simpleclip))
-
+(let ((package-list '(evil
+                      evil-leader
+                      evil-lisp-state ;; do we still need this?
+                      evil-visualstar
+                      evil-smartparens
+                      diff-hl
+                      solarized-theme
+                      aggressive-indent
+                      clojure-mode
+                      flycheck-joker
+                      git-link
+                      cider
+                      markdown-mode
+                      use-package
+                      exec-path-from-shell
+                      git-timemachine
+                      js2-mode
+                      ws-butler
+                      dumb-jump
+                      helm
+                      helm-projectile
+                      helm-ag
+                      smart-mode-line
+                      mode-line-bell
+                      expand-region
+                      projectile
+                      visual-fill-column
+                      smooth-scrolling
+                      smartparens
+                      simpleclip)))
   (setq package-check-signature nil) ;; FIXME: do we need this?
 
   (setq package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
@@ -86,6 +88,8 @@
  ;; If there is more than one, they won't work right.
  )
 
+(require 'helm-ag)
+(require 'helm-command)
 (setq helm-ag-base-command "rg --no-heading")
 (setq helm-M-x-fuzzy-match t)
 
@@ -113,6 +117,7 @@
 
 (global-diff-hl-mode)
 (diff-hl-flydiff-mode)
+(require 'git-link)
 (setq git-link-open-in-browser t)
 
 (defadvice git-timemachine-mode (after git-timemachine-change-to-emacs-state activate compile)
