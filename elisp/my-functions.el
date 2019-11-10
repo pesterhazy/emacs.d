@@ -146,3 +146,74 @@ npm i -g sql-formatter-cli"
           (rename-buffer new-name)
           (set-visited-file-name new-name)
           (set-buffer-modified-p nil))))))
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; iTerm
+
+;; https://sam217pa.github.io/2016/09/01/emacs-iterm-integration/
+
+(defun iterm-focus ()
+  (interactive)
+  (do-applescript
+   " do shell script \"open -a iTerm\"\n"))
+
+(defun iterm-open-new-tab ()
+  (interactive)
+  (do-applescript
+   (format
+    "
+    tell application \"iTerm2\"
+        activate
+        tell current window
+            create tab with default profile
+            tell the current session
+                write text \"cd %s\"
+            end tell
+        end tell
+    end tell"
+    (replace-regexp-in-string "\\\\" "\\\\\\\\"
+                              (shell-quote-argument (or default-directory "~"))))))
+
+
+(defun iterm-open ()
+  "Go to present working dir and focus iterm"
+  (interactive)
+  (do-applescript
+   (concat
+    " tell application \"iTerm2\"\n"
+    "   tell the current session of current window\n"
+    (format "     write text \"cd %s\" \n"
+            ;; string escaping madness for applescript
+            (replace-regexp-in-string "\\\\" "\\\\\\\\"
+                                      (shell-quote-argument (or default-directory "~"))))
+    "   end tell\n"
+    " end tell\n"
+    " do shell script \"open -a iTerm\"\n")))
+
+(defun iterm-new-tab ()
+  "Go to present working dir and focus iterm, in new tab"
+  (interactive)
+  (do-applescript
+   (concat
+    " tell application \"iTerm2\"\n"
+    "   tell the current session of current window\n"
+    (format "     write text \"cd %s\" \n"
+            ;; string escaping madness for applescript
+            (replace-regexp-in-string "\\\\" "\\\\\\\\"
+                                      (shell-quote-argument (or default-directory "~"))))
+    "   end tell\n"
+    " end tell\n"
+    " do shell script \"open -a iTerm\"\n")))
+
+(defun iterm-repeat-last-command ()
+  (interactive)
+  (do-applescript
+   (concat
+    "tell application \"iTerm2\"\n"
+    "  activate\n"
+    "    tell current session of current window\n"
+    "      tell application \"System Events\" to keystroke (ASCII character 30)\n" ;; up arrow
+    "      tell application \"System Events\" to key code 36\n" ;; return
+    "    end tell\n"
+    "end tell\n")))
