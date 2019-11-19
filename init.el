@@ -75,7 +75,20 @@
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (helm-unicode helm-chrome-control git-timemachine git-link diff-hl evil-visualstar js2-mode deadgrep smart-mode-line flycheck-jokeryy flycheck-joker cider aggressive-indent dumb-jump lsp-mode mode-line-bell helm-projectile markdown-mode helm-ag evil-lisp-state ws-butler evil-smartparens use-package smartparens evil-leader evil))))
+    (helm-unicode helm-chrome-control git-timemachine git-link diff-hl evil-visualstar js2-mode deadgrep smart-mode-line flycheck-jokeryy flycheck-joker cider aggressive-indent dumb-jump lsp-mode mode-line-bell helm-projectile markdown-mode helm-ag evil-lisp-state ws-butler evil-smartparens use-package smartparens evil-leader evil)))
+ '(safe-local-variable-values
+   (quote
+    ((eval define-clojure-indent
+           (reg-cofx :defn)
+           (reg-event-db :defn)
+           (reg-event-fx :defn)
+           (reg-fx :defn)
+           (reg-sub :defn)
+           (reg-event-domain :defn)
+           (reg-block-event-fx :defn)
+           (reg-event-domain-fx :defn)
+           (reg-event-persistent-db :defn)
+           (this-as 0))))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -278,15 +291,20 @@
         (evil-global-set-key state (kbd "SPC m k") 'cider-force-eval-buffer)
         (evil-global-set-key state (kbd "SPC s c") 'evil-ex-nohighlight)
         (evil-global-set-key state (kbd "SPC i e") 'em-dash)
+
+        (evil-global-set-key state (kbd "SPC k t") 'sp-transpose-sexp)
+        (evil-global-set-key state (kbd "SPC k s") 'sp-forward-slurp-sexp)
+        (evil-global-set-key state (kbd "SPC k r") 'raise-sexp)
+
         (evil-global-set-key state (kbd "SPC g l l") 'git-link)
         (evil-global-set-key state (kbd "SPC g t m") 'git-timemachine)
+        (evil-global-set-key state (kbd "SPC g ]") 'diff-hl-next-hunk)
+        (evil-global-set-key state (kbd "SPC g [") 'diff-hl-prev-hunk)
         (evil-global-set-key state (kbd "SPC c l") 'comment-line))
       '(normal visual))
 
 (mapc (lambda (state)
-        (evil-global-set-key state (kbd "SPC v") 'er/expand-region)
-        (evil-global-set-key state (kbd "SPC k s") 'sp-forward-slurp-sexp)
-        (evil-global-set-key state (kbd "SPC k r") 'raise-sexp))
+        (evil-global-set-key state (kbd "SPC v") 'er/expand-region))
       '(normal))
 
 (evil-define-minor-mode-key 'motion 'visual-line-mode "j" 'evil-next-visual-line)
