@@ -281,6 +281,8 @@
         (evil-global-set-key state (kbd "SPC t o") 'iterm-open)
         (evil-global-set-key state (kbd "SPC t t") 'iterm-open-new-tab)
         (evil-global-set-key state (kbd "SPC t r") 'iterm-repeat-last-command)
+        (evil-global-set-key state (kbd "SPC j i") 'helm-imenu)
+        (evil-global-set-key state (kbd "SPC j I") 'helm-imenu-in-all-buffers)
         (evil-global-set-key state (kbd "SPC j j") 'dumb-jump-go)
         (evil-global-set-key state (kbd "SPC j t") 'dumb-jump-go-prompt)
         (evil-global-set-key state (kbd "SPC r l") 'helm-resume)
@@ -295,6 +297,8 @@
         (evil-global-set-key state (kbd "SPC k t") 'sp-transpose-sexp)
         (evil-global-set-key state (kbd "SPC k s") 'sp-forward-slurp-sexp)
         (evil-global-set-key state (kbd "SPC k r") 'raise-sexp)
+        (evil-global-set-key state (kbd "SPC o b") 'sp-splice-sexp-killing-backward)
+        (evil-global-set-key state (kbd "SPC o d") 'sp-splice-sexp-killing-forward)
 
         (evil-global-set-key state (kbd "SPC g l l") 'git-link)
         (evil-global-set-key state (kbd "SPC g t m") 'git-timemachine)
