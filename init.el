@@ -297,6 +297,8 @@
         (evil-global-set-key state (kbd "SPC k t") 'sp-transpose-sexp)
         (evil-global-set-key state (kbd "SPC k s") 'sp-forward-slurp-sexp)
         (evil-global-set-key state (kbd "SPC k r") 'raise-sexp)
+        (evil-global-set-key state (kbd "SPC k w") 'insert-parentheses)
+        (evil-global-set-key state (kbd "SPC k W") 'sp-unwrap-sexp)
         (evil-global-set-key state (kbd "SPC o b") 'sp-splice-sexp-killing-backward)
         (evil-global-set-key state (kbd "SPC o d") 'sp-splice-sexp-killing-forward)
 
