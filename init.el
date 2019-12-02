@@ -23,6 +23,10 @@
                       zprint-mode
                       aggressive-indent
                       clojure-mode
+                      prettier-js
+                      typescript-mode
+                      tide
+                      company
                       flycheck-joker
                       git-link
                       cider
@@ -77,7 +81,7 @@
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (zprint-mode package-lint helm-unicode helm-chrome-control git-timemachine git-link diff-hl evil-visualstar js2-mode deadgrep smart-mode-line flycheck-jokeryy flycheck-joker cider aggressive-indent dumb-jump lsp-mode mode-line-bell helm-projectile markdown-mode helm-ag evil-lisp-state ws-butler evil-smartparens use-package smartparens evil-leader evil)))
+    (company tide prettier-js typescript-mode zprint-mode package-lint helm-unicode helm-chrome-control git-timemachine git-link diff-hl evil-visualstar js2-mode deadgrep smart-mode-line flycheck-jokeryy flycheck-joker cider aggressive-indent dumb-jump lsp-mode mode-line-bell helm-projectile markdown-mode helm-ag evil-lisp-state ws-butler evil-smartparens use-package smartparens evil-leader evil)))
  '(safe-local-variable-values
    (quote
     ((eval when
@@ -258,6 +262,24 @@
 (setq-default js2-basic-offset 2)
 (setq-default js-indent-level 2)
 
+;; typescript
+(defun setup-tide-mode ()
+  (interactive)
+  (tide-setup)
+  (flycheck-mode +1)
+  (setq flycheck-check-syntax-automatically '(save mode-enabled))
+  (eldoc-mode +1)
+  (tide-hl-identifier-mode +1)
+  (company-mode +1))
+
+;; aligns annotation to the right hand side
+(setq company-tooltip-align-annotations t)
+(setq-default typescript-indent-level 2)
+
+(add-hook 'typescript-mode-hook #'setup-tide-mode)
+(add-hook 'typescript-mode-hook #'prettier-js-mode)
+
+
 ;; text
 
 (add-hook 'visual-line-mode-hook 'visual-fill-column-mode)
@@ -336,6 +358,7 @@
         (evil-global-set-key state (kbd "SPC k r") 'raise-sexp)
         (evil-global-set-key state (kbd "SPC k w") 'insert-parentheses)
         (evil-global-set-key state (kbd "SPC k W") 'sp-unwrap-sexp)
+        (evil-global-set-key state (kbd "SPC k c") 'sp-clone-sexp)
         (evil-global-set-key state (kbd "SPC o b") 'sp-splice-sexp-killing-backward)
         (evil-global-set-key state (kbd "SPC o d") 'sp-splice-sexp-killing-forward)
 

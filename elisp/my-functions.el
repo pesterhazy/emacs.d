@@ -217,3 +217,27 @@ npm i -g sql-formatter-cli"
     "      tell application \"System Events\" to key code 36\n" ;; return
     "    end tell\n"
     "end tell\n")))
+
+(defun save-as-and-switch (filename)
+  "Clone the current buffer and switch to the clone"
+  (interactive "FCopy and switch to file: ")
+  (save-restriction
+    (widen)
+    (write-region (point-min) (point-max) filename nil nil nil 'confirm))
+  (find-file filename))
+
+(defun delete-current-buffer-file ()
+  "Removes file connected to current buffer and kills buffer."
+  (interactive)
+  (let ((filename (buffer-file-name))
+        (buffer (current-buffer))
+        (name (buffer-name)))
+    (if (not (and filename (file-exists-p filename)))
+        (ido-kill-buffer)
+      (if (yes-or-no-p
+           (format "Are you sure you want to delete this file: '%s'?" name))
+          (progn
+            (delete-file filename t)
+            (kill-buffer buffer)
+            (message "File deleted: '%s'" filename))
+        (message "Canceled: File deletion")))))
