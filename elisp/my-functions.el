@@ -217,3 +217,9 @@ npm i -g sql-formatter-cli"
     "      tell application \"System Events\" to key code 36\n" ;; return
     "    end tell\n"
     "end tell\n")))
+
+(defun my-jump-to-definition ()
+  (interactive)
+  (if (eq 'typescript-mode major-mode)
+      (tide-jump-to-definition)
+    (dumb-jump-go)))
