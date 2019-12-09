@@ -241,3 +241,9 @@ npm i -g sql-formatter-cli"
             (kill-buffer buffer)
             (message "File deleted: '%s'" filename))
         (message "Canceled: File deletion")))))
+
+(defun my-jump-to-definition ()
+  (interactive)
+  (if (eq 'typescript-mode major-mode)
+      (tide-jump-to-definition)
+    (dumb-jump-go)))

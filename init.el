@@ -20,12 +20,14 @@
                       diff-hl
                       solarized-theme
                       package-lint
-                      zprint-mode
+                      ;; zprint-mode
+                      tide
+                      prettier-js
+                      typescript-mode
                       aggressive-indent
                       clojure-mode
                       prettier-js
                       typescript-mode
-                      tide
                       company
                       flycheck-joker
                       git-link
@@ -51,7 +53,7 @@
   (setq package-check-signature nil) ;; FIXME: do we need this?
 
   (setq package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
-                           ("melpa" . "http://stable.melpa.org/packages/")))
+                           ("melpa" . "http://melpa.org/packages/")))
 
   ;; Activate all the packages (in particular autoloads)
   (package-initialize)
@@ -261,6 +263,7 @@
 (add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
 (setq-default js2-basic-offset 2)
 (setq-default js-indent-level 2)
+(setq-default typescript-indent-level 2)
 
 ;; typescript
 (defun setup-tide-mode ()
@@ -342,7 +345,7 @@
         (evil-global-set-key state (kbd "SPC t r") 'iterm-repeat-last-command)
         (evil-global-set-key state (kbd "SPC j i") 'helm-imenu)
         (evil-global-set-key state (kbd "SPC j I") 'helm-imenu-in-all-buffers)
-        (evil-global-set-key state (kbd "SPC j j") 'dumb-jump-go)
+        (evil-global-set-key state (kbd "SPC j j") 'my-jump-to-definition)
         (evil-global-set-key state (kbd "SPC j t") 'dumb-jump-go-prompt)
         (evil-global-set-key state (kbd "SPC r l") 'helm-resume)
         (evil-global-set-key state (kbd "SPC r y") 'helm-show-kill-ring)
