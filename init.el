@@ -353,6 +353,7 @@
         (evil-global-set-key state (kbd "SPC s c") 'evil-ex-nohighlight)
         (evil-global-set-key state (kbd "SPC i e") 'em-dash)
 
+        (evil-global-set-key state (kbd "SPC s j") 'sp-split-sexp)
         (evil-global-set-key state (kbd "SPC k t") 'sp-transpose-sexp)
         (evil-global-set-key state (kbd "SPC k s") 'sp-forward-slurp-sexp)
         (evil-global-set-key state (kbd "SPC k r") 'raise-sexp)
@@ -365,13 +366,18 @@
         (evil-global-set-key state (kbd "SPC g l l") 'git-link)
         (evil-global-set-key state (kbd "SPC g t m") 'git-timemachine)
         (evil-global-set-key state (kbd "SPC g ]") 'diff-hl-next-hunk)
-        (evil-global-set-key state (kbd "SPC g [") 'diff-hl-prev-hunk)
-        (evil-global-set-key state (kbd "SPC c l") 'comment-line))
+        (evil-global-set-key state (kbd "SPC g [") 'diff-hl-prev-hunk))
       '(normal visual))
 
 (mapc (lambda (state)
+        (evil-global-set-key state (kbd "SPC c l") 'comment-line)
         (evil-global-set-key state (kbd "SPC v") 'er/expand-region))
       '(normal))
+
+(mapc (lambda (state)
+        (evil-global-set-key state (kbd "SPC c l") 'comment-dwim)
+        )
+      '(visual))
 
 (evil-define-minor-mode-key 'motion 'visual-line-mode "j" 'evil-next-visual-line)
 (evil-define-minor-mode-key 'motion 'visual-line-mode (kbd "<down>") 'evil-next-visual-line)
