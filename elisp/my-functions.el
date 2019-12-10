@@ -218,7 +218,7 @@ npm i -g sql-formatter-cli"
     "    end tell\n"
     "end tell\n")))
 
-(defun save-as-and-switch (filename)
+(defun save-as (filename)
   "Clone the current buffer and switch to the clone"
   (interactive "FCopy and switch to file: ")
   (save-restriction
