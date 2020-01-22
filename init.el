@@ -33,6 +33,7 @@
                       git-link
                       cider
                       yaml-mode
+                      highlight-indentation-mode
                       markdown-mode
                       use-package
                       exec-path-from-shell
@@ -84,7 +85,7 @@
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (yaml-mode company tide prettier-js typescript-mode zprint-mode package-lint helm-unicode helm-chrome-control git-timemachine git-link diff-hl evil-visualstar js2-mode deadgrep smart-mode-line flycheck-jokeryy flycheck-joker cider aggressive-indent dumb-jump lsp-mode mode-line-bell helm-projectile markdown-mode helm-ag evil-lisp-state ws-butler evil-smartparens use-package smartparens evil-leader evil)))
+    (highlight-indentation-mode yaml-mode company tide prettier-js typescript-mode zprint-mode package-lint helm-unicode helm-chrome-control git-timemachine git-link diff-hl evil-visualstar js2-mode deadgrep smart-mode-line flycheck-jokeryy flycheck-joker cider aggressive-indent dumb-jump lsp-mode mode-line-bell helm-projectile markdown-mode helm-ag evil-lisp-state ws-butler evil-smartparens use-package smartparens evil-leader evil)))
  '(safe-local-variable-values
    (quote
     ((eval when
@@ -309,6 +310,10 @@
 ;;   (add-hook 'clojure-mode-hook #'lsp)
 ;;   (add-hook 'clojurec-mode-hook #'lsp)
 ;;   (add-hook 'clojurescript-mode-hook #'lsp))
+
+;; yaml
+
+(require 'highlight-indentation)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; keyboard
