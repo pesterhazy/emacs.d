@@ -33,7 +33,6 @@
                       git-link
                       cider
                       yaml-mode
-                      highlight-indentation-mode
                       markdown-mode
                       use-package
                       exec-path-from-shell
