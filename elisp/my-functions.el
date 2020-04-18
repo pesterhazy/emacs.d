@@ -83,6 +83,15 @@
 (defun find-compose ()
   (interactive)
   (find-file "~/Dropbox/zettel/compose.txt"))
+(defun find-reading ()
+  (interactive)
+  (find-file "~/Dropbox/zettel/reading.txt"))
+(defun find-writing ()
+  (interactive)
+  (find-file "~/Dropbox/zettel/writing.txt"))
+(defun find-scraps ()
+  (interactive)
+  (find-file "~/Dropbox/zettel/scraps.cljs"))
 
 (defun find-init-el ()
   (interactive)
@@ -247,3 +256,10 @@ npm i -g sql-formatter-cli"
   (if (eq 'typescript-mode major-mode)
       (tide-jump-to-definition)
     (dumb-jump-go)))
+
+(defun kill-other-buffers ()
+  "Kill all other buffers."
+  (interactive)
+  (mapc 'kill-buffer
+        (delq (current-buffer)
+              (remove-if-not 'buffer-file-name (buffer-list)))))

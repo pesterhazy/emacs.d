@@ -14,9 +14,7 @@
 
 (let ((package-list '(evil
                       evil-leader
-                      evil-lisp-state ;; do we still need this?
                       evil-visualstar
-                      evil-smartparens
                       diff-hl
                       solarized-theme
                       package-lint
@@ -33,7 +31,6 @@
                       git-link
                       cider
                       yaml-mode
-                      highlight-indentation-mode
                       markdown-mode
                       use-package
                       exec-path-from-shell
@@ -49,9 +46,11 @@
                       expand-region
                       projectile
                       visual-fill-column
+                      simpleclip
                       smooth-scrolling
+                      ;; parenthesis management
                       smartparens
-                      simpleclip)))
+                      evil-smartparens)))
   (setq package-check-signature nil) ;; FIXME: do we need this?
 
   (setq package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
@@ -167,7 +166,7 @@
 
 ;; remember how things used to be
 
-(desktop-save-mode 1)
+;; (desktop-save-mode 1)
 (save-place-mode 1)
 
 ;; chrome
@@ -238,8 +237,6 @@
 (dolist (hook '(clojure-mode-hook emacs-lisp-mode-hook))
   (add-hook hook 'turn-on-smartparens-strict-mode))
 (add-hook 'smartparens-enabled-hook #'evil-smartparens-mode)
-
-(require 'evil-lisp-state)
 
 (require 'cider)
 (setq cider-repl-pop-to-buffer-on-connect nil)
@@ -337,6 +334,7 @@
         (evil-global-set-key state (kbd "SPC w m") 'delete-other-windows)
         (evil-global-set-key state (kbd "SPC f f") 'helm-find-files)
         (evil-global-set-key state (kbd "SPC /") 'helm-do-ag-project-root)
+        (evil-global-set-key state (kbd "SPC ?") 'helm-do-ag-buffers)
         (evil-global-set-key state "U" 'backward-up-list)
         (evil-global-set-key state "R" 'down-list)
         (evil-global-set-key state "L" 'sp-forward-sexp)
@@ -345,6 +343,9 @@
         (evil-global-set-key state (kbd "SPC o f") 'fill-paragraph)
         (evil-global-set-key state (kbd "SPC o o") 'find-primary-proj)
         (evil-global-set-key state (kbd "SPC o c") 'find-compose)
+        (evil-global-set-key state (kbd "SPC o r") 'find-reading)
+        (evil-global-set-key state (kbd "SPC o w") 'find-writing)
+        (evil-global-set-key state (kbd "SPC o s") 'find-scraps)
         (evil-global-set-key state (kbd "SPC o z") 'zprint)
         (evil-global-set-key state (kbd "SPC t o") 'iterm-open)
         (evil-global-set-key state (kbd "SPC t t") 'iterm-open-new-tab)
@@ -365,12 +366,14 @@
         (evil-global-set-key state (kbd "SPC s j") 'sp-split-sexp)
         (evil-global-set-key state (kbd "SPC k t") 'sp-transpose-sexp)
         (evil-global-set-key state (kbd "SPC k s") 'sp-forward-slurp-sexp)
+        (evil-global-set-key state (kbd "SPC k b") 'sp-forward-barf-sexp)
         (evil-global-set-key state (kbd "SPC k r") 'raise-sexp)
         (evil-global-set-key state (kbd "SPC k w") 'insert-parentheses)
         (evil-global-set-key state (kbd "SPC k W") 'sp-unwrap-sexp)
         (evil-global-set-key state (kbd "SPC k c") 'sp-clone-sexp)
         (evil-global-set-key state (kbd "SPC o b") 'sp-splice-sexp-killing-backward)
         (evil-global-set-key state (kbd "SPC o d") 'sp-splice-sexp-killing-forward)
+        (evil-global-set-key state (kbd "SPC o t") 'touch)
 
         (evil-global-set-key state (kbd "SPC g l l") 'git-link)
         (evil-global-set-key state (kbd "SPC g t m") 'git-timemachine)
