@@ -57,7 +57,9 @@
                            ("melpa" . "http://melpa.org/packages/")))
 
   ;; Activate all the packages (in particular autoloads)
-  (package-initialize)
+  (package-initialize
+
+   )
   (unless package-archive-contents
     (package-refresh-contents))
   (dolist (package package-list)
@@ -227,6 +229,16 @@
       '(clojure-mode-hook
         emacs-lisp-mode-hook))
 
+;; see https://github.com/clojure-emacs/clojure-mode/issues/516
+(add-hook 'clojure-mode-hook
+          (lambda ()
+            (setq comment-indent-function 'comment-indent-default)
+            (setq comment-add 0)
+            (comment-normalize-vars)
+            (setq-local comment-column 0)))
+
+(require 'clojure-comment-dwim)
+
 ;; lisp
 
 (require 'flycheck)
@@ -363,6 +375,10 @@
         (evil-global-set-key state (kbd "SPC s c") 'evil-ex-nohighlight)
         (evil-global-set-key state (kbd "SPC i e") 'em-dash)
 
+        (evil-global-set-key state (kbd "SPC m m") 'markdown-shifttab)
+        (evil-global-set-key state (kbd "SPC n n") 'markdown-narrow-to-subtree)
+        (evil-global-set-key state (kbd "SPC n w") 'widen)
+
         (evil-global-set-key state (kbd "SPC s j") 'sp-split-sexp)
         (evil-global-set-key state (kbd "SPC k t") 'sp-transpose-sexp)
         (evil-global-set-key state (kbd "SPC k s") 'sp-forward-slurp-sexp)
@@ -374,6 +390,7 @@
         (evil-global-set-key state (kbd "SPC o b") 'sp-splice-sexp-killing-backward)
         (evil-global-set-key state (kbd "SPC o d") 'sp-splice-sexp-killing-forward)
         (evil-global-set-key state (kbd "SPC o t") 'touch)
+        (evil-global-set-key state (kbd "SPC c c") 'clojure-comment-dwim)
 
         (evil-global-set-key state (kbd "SPC g l l") 'git-link)
         (evil-global-set-key state (kbd "SPC g t m") 'git-timemachine)
