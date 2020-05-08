@@ -92,10 +92,16 @@
 (defun find-scraps ()
   (interactive)
   (find-file "/Users/user/prg/cljs-scrap/src/main/scrap/scrap.cljs"))
+(defun find-diary ()
+  (interactive)
+  (find-file "~/Dropbox/zettel/diary.md"))
 
 (defun find-init-el ()
   (interactive)
   (find-file "~/emacs.d/init.el"))
+(defun find-my-functions ()
+  (interactive)
+  (find-file "~/emacs.d/elisp/my-functions.el"))
 
 (defun find-work ()
   (interactive)
@@ -263,3 +269,9 @@ npm i -g sql-formatter-cli"
   (mapc 'kill-buffer
         (delq (current-buffer)
               (remove-if-not 'buffer-file-name (buffer-list)))))
+
+(defun insert-date (arg)
+  (interactive "P")
+  (insert (if arg
+              (format-time-string "%d.%m.%Y")
+            (format-time-string "%Y-%m-%d"))))

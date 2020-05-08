@@ -340,6 +340,9 @@
   "d" 'eval-defun)
 
 (mapc (lambda (state)
+        (evil-global-set-key state (kbd "s-=") (lambda () (interactive) (text-scale-increase 1)))
+        (evil-global-set-key state (kbd "s-+") (lambda () (interactive) (text-scale-increase 1)))
+        (evil-global-set-key state (kbd "s--") (lambda () (interactive) (text-scale-increase -1)))
         (evil-global-set-key state (kbd "SPC SPC") 'helm-M-x)
         (evil-global-set-key state (kbd "SPC b b") 'helm-mini)
         (evil-global-set-key state (kbd "SPC b d") 'kill-this-buffer)
@@ -358,6 +361,7 @@
         (evil-global-set-key state (kbd "SPC o r") 'find-reading)
         (evil-global-set-key state (kbd "SPC o w") 'find-writing)
         (evil-global-set-key state (kbd "SPC o s") 'find-scraps)
+        (evil-global-set-key state (kbd "SPC o d") 'find-diary)
         (evil-global-set-key state (kbd "SPC o z") 'zprint)
         (evil-global-set-key state (kbd "SPC t o") 'iterm-open)
         (evil-global-set-key state (kbd "SPC t t") 'iterm-open-new-tab)
@@ -370,10 +374,13 @@
         (evil-global-set-key state (kbd "SPC r y") 'helm-show-kill-ring)
         (evil-global-set-key state (kbd "SPC p f") 'helm-projectile)
         (evil-global-set-key state (kbd "SPC f e d") 'find-init-el)
+        (evil-global-set-key state (kbd "SPC f e m") 'find-my-functions)
         (evil-global-set-key state (kbd "SPC m c") 'cider-force-connect)
         (evil-global-set-key state (kbd "SPC m k") 'cider-force-eval-buffer)
         (evil-global-set-key state (kbd "SPC s c") 'evil-ex-nohighlight)
         (evil-global-set-key state (kbd "SPC i e") 'em-dash)
+
+        (evil-global-set-key state (kbd "SPC s k") 'smerge-keep-current)
 
         (evil-global-set-key state (kbd "SPC m m") 'markdown-shifttab)
         (evil-global-set-key state (kbd "SPC n n") 'markdown-narrow-to-subtree)
@@ -388,7 +395,6 @@
         (evil-global-set-key state (kbd "SPC k W") 'sp-unwrap-sexp)
         (evil-global-set-key state (kbd "SPC k c") 'sp-clone-sexp)
         (evil-global-set-key state (kbd "SPC o b") 'sp-splice-sexp-killing-backward)
-        (evil-global-set-key state (kbd "SPC o d") 'sp-splice-sexp-killing-forward)
         (evil-global-set-key state (kbd "SPC o t") 'touch)
         (evil-global-set-key state (kbd "SPC c c") 'clojure-comment-dwim)
 
