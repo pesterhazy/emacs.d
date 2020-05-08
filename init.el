@@ -226,6 +226,7 @@
 ;; aggressive-indent
 
 (mapc (lambda (hook)
+        (add-hook hook 'lsp)
         (add-hook hook 'aggressive-indent-mode))
       '(clojure-mode-hook
         emacs-lisp-mode-hook))
@@ -305,6 +306,7 @@
 
 (require 'lsp-mode)
 (setq lsp-enable-snippet nil)
+(setq lsp-enable-file-watchers nil)
 (add-to-list 'lsp-language-id-configuration '(clojure-mode . "clojure-mode"))
 (add-to-list 'lsp-language-id-configuration '(clojurec-mode . "clojurec-mode"))
 (add-to-list 'lsp-language-id-configuration '(clojurescript-mode . "clojurescript-mode"))
@@ -375,7 +377,8 @@
         (evil-global-set-key state (kbd "SPC t r") 'iterm-repeat-last-command)
         (evil-global-set-key state (kbd "SPC j i") 'helm-imenu)
         (evil-global-set-key state (kbd "SPC j I") 'helm-imenu-in-all-buffers)
-        (evil-global-set-key state (kbd "SPC j j") 'my-jump-to-definition)
+        (evil-global-set-key state (kbd "SPC j j") 'lsp-find-definition)
+        (evil-global-set-key state (kbd "SPC j r") 'lsp-find-references)
         (evil-global-set-key state (kbd "SPC j t") 'dumb-jump-go-prompt)
         (evil-global-set-key state (kbd "SPC r l") 'helm-resume)
         (evil-global-set-key state (kbd "SPC r y") 'helm-show-kill-ring)
