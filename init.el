@@ -32,7 +32,8 @@
                       cider
                       yaml-mode
                       markdown-mode
-                      use-package
+                      lsp-mode
+                      ;; lsp-ui
                       exec-path-from-shell
                       git-timemachine
                       js2-mode
@@ -54,7 +55,7 @@
   (setq package-check-signature nil) ;; FIXME: do we need this?
 
   (setq package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
-                           ("melpa" . "http://melpa.org/packages/")))
+                           ("melpa" . "https://melpa.org/packages/")))
 
   ;; Activate all the packages (in particular autoloads)
   (package-initialize
@@ -86,7 +87,7 @@
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (highlight-indentation-mode yaml-mode company tide prettier-js typescript-mode zprint-mode package-lint helm-unicode helm-chrome-control git-timemachine git-link diff-hl evil-visualstar js2-mode deadgrep smart-mode-line flycheck-jokeryy flycheck-joker cider aggressive-indent dumb-jump lsp-mode mode-line-bell helm-projectile markdown-mode helm-ag evil-lisp-state ws-butler evil-smartparens use-package smartparens evil-leader evil)))
+    (lsp-ui highlight-indentation-mode yaml-mode company tide prettier-js typescript-mode zprint-mode package-lint helm-unicode helm-chrome-control git-timemachine git-link diff-hl evil-visualstar js2-mode deadgrep smart-mode-line flycheck-jokeryy flycheck-joker cider aggressive-indent dumb-jump lsp-mode mode-line-bell helm-projectile markdown-mode helm-ag evil-lisp-state ws-butler evil-smartparens use-package smartparens evil-leader evil)))
  '(safe-local-variable-values
    (quote
     ((eval when
@@ -302,6 +303,15 @@
 
 ;; lsp
 
+(require 'lsp-mode)
+(setq lsp-enable-snippet nil)
+(add-to-list 'lsp-language-id-configuration '(clojure-mode . "clojure-mode"))
+(add-to-list 'lsp-language-id-configuration '(clojurec-mode . "clojurec-mode"))
+(add-to-list 'lsp-language-id-configuration '(clojurescript-mode . "clojurescript-mode"))
+
+;; (setq lsp-keymap-prefix "M-p")
+;; lsp
+
 ;; (use-package lsp-mode
 ;;   :ensure t
 ;;   :commands lsp
@@ -309,9 +319,6 @@
 
 ;;   (add-to-list 'lsp-language-id-configuration '(js2-mode . "js2-mode"))
 
-;;   ;; (add-to-list 'lsp-language-id-configuration '(clojure-mode . "clojure-mode"))
-;;   ;; (add-to-list 'lsp-language-id-configuration '(clojurec-mode . "clojurec-mode"))
-;;   ;; (add-to-list 'lsp-language-id-configuration '(clojurescript-mode . "clojurescript-mode"))
 
 ;;   :init
 ;;   (setq lsp-enable-indentation nil)
