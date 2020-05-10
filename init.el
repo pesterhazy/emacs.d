@@ -27,12 +27,13 @@
                       prettier-js
                       typescript-mode
                       company
-                      flycheck-joker
+                      ;; flycheck-joker
                       git-link
                       cider
                       yaml-mode
                       markdown-mode
                       lsp-mode
+                      helm-lsp
                       ;; lsp-ui
                       exec-path-from-shell
                       git-timemachine
@@ -87,7 +88,7 @@
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (lsp-ui highlight-indentation-mode yaml-mode company tide prettier-js typescript-mode zprint-mode package-lint helm-unicode helm-chrome-control git-timemachine git-link diff-hl evil-visualstar js2-mode deadgrep smart-mode-line flycheck-jokeryy flycheck-joker cider aggressive-indent dumb-jump lsp-mode mode-line-bell helm-projectile markdown-mode helm-ag evil-lisp-state ws-butler evil-smartparens use-package smartparens evil-leader evil)))
+    (helm-lsp lsp-ui highlight-indentation-mode yaml-mode company tide prettier-js typescript-mode zprint-mode package-lint helm-unicode helm-chrome-control git-timemachine git-link diff-hl evil-visualstar js2-mode deadgrep smart-mode-line flycheck-jokeryy flycheck-joker cider aggressive-indent dumb-jump lsp-mode mode-line-bell helm-projectile markdown-mode helm-ag evil-lisp-state ws-butler evil-smartparens use-package smartparens evil-leader evil)))
  '(safe-local-variable-values
    (quote
     ((eval when
@@ -141,6 +142,8 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  )
+
+(setq helm-mode-fuzzy-match t)
 
 (require 'helm-ag)
 (require 'helm-command)
@@ -267,7 +270,7 @@
 (add-hook 'clojure-mode-hook 'clojure-word-chars)
 (add-hook 'emacs-lisp-mode-hook #'(lambda () (modify-syntax-entry ?- "w")))
 
-(require 'flycheck-joker)
+;; (require 'flycheck-joker)
 (global-flycheck-mode)
 
 ;; javascript
@@ -305,8 +308,12 @@
 ;; lsp
 
 (require 'lsp-mode)
+;; (require 'lsp-ui)
 (setq lsp-enable-snippet nil)
 (setq lsp-enable-file-watchers nil)
+(setq lsp-enable-indentation nil)
+(setq lsp-enable-completion-at-point nil)
+
 (add-to-list 'lsp-language-id-configuration '(clojure-mode . "clojure-mode"))
 (add-to-list 'lsp-language-id-configuration '(clojurec-mode . "clojurec-mode"))
 (add-to-list 'lsp-language-id-configuration '(clojurescript-mode . "clojurescript-mode"))
@@ -379,6 +386,9 @@
         (evil-global-set-key state (kbd "SPC j I") 'helm-imenu-in-all-buffers)
         (evil-global-set-key state (kbd "SPC j j") 'lsp-find-definition)
         (evil-global-set-key state (kbd "SPC j r") 'lsp-find-references)
+        (evil-global-set-key state (kbd "SPC j R") 'lsp-rename)
+        (evil-global-set-key state (kbd "SPC j s") 'helm-lsp-workspace-symbol)
+        (evil-global-set-key state (kbd "SPC j h") 'lsp-describe-thing-at-point)
         (evil-global-set-key state (kbd "SPC j t") 'dumb-jump-go-prompt)
         (evil-global-set-key state (kbd "SPC r l") 'helm-resume)
         (evil-global-set-key state (kbd "SPC r y") 'helm-show-kill-ring)
