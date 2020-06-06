@@ -8,6 +8,12 @@
 ;;; Code:
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; preliminaries
+
+(setq gc-cons-threshold 200000000)
+(setq read-process-output-max (* 1024 1024))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; package configuration
 
 (require 'package)
@@ -19,14 +25,13 @@
                       solarized-theme
                       package-lint
                       ;; zprint-mode
-                      tide
                       prettier-js
                       typescript-mode
+                      which-key
                       aggressive-indent
                       clojure-mode
                       prettier-js
                       typescript-mode
-                      company
                       ;; flycheck-joker
                       git-link
                       cider
@@ -88,7 +93,7 @@
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (helm-lsp lsp-ui highlight-indentation-mode yaml-mode company tide prettier-js typescript-mode zprint-mode package-lint helm-unicode helm-chrome-control git-timemachine git-link diff-hl evil-visualstar js2-mode deadgrep smart-mode-line flycheck-jokeryy flycheck-joker cider aggressive-indent dumb-jump lsp-mode mode-line-bell helm-projectile markdown-mode helm-ag evil-lisp-state ws-butler evil-smartparens use-package smartparens evil-leader evil)))
+    (company-mode which-key helm-lsp lsp-ui highlight-indentation-mode yaml-mode company tide prettier-js typescript-mode zprint-mode package-lint helm-unicode helm-chrome-control git-timemachine git-link diff-hl evil-visualstar js2-mode deadgrep smart-mode-line flycheck-jokeryy flycheck-joker cider aggressive-indent dumb-jump lsp-mode mode-line-bell helm-projectile markdown-mode helm-ag evil-lisp-state ws-butler evil-smartparens use-package smartparens evil-leader evil)))
  '(safe-local-variable-values
    (quote
     ((eval when
@@ -161,6 +166,8 @@
 ;; appearance
 
 (load-theme 'solarized-light t)
+(setq which-key-idle-delay 3.0)
+(which-key-mode)
 (setq default-frame-alist '((font . "Menlo-15")))
 ;; maximize vertically
 (add-to-list 'initial-frame-alist '(fullscreen . fullheight))
@@ -281,21 +288,10 @@
 (setq-default js-indent-level 2)
 (setq-default typescript-indent-level 2)
 
-;; typescript
-(defun setup-tide-mode ()
-  (interactive)
-  (tide-setup)
-  (flycheck-mode +1)
-  (setq flycheck-check-syntax-automatically '(save mode-enabled))
-  (eldoc-mode +1)
-  (tide-hl-identifier-mode +1)
-  (company-mode +1))
-
 ;; aligns annotation to the right hand side
 (setq company-tooltip-align-annotations t)
 (setq-default typescript-indent-level 2)
 
-(add-hook 'typescript-mode-hook #'setup-tide-mode)
 (add-hook 'typescript-mode-hook #'prettier-js-mode)
 
 
@@ -313,10 +309,12 @@
 (setq lsp-enable-file-watchers nil)
 (setq lsp-enable-indentation nil)
 (setq lsp-enable-completion-at-point nil)
+(setq lsp-prefer-capf t)
 
 (add-to-list 'lsp-language-id-configuration '(clojure-mode . "clojure-mode"))
 (add-to-list 'lsp-language-id-configuration '(clojurec-mode . "clojurec-mode"))
 (add-to-list 'lsp-language-id-configuration '(clojurescript-mode . "clojurescript-mode"))
+(add-to-list 'lsp-language-id-configuration '(typescript-mode . "typescript-mode"))
 
 ;; (setq lsp-keymap-prefix "M-p")
 ;; lsp
