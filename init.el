@@ -416,6 +416,8 @@
         (evil-global-set-key state (kbd "SPC o t") 'touch)
         (evil-global-set-key state (kbd "SPC c c") 'clojure-comment-dwim)
 
+        (evil-global-set-key state (kbd "SPC i b") 'insert-bar)
+
         (evil-global-set-key state (kbd "SPC g l l") 'git-link)
         (evil-global-set-key state (kbd "SPC g t m") 'git-timemachine)
         (evil-global-set-key state (kbd "SPC g ]") 'diff-hl-next-hunk)

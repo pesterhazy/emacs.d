@@ -50,7 +50,9 @@
 
 (defun insert-bar ()
   (interactive)
-  (insert ";;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;\n"))
+  (if (string-equal major-mode "typescript-mode")
+      (insert "// ********************************************************************\n")
+    (insert ";;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;\n")))
 
 (defun insert-next ()
   (interactive)
