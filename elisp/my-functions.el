@@ -80,7 +80,7 @@
 
 (defun find-primary-proj ()
   (interactive)
-  (find-file "~/pitch/pitch-app/README.md"))
+  (find-file "~/pitch/pitch-app/desktop-app/src/app/pitch/app.cljs"))
 
 (defun find-compose ()
   (interactive)

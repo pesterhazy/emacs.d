@@ -253,7 +253,7 @@
 
 ;; lisp
 
-(require 'flycheck)
+;; (require 'flycheck)
 (setq flycheck-emacs-lisp-load-path 'inherit)
 
 (require 'smartparens-config)
@@ -278,7 +278,7 @@
 (add-hook 'emacs-lisp-mode-hook #'(lambda () (modify-syntax-entry ?- "w")))
 
 ;; (require 'flycheck-joker)
-(global-flycheck-mode)
+;; (global-flycheck-mode)
 
 ;; javascript
 
@@ -347,6 +347,17 @@
 
 (require 'evil-leader)
 (global-evil-leader-mode)
+
+;; remove binding from map
+(define-key undo-tree-map (kbd "M-_") nil)
+(global-set-key (kbd "M-_")
+                (lambda ()
+                  (interactive)
+                  (insert "—")))
+(global-set-key (kbd "M--")
+                (lambda ()
+                  (interactive)
+                  (insert "–")))
 
 (evil-leader/set-leader ",")
 (evil-leader/set-key
