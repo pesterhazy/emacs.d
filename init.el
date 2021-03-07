@@ -21,10 +21,11 @@
 (let ((package-list '(evil
                       evil-leader
                       evil-visualstar
+                      sqlformat
+                      bm
                       diff-hl
                       solarized-theme
                       package-lint
-                      ;; zprint-mode
                       prettier-js
                       typescript-mode
                       which-key
@@ -77,11 +78,19 @@
 ;; load extra files
 
 (when (memq window-system '(mac ns x))
+  (setenv "RIPGREP_CONFIG_PATH"
+          (expand-file-name "~/.rgconfig"))
   (exec-path-from-shell-initialize))
 
 (add-to-list 'load-path (expand-file-name "~/emacs.d/vendor"))
 (add-to-list 'load-path (expand-file-name "~/emacs.d/elisp"))
+(add-to-list 'load-path (expand-file-name "~/prg/zprint-mode.el"))
 (load-file (expand-file-name "~/emacs.d/elisp/my-functions.el"))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; zprint-mode
+
+(require 'zprint-mode)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; custom
@@ -92,11 +101,9 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-   (quote
-    (company-mode which-key helm-lsp lsp-ui highlight-indentation-mode yaml-mode company tide prettier-js typescript-mode zprint-mode package-lint helm-unicode helm-chrome-control git-timemachine git-link diff-hl evil-visualstar js2-mode deadgrep smart-mode-line flycheck-jokeryy flycheck-joker cider aggressive-indent dumb-jump lsp-mode mode-line-bell helm-projectile markdown-mode helm-ag evil-lisp-state ws-butler evil-smartparens use-package smartparens evil-leader evil)))
+   '(sqlformat bm company-mode which-key helm-lsp lsp-ui highlight-indentation-mode yaml-mode company tide prettier-js typescript-mode package-lint helm-unicode helm-chrome-control git-timemachine git-link diff-hl evil-visualstar js2-mode deadgrep smart-mode-line flycheck-jokeryy flycheck-joker cider aggressive-indent dumb-jump lsp-mode mode-line-bell helm-projectile markdown-mode helm-ag evil-lisp-state ws-butler evil-smartparens use-package smartparens evil-leader evil))
  '(safe-local-variable-values
-   (quote
-    ((eval when
+   '((eval when
            (and
             (buffer-file-name)
             (not
@@ -105,30 +112,24 @@
             (string-match-p "^[^.]"
                             (buffer-file-name)))
            (unless
-               (featurep
-                (quote package-build))
+               (featurep 'package-build)
              (let
                  ((load-path
                    (cons "../package-build" load-path)))
-               (require
-                (quote package-build))))
+               (require 'package-build)))
            (unless
-               (derived-mode-p
-                (quote emacs-lisp-mode))
+               (derived-mode-p 'emacs-lisp-mode)
              (emacs-lisp-mode))
            (package-build-minor-mode)
            (setq-local flycheck-checkers nil)
            (set
-            (make-local-variable
-             (quote package-build-working-dir))
+            (make-local-variable 'package-build-working-dir)
             (expand-file-name "../working/"))
            (set
-            (make-local-variable
-             (quote package-build-archive-dir))
+            (make-local-variable 'package-build-archive-dir)
             (expand-file-name "../packages/"))
            (set
-            (make-local-variable
-             (quote package-build-recipes-dir))
+            (make-local-variable 'package-build-recipes-dir)
             default-directory))
      (eval define-clojure-indent
            (reg-cofx :defn)
@@ -140,7 +141,7 @@
            (reg-block-event-fx :defn)
            (reg-event-domain-fx :defn)
            (reg-event-persistent-db :defn)
-           (this-as 0))))))
+           (this-as 0)))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -177,10 +178,10 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; behavior
 
-;; remember how things used to be
-
-;; (desktop-save-mode 1)
 (save-place-mode 1)
+(require 'bm)
+(setq bm-cycle-all-buffers t)
+(setq bm-marker 'bm-marker-right)
 
 ;; chrome
 
@@ -193,13 +194,10 @@
 (require 'git-link)
 (setq git-link-open-in-browser t)
 
-(defadvice git-timemachine-mode (after git-timemachine-change-to-emacs-state activate compile)
-  "Enable time traveling in git."
-  (if (evil-normal-state-p)
-      (evil-emacs-state)
-    (evil-normal-state)))
-
-(ad-activate 'git-timemachine-mode)
+(with-eval-after-load 'git-timemachine
+  (evil-make-overriding-map git-timemachine-mode-map 'normal)
+  ;; force update evil keymaps after git-timemachine-mode loaded
+  (add-hook 'git-timemachine-mode-hook #'evil-normalize-keymaps))
 
 ;; backups
 
@@ -348,16 +346,12 @@
 (require 'evil-leader)
 (global-evil-leader-mode)
 
-;; remove binding from map
-(define-key undo-tree-map (kbd "M-_") nil)
-(global-set-key (kbd "M-_")
-                (lambda ()
-                  (interactive)
-                  (insert "—")))
-(global-set-key (kbd "M--")
-                (lambda ()
-                  (interactive)
-                  (insert "–")))
+;; Use MacOS key-bindings (Option-hyhpen, Option-Shift-hyphen) for en-dash and em-dash
+(define-key undo-tree-map (kbd "M-_") nil) ;; remove override
+(global-set-key (kbd "M-_") (lambda () (interactive) (insert "—")))
+(global-set-key (kbd "M--") (lambda () (interactive) (insert "–")))
+(global-set-key (kbd "M-8") (lambda () (interactive) (insert "•")))
+(global-set-key (kbd "M-*") (lambda () (interactive) (insert "°")))
 
 (evil-leader/set-leader ",")
 (evil-leader/set-key
@@ -371,6 +365,8 @@
         (evil-global-set-key state (kbd "SPC SPC") 'helm-M-x)
         (evil-global-set-key state (kbd "SPC b b") 'helm-mini)
         (evil-global-set-key state (kbd "SPC b d") 'kill-this-buffer)
+        (evil-global-set-key state (kbd "SPC b n") 'bm-next)
+        (evil-global-set-key state (kbd "SPC b t") 'bm-toggle)
         (evil-global-set-key state (kbd "SPC w m") 'delete-other-windows)
         (evil-global-set-key state (kbd "SPC f f") 'helm-find-files)
         (evil-global-set-key state (kbd "SPC /") 'helm-do-ag-project-root)
@@ -383,9 +379,11 @@
         (evil-global-set-key state (kbd "SPC o f") 'fill-paragraph)
         (evil-global-set-key state (kbd "SPC o o") 'find-primary-proj)
         (evil-global-set-key state (kbd "SPC o c") 'find-compose)
+        (evil-global-set-key state (kbd "SPC o C") 'find-compose2)
         (evil-global-set-key state (kbd "SPC o r") 'find-reading)
         (evil-global-set-key state (kbd "SPC o w") 'find-writing)
         (evil-global-set-key state (kbd "SPC o s") 'find-scraps)
+        (evil-global-set-key state (kbd "SPC o i") 'find-it)
         (evil-global-set-key state (kbd "SPC o d") 'find-diary)
         (evil-global-set-key state (kbd "SPC o z") 'zprint)
         (evil-global-set-key state (kbd "SPC t o") 'iterm-open)
@@ -412,8 +410,6 @@
         (evil-global-set-key state (kbd "SPC s k") 'smerge-keep-current)
 
         (evil-global-set-key state (kbd "SPC m m") 'markdown-shifttab)
-        (evil-global-set-key state (kbd "SPC n n") 'markdown-narrow-to-subtree)
-        (evil-global-set-key state (kbd "SPC n w") 'widen)
 
         (evil-global-set-key state (kbd "SPC s j") 'sp-split-sexp)
         (evil-global-set-key state (kbd "SPC k t") 'sp-transpose-sexp)
