@@ -12,6 +12,7 @@
 
 (setq gc-cons-threshold 200000000)
 (setq read-process-output-max (* 1024 1024))
+(setq create-lockfiles nil)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; package configuration
@@ -25,6 +26,7 @@
                       bm
                       diff-hl
                       solarized-theme
+                      toggle-test
                       package-lint
                       prettier-js
                       typescript-mode
@@ -239,6 +241,10 @@
       '(clojure-mode-hook
         emacs-lisp-mode-hook))
 
+(mapc (lambda (hook)
+        (add-hook hook 'lsp))
+      '(typescript-mode-hook))
+
 ;; see https://github.com/clojure-emacs/clojure-mode/issues/516
 (add-hook 'clojure-mode-hook
           (lambda ()
@@ -380,6 +386,7 @@
         (evil-global-set-key state (kbd "SPC o o") 'find-primary-proj)
         (evil-global-set-key state (kbd "SPC o c") 'find-compose)
         (evil-global-set-key state (kbd "SPC o C") 'find-compose2)
+        (evil-global-set-key state (kbd "SPC o 1") 'find-1x1)
         (evil-global-set-key state (kbd "SPC o r") 'find-reading)
         (evil-global-set-key state (kbd "SPC o w") 'find-writing)
         (evil-global-set-key state (kbd "SPC o s") 'find-scraps)
@@ -425,6 +432,8 @@
 
         (evil-global-set-key state (kbd "SPC i b") 'insert-bar)
 
+        (evil-global-set-key state (kbd "SPC t t") 'projectile-toggle-between-implementation-and-test)
+
         (evil-global-set-key state (kbd "SPC g l l") 'git-link)
         (evil-global-set-key state (kbd "SPC g t m") 'git-timemachine)
         (evil-global-set-key state (kbd "SPC g ]") 'diff-hl-next-hunk)
@@ -447,6 +456,15 @@
 (evil-define-minor-mode-key 'motion 'visual-line-mode (kbd "<up>") 'evil-previous-visual-line)
 (evil-define-minor-mode-key 'motion 'visual-line-mode "0" 'evil-beginning-of-visual-line)
 (evil-define-minor-mode-key 'motion 'visual-line-mode "$" 'evil-end-of-visual-line)
+
+;; tgt-toggle
+
+(setq tgt-open-in-new-window 'nil)
+
+(add-to-list 'tgt-projects '((:root-dir "~/pitch/shadow-jest")
+                             (:src-dirs "src/main")
+                             (:test-dirs "src/test")
+                             (:test-suffixes "_spec")))
 
 (provide 'init)
 ;;; init.el ends here
