@@ -23,6 +23,7 @@
                       evil-leader
                       evil-visualstar
                       sqlformat
+                      eglot
                       csv-mode
                       bm
                       diff-hl
@@ -42,9 +43,6 @@
                       cider
                       yaml-mode
                       markdown-mode
-                      lsp-mode
-                      helm-lsp
-                      ;; lsp-ui
                       exec-path-from-shell
                       git-timemachine
                       js2-mode
@@ -105,7 +103,7 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-   '(yasnippet csv-mode sqlformat bm company-mode which-key helm-lsp lsp-ui highlight-indentation-mode yaml-mode company tide prettier-js typescript-mode package-lint helm-unicode helm-chrome-control git-timemachine git-link diff-hl evil-visualstar js2-mode deadgrep smart-mode-line flycheck-jokeryy flycheck-joker cider aggressive-indent dumb-jump lsp-mode mode-line-bell helm-projectile markdown-mode helm-ag evil-lisp-state ws-butler evil-smartparens use-package smartparens evil-leader evil))
+   '(eglot yasnippet csv-mode sqlformat bm company-mode which-key helm-lsp lsp-ui highlight-indentation-mode yaml-mode company tide prettier-js typescript-mode package-lint helm-unicode helm-chrome-control git-timemachine git-link diff-hl evil-visualstar js2-mode deadgrep smart-mode-line flycheck-jokeryy flycheck-joker cider aggressive-indent dumb-jump lsp-mode mode-line-bell helm-projectile markdown-mode helm-ag evil-lisp-state ws-butler evil-smartparens use-package smartparens evil-leader evil))
  '(safe-local-variable-values
    '((eval when
            (and
@@ -238,12 +236,10 @@
 ;; aggressive-indent
 
 (mapc (lambda (hook)
-        (add-hook hook 'lsp)
         (add-hook hook 'aggressive-indent-mode))
       '(clojure-mode-hook))
 
-(mapc (lambda (hook)
-        (add-hook hook 'lsp))
+(mapc (lambda (hook))
       '(typescript-mode-hook))
 
 ;; see https://github.com/clojure-emacs/clojure-mode/issues/516
@@ -315,41 +311,7 @@
 (add-hook 'visual-line-mode-hook (lambda () (setq fill-column 90)))
 (add-hook 'text-mode-hook 'turn-on-visual-line-mode)
 
-;; lsp
-
-(require 'lsp-mode)
-;; (require 'lsp-ui)
-(setq lsp-enable-snippet nil)
-(setq lsp-enable-file-watchers nil)
-(setq lsp-enable-indentation nil)
-(setq lsp-enable-completion-at-point nil)
-(setq lsp-prefer-capf t)
-(setq lsp-log-io nil) ;; for debugging only
-
-(add-to-list 'lsp-language-id-configuration '(clojure-mode . "clojure-mode"))
-(add-to-list 'lsp-language-id-configuration '(clojurec-mode . "clojurec-mode"))
-(add-to-list 'lsp-language-id-configuration '(clojurescript-mode . "clojurescript-mode"))
-(add-to-list 'lsp-language-id-configuration '(typescript-mode . "typescript-mode"))
-
-;; (setq lsp-keymap-prefix "M-p")
-;; lsp
-
-;; (use-package lsp-mode
-;;   :ensure t
-;;   :commands lsp
-;;   :config
-
-;;   (add-to-list 'lsp-language-id-configuration '(js2-mode . "js2-mode"))
-
-
-;;   :init
-;;   (setq lsp-enable-indentation nil)
-;;   (setq lsp-enable-snippet nil)
-;;   (add-hook 'clojure-mode-hook #'lsp)
-;;   (add-hook 'clojurec-mode-hook #'lsp)
-;;   (add-hook 'clojurescript-mode-hook #'lsp))
-
-;; yaml
+;;;; yaml
 
 (require 'highlight-indentation)
 
@@ -409,12 +371,11 @@
         (evil-global-set-key state (kbd "SPC t r") 'iterm-repeat-last-command)
         (evil-global-set-key state (kbd "SPC j i") 'helm-imenu)
         (evil-global-set-key state (kbd "SPC j I") 'helm-imenu-in-all-buffers)
-        (evil-global-set-key state (kbd "SPC j j") 'lsp-find-definition)
-        (evil-global-set-key state (kbd "SPC j r") 'lsp-find-references)
-        (evil-global-set-key state (kbd "SPC j a") 'helm-lsp-code-actions)
-        (evil-global-set-key state (kbd "SPC j R") 'lsp-rename)
-        (evil-global-set-key state (kbd "SPC j s") 'helm-lsp-workspace-symbol)
-        (evil-global-set-key state (kbd "SPC j h") 'lsp-describe-thing-at-point)
+        ;; (evil-global-set-key state (kbd "SPC j j") 'lsp-find-definition)
+        ;; (evil-global-set-key state (kbd "SPC j r") 'lsp-find-references)
+        ;; (evil-global-set-key state (kbd "SPC j a") 'helm-lsp-code-actions)
+        (evil-global-set-key state (kbd "SPC j R") 'eglot-rename)
+        ;; (evil-global-set-key state (kbd "SPC j h") 'lsp-describe-thing-at-point)
         (evil-global-set-key state (kbd "SPC j t") 'dumb-jump-go-prompt)
         (evil-global-set-key state (kbd "SPC r l") 'helm-resume)
         (evil-global-set-key state (kbd "SPC r y") 'helm-show-kill-ring)
