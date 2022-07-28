@@ -25,10 +25,8 @@
                       sqlformat
                       eglot
                       csv-mode
-                      bm
                       diff-hl
                       solarized-theme
-                      toggle-test
                       package-lint
                       prettier-js
                       typescript-mode
@@ -181,9 +179,6 @@
 ;; behavior
 
 (save-place-mode 1)
-(require 'bm)
-(setq bm-cycle-all-buffers t)
-(setq bm-marker 'bm-marker-right)
 
 ;; chrome
 
@@ -441,6 +436,9 @@
 
 (require 'yasnippet)
 (yas-global-mode 1)
+
+(setq tab-always-indent 'complete)
+(helm-mode 1)
 
 (provide 'init)
 ;;; init.el ends here
