@@ -23,6 +23,7 @@
                       evil-leader
                       evil-visualstar
                       sqlformat
+                      csv-mode
                       bm
                       diff-hl
                       solarized-theme
@@ -36,6 +37,7 @@
                       prettier-js
                       typescript-mode
                       ;; flycheck-joker
+                      yasnippet
                       git-link
                       cider
                       yaml-mode
@@ -103,7 +105,7 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-   '(sqlformat bm company-mode which-key helm-lsp lsp-ui highlight-indentation-mode yaml-mode company tide prettier-js typescript-mode package-lint helm-unicode helm-chrome-control git-timemachine git-link diff-hl evil-visualstar js2-mode deadgrep smart-mode-line flycheck-jokeryy flycheck-joker cider aggressive-indent dumb-jump lsp-mode mode-line-bell helm-projectile markdown-mode helm-ag evil-lisp-state ws-butler evil-smartparens use-package smartparens evil-leader evil))
+   '(yasnippet csv-mode sqlformat bm company-mode which-key helm-lsp lsp-ui highlight-indentation-mode yaml-mode company tide prettier-js typescript-mode package-lint helm-unicode helm-chrome-control git-timemachine git-link diff-hl evil-visualstar js2-mode deadgrep smart-mode-line flycheck-jokeryy flycheck-joker cider aggressive-indent dumb-jump lsp-mode mode-line-bell helm-projectile markdown-mode helm-ag evil-lisp-state ws-butler evil-smartparens use-package smartparens evil-leader evil))
  '(safe-local-variable-values
    '((eval when
            (and
@@ -238,8 +240,7 @@
 (mapc (lambda (hook)
         (add-hook hook 'lsp)
         (add-hook hook 'aggressive-indent-mode))
-      '(clojure-mode-hook
-        emacs-lisp-mode-hook))
+      '(clojure-mode-hook))
 
 (mapc (lambda (hook)
         (add-hook hook 'lsp))
@@ -271,8 +272,16 @@
 
 ;; lispy word characters
 
+;; C-q: insert literal character
+;; C-q C-j -> newline
+;; delete a quote character without regard for balancing: C-u 0 BACKSPACE
+;; C-h k <KEY> -> help for key or key sequence (describe-key)
+;; C-x C-h -> show all prefix commands that with C-x; works with any prefix commmand
+;; C-c -> prefix command for user-defined keybindings; package authors shouldn't use it
+
+
 (defun clojure-word-chars ()
-  "Add more special charcaters for Clojure."
+  "Add more special characters " "for Clojure."
   (modify-syntax-entry ?+ "w")
   (modify-syntax-entry ?- "w")
   (modify-syntax-entry ?< "w")
@@ -288,6 +297,7 @@
 
 (require 'js2-mode)
 (add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
+(add-to-list 'auto-mode-alist '("\\.mjs\\'" . js2-mode))
 (setq-default js2-basic-offset 2)
 (setq-default js-indent-level 2)
 (setq-default typescript-indent-level 2)
@@ -314,6 +324,7 @@
 (setq lsp-enable-indentation nil)
 (setq lsp-enable-completion-at-point nil)
 (setq lsp-prefer-capf t)
+(setq lsp-log-io nil) ;; for debugging only
 
 (add-to-list 'lsp-language-id-configuration '(clojure-mode . "clojure-mode"))
 (add-to-list 'lsp-language-id-configuration '(clojurec-mode . "clojurec-mode"))
@@ -353,7 +364,7 @@
 (global-evil-leader-mode)
 
 ;; Use MacOS key-bindings (Option-hyhpen, Option-Shift-hyphen) for en-dash and em-dash
-(define-key undo-tree-map (kbd "M-_") nil) ;; remove override
+;; (define-key undo-tree-map (kbd "M-_") nil) ;; remove override
 (global-set-key (kbd "M-_") (lambda () (interactive) (insert "—")))
 (global-set-key (kbd "M--") (lambda () (interactive) (insert "–")))
 (global-set-key (kbd "M-8") (lambda () (interactive) (insert "•")))
@@ -400,6 +411,7 @@
         (evil-global-set-key state (kbd "SPC j I") 'helm-imenu-in-all-buffers)
         (evil-global-set-key state (kbd "SPC j j") 'lsp-find-definition)
         (evil-global-set-key state (kbd "SPC j r") 'lsp-find-references)
+        (evil-global-set-key state (kbd "SPC j a") 'helm-lsp-code-actions)
         (evil-global-set-key state (kbd "SPC j R") 'lsp-rename)
         (evil-global-set-key state (kbd "SPC j s") 'helm-lsp-workspace-symbol)
         (evil-global-set-key state (kbd "SPC j h") 'lsp-describe-thing-at-point)
@@ -465,6 +477,9 @@
                              (:src-dirs "src/main")
                              (:test-dirs "src/test")
                              (:test-suffixes "_spec")))
+
+(require 'yasnippet)
+(yas-global-mode 1)
 
 (provide 'init)
 ;;; init.el ends here
