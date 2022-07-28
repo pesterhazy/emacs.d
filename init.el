@@ -176,10 +176,6 @@
 
 (save-place-mode 1)
 
-;; chrome
-
-(require 'helm-chrome-control)
-
 ;; git
 
 (global-diff-hl-mode)
