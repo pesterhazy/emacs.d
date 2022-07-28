@@ -22,9 +22,7 @@
 (let ((package-list '(evil
                       evil-leader
                       evil-visualstar
-                      sqlformat
                       eglot
-                      csv-mode
                       diff-hl
                       solarized-theme
                       package-lint
@@ -35,7 +33,6 @@
                       clojure-mode
                       prettier-js
                       typescript-mode
-                      ;; flycheck-joker
                       yasnippet
                       git-link
                       cider
@@ -45,7 +42,6 @@
                       git-timemachine
                       js2-mode
                       ws-butler
-                      dumb-jump
                       helm
                       helm-projectile
                       helm-ag
@@ -249,8 +245,6 @@
 
 ;; lisp
 
-;; (require 'flycheck)
-(setq flycheck-emacs-lisp-load-path 'inherit)
 
 (require 'smartparens-config)
 
@@ -280,9 +274,6 @@
 
 (add-hook 'clojure-mode-hook 'clojure-word-chars)
 (add-hook 'emacs-lisp-mode-hook #'(lambda () (modify-syntax-entry ?- "w")))
-
-;; (require 'flycheck-joker)
-;; (global-flycheck-mode)
 
 ;; javascript
 
