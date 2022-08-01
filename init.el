@@ -357,7 +357,7 @@
         (evil-global-set-key state (kbd "SPC j r") 'xref-find-references)
         ;; (evil-global-set-key state (kbd "SPC j a") 'helm-lsp-code-actions)
         (evil-global-set-key state (kbd "SPC j R") 'eglot-rename)
-        ;; (evil-global-set-key state (kbd "SPC j h") 'lsp-describe-thing-at-point)
+        (evil-global-set-key state (kbd "SPC j h") 'eldoc-doc-buffer)
         (evil-global-set-key state (kbd "SPC j t") 'dumb-jump-go-prompt)
         (evil-global-set-key state (kbd "SPC r l") 'helm-resume)
         (evil-global-set-key state (kbd "SPC r y") 'helm-show-kill-ring)
@@ -426,6 +426,18 @@
 
 (setq tab-always-indent 'complete)
 (helm-mode 1)
+
+;; eglot
+
+(add-hook 'eglot-managed-mode-hook
+	  ;; This displays full docs for clojure functions.
+	  ;; See https://github.com/joaotavora/eglot/discussions/894
+	  #'(lambda ()
+	      (setq-local eldoc-documentation-strategy
+			  #'eldoc-documentation-compose
+
+			  eldoc-echo-area-use-multiline-p
+			  5)))
 
 (provide 'init)
 ;;; init.el ends here
