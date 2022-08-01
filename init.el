@@ -351,11 +351,12 @@
         (evil-global-set-key state (kbd "SPC t o") 'iterm-open)
         (evil-global-set-key state (kbd "SPC t t") 'iterm-open-new-tab)
         (evil-global-set-key state (kbd "SPC t r") 'iterm-repeat-last-command)
+
         (evil-global-set-key state (kbd "SPC j i") 'helm-imenu)
         (evil-global-set-key state (kbd "SPC j I") 'helm-imenu-in-all-buffers)
         (evil-global-set-key state (kbd "SPC j j") 'xref-find-definitions)
         (evil-global-set-key state (kbd "SPC j r") 'xref-find-references)
-        ;; (evil-global-set-key state (kbd "SPC j a") 'helm-lsp-code-actions)
+        (evil-global-set-key state (kbd "SPC j a") 'eglot-code-actions)
         (evil-global-set-key state (kbd "SPC j R") 'eglot-rename)
         (evil-global-set-key state (kbd "SPC j h") 'eldoc-doc-buffer)
         (evil-global-set-key state (kbd "SPC j t") 'dumb-jump-go-prompt)
