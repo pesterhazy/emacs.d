@@ -439,5 +439,8 @@
 			  eldoc-echo-area-use-multiline-p
 			  5)))
 
+(dolist (hook '(clojure-mode-hook))
+  (add-hook hook 'eglot-ensure))
+
 (provide 'init)
 ;;; init.el ends here
