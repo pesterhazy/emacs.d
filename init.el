@@ -97,7 +97,7 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-   '(eglot yasnippet csv-mode sqlformat bm company-mode which-key helm-lsp lsp-ui highlight-indentation-mode yaml-mode company tide prettier-js typescript-mode package-lint helm-unicode helm-chrome-control git-timemachine git-link diff-hl evil-visualstar js2-mode deadgrep smart-mode-line flycheck-jokeryy flycheck-joker cider aggressive-indent dumb-jump lsp-mode mode-line-bell helm-projectile markdown-mode helm-ag evil-lisp-state ws-butler evil-smartparens use-package smartparens evil-leader evil))
+   '(eglot yasnippet csv-mode sqlformat bm company-mode which-key helm-lsp lsp-ui highlight-indentation-mode yaml-mode company tide prettier-js typescript-mode package-lint helm-unicode helm-chrome-control git-timemachine git-link diff-hl evil-visualstar js2-mode deadgrep smart-mode-line flycheck-jokeryy flycheck-joker cider aggressive-indent lsp-mode mode-line-bell helm-projectile markdown-mode helm-ag evil-lisp-state ws-butler evil-smartparens use-package smartparens evil-leader evil))
  '(safe-local-variable-values
    '((eval when
            (and
@@ -359,7 +359,6 @@
         (evil-global-set-key state (kbd "SPC j a") 'eglot-code-actions)
         (evil-global-set-key state (kbd "SPC j R") 'eglot-rename)
         (evil-global-set-key state (kbd "SPC j h") 'eldoc-doc-buffer)
-        (evil-global-set-key state (kbd "SPC j t") 'dumb-jump-go-prompt)
         (evil-global-set-key state (kbd "SPC r l") 'helm-resume)
         (evil-global-set-key state (kbd "SPC r y") 'helm-show-kill-ring)
         (evil-global-set-key state (kbd "SPC p f") 'helm-projectile)
