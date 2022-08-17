@@ -161,7 +161,10 @@
 (load-theme 'solarized-light t)
 (setq which-key-idle-delay 3.0)
 (which-key-mode)
-(setq default-frame-alist '((font . "Menlo-15")))
+;; brew tap homebrew/cask-fonts
+;; brew install --cask font-iosevka
+(setq default-frame-alist '((font . "Iosevka-15")))
+;; (setq default-frame-alist '((font . "Menlo-15")))
 ;; maximize vertically
 (add-to-list 'initial-frame-alist '(fullscreen . fullheight))
 ;; modeline
