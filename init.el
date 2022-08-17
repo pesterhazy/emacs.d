@@ -37,7 +37,6 @@
                       yaml-mode
                       markdown-mode
                       exec-path-from-shell
-                      git-timemachine
                       js2-mode
                       ws-butler
                       helm
@@ -165,6 +164,7 @@
 ;; brew install --cask font-iosevka
 (setq default-frame-alist '((font . "Iosevka-15")))
 ;; (setq default-frame-alist '((font . "Menlo-15")))
+
 ;; maximize vertically
 (add-to-list 'initial-frame-alist '(fullscreen . fullheight))
 ;; modeline
@@ -181,11 +181,6 @@
 (diff-hl-flydiff-mode)
 (require 'git-link)
 (setq git-link-open-in-browser t)
-
-(with-eval-after-load 'git-timemachine
-  (evil-make-overriding-map git-timemachine-mode-map 'normal)
-  ;; force update evil keymaps after git-timemachine-mode loaded
-  (add-hook 'git-timemachine-mode-hook #'evil-normalize-keymaps))
 
 ;; backups
 
