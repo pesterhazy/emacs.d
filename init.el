@@ -17,8 +17,6 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; package configuration
 
-(require 'package)
-
 (let ((package-list '(evil
                       evil-leader
                       evil-visualstar
@@ -61,9 +59,7 @@
                            ("melpa" . "https://melpa.org/packages/")))
 
   ;; Activate all the packages (in particular autoloads)
-  (package-initialize
-
-   )
+  (package-initialize)
   (unless package-archive-contents
     (package-refresh-contents))
   (dolist (package package-list)
@@ -73,10 +69,9 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; load extra files
 
-(when (memq window-system '(mac ns x))
-  (setenv "RIPGREP_CONFIG_PATH"
-          (expand-file-name "~/.rgconfig"))
-  (exec-path-from-shell-initialize))
+(setenv "RIPGREP_CONFIG_PATH"
+        (expand-file-name "~/.rgconfig"))
+(exec-path-from-shell-initialize)
 
 (add-to-list 'load-path (expand-file-name "~/emacs.d/vendor"))
 (add-to-list 'load-path (expand-file-name "~/emacs.d/elisp"))
@@ -96,6 +91,7 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(eglot-connect-timeout 90)
  '(package-selected-packages
    '(eglot yasnippet csv-mode sqlformat bm company-mode which-key helm-lsp lsp-ui highlight-indentation-mode yaml-mode company tide prettier-js typescript-mode package-lint helm-unicode helm-chrome-control git-timemachine git-link diff-hl evil-visualstar js2-mode deadgrep smart-mode-line flycheck-jokeryy flycheck-joker cider aggressive-indent lsp-mode mode-line-bell helm-projectile markdown-mode helm-ag evil-lisp-state ws-butler evil-smartparens use-package smartparens evil-leader evil))
  '(safe-local-variable-values
