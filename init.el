@@ -22,6 +22,8 @@
                       evil-visualstar
                       eglot
                       diff-hl
+                      groovy-mode
+                      csv-mode
                       solarized-theme
                       package-lint
                       prettier-js
@@ -74,13 +76,7 @@
 
 (add-to-list 'load-path (expand-file-name "~/emacs.d/vendor"))
 (add-to-list 'load-path (expand-file-name "~/emacs.d/elisp"))
-(add-to-list 'load-path (expand-file-name "~/prg/zprint-mode.el"))
 (load-file (expand-file-name "~/emacs.d/elisp/my-functions.el"))
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; zprint-mode
-
-(require 'zprint-mode)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; custom
@@ -92,7 +88,7 @@
  ;; If there is more than one, they won't work right.
  '(eglot-connect-timeout 90)
  '(package-selected-packages
-   '(eglot yasnippet csv-mode sqlformat bm company-mode which-key helm-lsp lsp-ui highlight-indentation-mode yaml-mode company tide prettier-js typescript-mode package-lint helm-unicode helm-chrome-control git-timemachine git-link diff-hl evil-visualstar js2-mode deadgrep smart-mode-line flycheck-jokeryy flycheck-joker cider aggressive-indent lsp-mode mode-line-bell helm-projectile markdown-mode helm-ag evil-lisp-state ws-butler evil-smartparens use-package smartparens evil-leader evil))
+   '(groovy-mode eglot yasnippet csv-mode sqlformat bm company-mode which-key helm-lsp lsp-ui highlight-indentation-mode yaml-mode company tide prettier-js typescript-mode package-lint helm-unicode helm-chrome-control git-timemachine git-link diff-hl evil-visualstar js2-mode deadgrep smart-mode-line flycheck-jokeryy flycheck-joker cider aggressive-indent lsp-mode mode-line-bell helm-projectile markdown-mode helm-ag evil-lisp-state ws-butler evil-smartparens use-package smartparens evil-leader evil))
  '(safe-local-variable-values
    '((eval when
            (and
@@ -341,7 +337,6 @@
         (evil-global-set-key state (kbd "SPC o s") 'find-scraps)
         (evil-global-set-key state (kbd "SPC o i") 'find-it)
         (evil-global-set-key state (kbd "SPC o d") 'find-diary)
-        (evil-global-set-key state (kbd "SPC o z") 'zprint)
         (evil-global-set-key state (kbd "SPC t o") 'iterm-open)
         (evil-global-set-key state (kbd "SPC t t") 'iterm-open-new-tab)
         (evil-global-set-key state (kbd "SPC t r") 'iterm-repeat-last-command)
@@ -405,15 +400,6 @@
 (evil-define-minor-mode-key 'motion 'visual-line-mode (kbd "<up>") 'evil-previous-visual-line)
 (evil-define-minor-mode-key 'motion 'visual-line-mode "0" 'evil-beginning-of-visual-line)
 (evil-define-minor-mode-key 'motion 'visual-line-mode "$" 'evil-end-of-visual-line)
-
-;; tgt-toggle
-
-(setq tgt-open-in-new-window 'nil)
-
-(add-to-list 'tgt-projects '((:root-dir "~/pitch/shadow-jest")
-                             (:src-dirs "src/main")
-                             (:test-dirs "src/test")
-                             (:test-suffixes "_spec")))
 
 (require 'yasnippet)
 (yas-global-mode 1)
