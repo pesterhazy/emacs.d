@@ -285,3 +285,14 @@ npm i -g sql-formatter-cli"
   (insert (if arg
               (format-time-string "%d.%m.%Y")
             (format-time-string "%Y-%m-%d"))))
+
+(defun zprint-region ()
+  (interactive)
+  (save-excursion
+    (shell-command-on-region (mark) (point) "zprint" (buffer-name) t)))
+
+(defun zkj-project-override (dir)
+  (let ((override (locate-dominating-file dir ".project.el")))
+    (if override
+      (cons 'vc override)
+      nil)))

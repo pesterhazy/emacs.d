@@ -88,7 +88,7 @@
  ;; If there is more than one, they won't work right.
  '(eglot-connect-timeout 90)
  '(package-selected-packages
-   '(groovy-mode eglot yasnippet csv-mode sqlformat bm company-mode which-key helm-lsp lsp-ui highlight-indentation-mode yaml-mode company tide prettier-js typescript-mode package-lint helm-unicode helm-chrome-control git-timemachine git-link diff-hl evil-visualstar js2-mode deadgrep smart-mode-line flycheck-jokeryy flycheck-joker cider aggressive-indent lsp-mode mode-line-bell helm-projectile markdown-mode helm-ag evil-lisp-state ws-butler evil-smartparens use-package smartparens evil-leader evil))
+   '(zprint-mode groovy-mode eglot yasnippet csv-mode sqlformat bm company-mode which-key helm-lsp lsp-ui highlight-indentation-mode yaml-mode company tide prettier-js typescript-mode package-lint helm-unicode helm-chrome-control git-timemachine git-link diff-hl evil-visualstar js2-mode deadgrep smart-mode-line flycheck-jokeryy flycheck-joker cider aggressive-indent lsp-mode mode-line-bell helm-projectile markdown-mode helm-ag evil-lisp-state ws-butler evil-smartparens use-package smartparens evil-leader evil))
  '(safe-local-variable-values
    '((eval when
            (and
@@ -307,7 +307,8 @@
 (evil-leader/set-leader ",")
 (evil-leader/set-key
   "e" 'eval-region
-  "d" 'eval-defun)
+  "d" 'eval-defun
+  "x" 'eval-expression)
 
 (mapc (lambda (state)
         (evil-global-set-key state (kbd "s-=") (lambda () (interactive) (text-scale-increase 1)))
@@ -350,7 +351,7 @@
         (evil-global-set-key state (kbd "SPC j h") 'eldoc-doc-buffer)
         (evil-global-set-key state (kbd "SPC r l") 'helm-resume)
         (evil-global-set-key state (kbd "SPC r y") 'helm-show-kill-ring)
-        (evil-global-set-key state (kbd "SPC p f") 'helm-projectile)
+        (evil-global-set-key state (kbd "SPC p f") 'project-find-file)
         (evil-global-set-key state (kbd "SPC f e d") 'find-init-el)
         (evil-global-set-key state (kbd "SPC f e m") 'find-my-functions)
         (evil-global-set-key state (kbd "SPC m c") 'cider-force-connect)
@@ -421,6 +422,8 @@
 
 (dolist (hook '(clojure-mode-hook))
   (add-hook hook 'eglot-ensure))
+
+(add-hook 'project-find-functions #'zkj-project-override)
 
 (provide 'init)
 ;;; init.el ends here
