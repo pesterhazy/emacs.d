@@ -24,6 +24,7 @@
                       diff-hl
                       groovy-mode
                       csv-mode
+                      toggle-test
                       solarized-theme
                       package-lint
                       prettier-js
@@ -42,12 +43,10 @@
                       js2-mode
                       ws-butler
                       helm
-                      helm-projectile
                       helm-ag
                       smart-mode-line
                       mode-line-bell
                       expand-region
-                      projectile
                       visual-fill-column
                       simpleclip
                       smooth-scrolling
@@ -88,7 +87,7 @@
  ;; If there is more than one, they won't work right.
  '(eglot-connect-timeout 90)
  '(package-selected-packages
-   '(zprint-mode groovy-mode eglot yasnippet csv-mode sqlformat bm company-mode which-key helm-lsp lsp-ui highlight-indentation-mode yaml-mode company tide prettier-js typescript-mode package-lint helm-unicode helm-chrome-control git-timemachine git-link diff-hl evil-visualstar js2-mode deadgrep smart-mode-line flycheck-jokeryy flycheck-joker cider aggressive-indent lsp-mode mode-line-bell helm-projectile markdown-mode helm-ag evil-lisp-state ws-butler evil-smartparens use-package smartparens evil-leader evil))
+   '(toggle-test zprint-mode groovy-mode eglot yasnippet csv-mode sqlformat bm company-mode which-key helm-lsp lsp-ui highlight-indentation-mode yaml-mode company tide prettier-js typescript-mode package-lint helm-unicode helm-chrome-control git-timemachine git-link diff-hl evil-visualstar js2-mode deadgrep smart-mode-line flycheck-jokeryy flycheck-joker cider aggressive-indent lsp-mode mode-line-bell helm-projectile markdown-mode helm-ag evil-lisp-state ws-butler evil-smartparens use-package smartparens evil-leader evil))
  '(safe-local-variable-values
    '((eval when
            (and
@@ -227,8 +226,6 @@
             (comment-normalize-vars)
             (setq-local comment-column 0)))
 
-(require 'clojure-comment-dwim)
-
 ;; lisp
 
 
@@ -339,8 +336,9 @@
         (evil-global-set-key state (kbd "SPC o i") 'find-it)
         (evil-global-set-key state (kbd "SPC o d") 'find-diary)
         (evil-global-set-key state (kbd "SPC t o") 'iterm-open)
-        (evil-global-set-key state (kbd "SPC t t") 'iterm-open-new-tab)
         (evil-global-set-key state (kbd "SPC t r") 'iterm-repeat-last-command)
+
+        (evil-global-set-key state (kbd "SPC t t") 'tgt-toggle)
 
         (evil-global-set-key state (kbd "SPC j i") 'helm-imenu)
         (evil-global-set-key state (kbd "SPC j I") 'helm-imenu-in-all-buffers)
@@ -377,7 +375,7 @@
 
         (evil-global-set-key state (kbd "SPC i b") 'insert-bar)
 
-        (evil-global-set-key state (kbd "SPC t t") 'projectile-toggle-between-implementation-and-test)
+        ;; (evil-global-set-key state (kbd "SPC t t") 'projectile-toggle-between-implementation-and-test)
 
         (evil-global-set-key state (kbd "SPC g l l") 'git-link)
         (evil-global-set-key state (kbd "SPC g t m") 'git-timemachine)
@@ -423,7 +421,13 @@
 (dolist (hook '(clojure-mode-hook))
   (add-hook hook 'eglot-ensure))
 
-(add-hook 'project-find-functions #'zkj-project-override)
+(add-hook 'project-find-functions #'project-find-deps-edn)
+
+(add-to-list 'tgt-projects '((:root-dir "~/pitch/pitch-app/projects/pico")
+                             (:src-dirs "src")
+                             (:test-dirs "test")
+                             (:test-suffixes "_test")))
+(setq tgt-open-in-new-window nil)
 
 (provide 'init)
 ;;; init.el ends here

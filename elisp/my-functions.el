@@ -291,8 +291,8 @@ npm i -g sql-formatter-cli"
   (save-excursion
     (shell-command-on-region (mark) (point) "zprint" (buffer-name) t)))
 
-(defun zkj-project-override (dir)
-  (let ((override (locate-dominating-file dir ".project.el")))
+(defun project-find-deps-edn (dir)
+  (let ((override (locate-dominating-file dir "deps.edn")))
     (if override
       (cons 'vc override)
       nil)))
