@@ -15,7 +15,8 @@
   (let ((repl (cider-current-repl nil nil)))
     (when repl
       (cider-quit repl))
-    (cider-connect '(:host "localhost" :port 48888))))
+    (cider-connect (plist-put '(:host "localhost" :cljs-repl-type shadow)
+                              :port (cl-second (cl-first (cider-locate-running-nrepl-ports)))))))
 
 (defun cider-force-eval-buffer ()
   (interactive)
@@ -107,6 +108,9 @@
 (defun find-diary ()
   (interactive)
   (find-file "~/Dropbox/zettel/diary.md"))
+(defun find-worktodo ()
+  (interactive)
+  (find-file "~/Dropbox/zettel/worktodo.md"))
 
 (defun find-init-el ()
   (interactive)
@@ -296,3 +300,19 @@ npm i -g sql-formatter-cli"
     (if override
       (cons 'vc override)
       nil)))
+
+(defun paste-as-comment ()
+  (interactive)
+  (let ((beg (point-marker))
+	(end (save-excursion
+	       (insert " ")
+	       (point-marker))))
+    (yank-pop)
+    (comment-region beg end)))
+
+(defun flyspell-save-word ()
+  (interactive)
+  (let ((current-location (point))
+         (word (flyspell-get-word)))
+    (when (consp word)
+      (flyspell-do-correct 'save nil (car word) current-location (cadr word) (caddr word) current-location))))

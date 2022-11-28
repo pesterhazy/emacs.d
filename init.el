@@ -21,6 +21,8 @@
                       evil-leader
                       evil-visualstar
                       eglot
+                      dockerfile-mode
+                      projectile
                       diff-hl
                       groovy-mode
                       csv-mode
@@ -87,7 +89,7 @@
  ;; If there is more than one, they won't work right.
  '(eglot-connect-timeout 90)
  '(package-selected-packages
-   '(toggle-test zprint-mode groovy-mode eglot yasnippet csv-mode sqlformat bm company-mode which-key helm-lsp lsp-ui highlight-indentation-mode yaml-mode company tide prettier-js typescript-mode package-lint helm-unicode helm-chrome-control git-timemachine git-link diff-hl evil-visualstar js2-mode deadgrep smart-mode-line flycheck-jokeryy flycheck-joker cider aggressive-indent lsp-mode mode-line-bell helm-projectile markdown-mode helm-ag evil-lisp-state ws-butler evil-smartparens use-package smartparens evil-leader evil))
+   '(dockerfile-mode toggle-test zprint-mode groovy-mode eglot yasnippet csv-mode sqlformat bm company-mode which-key helm-lsp lsp-ui highlight-indentation-mode yaml-mode company tide prettier-js typescript-mode package-lint helm-unicode helm-chrome-control git-timemachine git-link diff-hl evil-visualstar js2-mode deadgrep smart-mode-line flycheck-jokeryy flycheck-joker cider aggressive-indent lsp-mode mode-line-bell helm-projectile markdown-mode helm-ag evil-lisp-state ws-butler evil-smartparens use-package smartparens evil-leader evil))
  '(safe-local-variable-values
    '((eval when
            (and
@@ -335,6 +337,7 @@
         (evil-global-set-key state (kbd "SPC o s") 'find-scraps)
         (evil-global-set-key state (kbd "SPC o i") 'find-it)
         (evil-global-set-key state (kbd "SPC o d") 'find-diary)
+        (evil-global-set-key state (kbd "SPC o D") 'find-worktodo)
         (evil-global-set-key state (kbd "SPC t o") 'iterm-open)
         (evil-global-set-key state (kbd "SPC t r") 'iterm-repeat-last-command)
 
@@ -350,6 +353,7 @@
         (evil-global-set-key state (kbd "SPC r l") 'helm-resume)
         (evil-global-set-key state (kbd "SPC r y") 'helm-show-kill-ring)
         (evil-global-set-key state (kbd "SPC p f") 'project-find-file)
+        (evil-global-set-key state (kbd "SPC p F") 'projectile-find-file)
         (evil-global-set-key state (kbd "SPC f e d") 'find-init-el)
         (evil-global-set-key state (kbd "SPC f e m") 'find-my-functions)
         (evil-global-set-key state (kbd "SPC m c") 'cider-force-connect)
@@ -427,7 +431,17 @@
                              (:src-dirs "src")
                              (:test-dirs "test")
                              (:test-suffixes "_test")))
+(add-to-list 'tgt-projects '((:root-dir "~/prg/aoc2022")
+                             (:src-dirs "src")
+                             (:test-dirs "test")
+                             (:test-suffixes ".test")))
 (setq tgt-open-in-new-window nil)
+
+;; (setq langtool-language-tool-jar "/Users/user/lagnguagetool/languagetool-commandline.jar")
+;; (require 'langtool)
+
+(dolist (hook '(text-mode-hook))
+  (add-hook hook (lambda () (flyspell-mode 1))))
 
 (provide 'init)
 ;;; init.el ends here
