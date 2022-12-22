@@ -81,7 +81,11 @@
 
 (defun find-primary-proj ()
   (interactive)
-  (find-file "~/pitch/pitch-app/desktop-app/src/app/pitch/app.cljs"))
+  (find-file "~/pitch/pitch-app/desktop-app/dev/cljs/user.cljs"))
+
+(defun find-secondary-proj ()
+  (interactive)
+  (find-file "~/pitch/pitch-app/services/backend/dev/user.clj"))
 
 (defun find-compose ()
   (interactive)
@@ -316,3 +320,17 @@ npm i -g sql-formatter-cli"
          (word (flyspell-get-word)))
     (when (consp word)
       (flyspell-do-correct 'save nil (car word) current-location (cadr word) (caddr word) current-location))))
+
+(defun ag-mopro-root (&optional query)
+  (interactive)
+  (let ((dir (locate-dominating-file default-directory "deps.edn")))
+    (unless dir
+      (error "Could not find the root"))
+    (helm-do-ag dir nil query)))
+
+(defun mopro-find-file ()
+  (interactive)
+  (let ((root (or
+               (locate-dominating-file "." "deps.edn")
+               projectile-project-root)))
+    (projectile-find-file-in-directory root)))

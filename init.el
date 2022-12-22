@@ -21,8 +21,10 @@
                       evil-leader
                       evil-visualstar
                       eglot
-                      dockerfile-mode
+                      jarchive
+                      python-mode
                       projectile
+                      dockerfile-mode
                       diff-hl
                       groovy-mode
                       csv-mode
@@ -87,9 +89,10 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(eglot-confirm-server-initiated-edits nil)
  '(eglot-connect-timeout 90)
  '(package-selected-packages
-   '(dockerfile-mode toggle-test zprint-mode groovy-mode eglot yasnippet csv-mode sqlformat bm company-mode which-key helm-lsp lsp-ui highlight-indentation-mode yaml-mode company tide prettier-js typescript-mode package-lint helm-unicode helm-chrome-control git-timemachine git-link diff-hl evil-visualstar js2-mode deadgrep smart-mode-line flycheck-jokeryy flycheck-joker cider aggressive-indent lsp-mode mode-line-bell helm-projectile markdown-mode helm-ag evil-lisp-state ws-butler evil-smartparens use-package smartparens evil-leader evil))
+   '(jarchive asdfasdf python-mode dockerfile-mode toggle-test zprint-mode groovy-mode eglot yasnippet csv-mode sqlformat bm company-mode which-key helm-lsp lsp-ui highlight-indentation-mode yaml-mode company tide prettier-js typescript-mode package-lint helm-unicode helm-chrome-control git-timemachine git-link diff-hl evil-visualstar js2-mode deadgrep smart-mode-line flycheck-jokeryy flycheck-joker cider aggressive-indent lsp-mode mode-line-bell helm-projectile markdown-mode helm-ag evil-lisp-state ws-butler evil-smartparens use-package smartparens evil-leader evil))
  '(safe-local-variable-values
    '((eval when
            (and
@@ -150,6 +153,8 @@
 (load "server")
 (unless (server-running-p) (server-start))
 (setq inhibit-startup-screen t)
+;; don't open new frames when accessed via open -a Emacs filename
+(setq ns-pop-up-frames nil)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; appearance
@@ -320,6 +325,7 @@
         (evil-global-set-key state (kbd "SPC b t") 'bm-toggle)
         (evil-global-set-key state (kbd "SPC w m") 'delete-other-windows)
         (evil-global-set-key state (kbd "SPC f f") 'helm-find-files)
+        (evil-global-set-key state (kbd "SPC f d") 'projectile-find-file-dwim)
         (evil-global-set-key state (kbd "SPC /") 'helm-do-ag-project-root)
         (evil-global-set-key state (kbd "SPC ?") 'helm-do-ag-buffers)
         (evil-global-set-key state "U" 'backward-up-list)
@@ -329,6 +335,13 @@
         (evil-global-set-key state ";" 'mark-sexp)
         (evil-global-set-key state (kbd "SPC o f") 'fill-paragraph)
         (evil-global-set-key state (kbd "SPC o o") 'find-primary-proj)
+        (evil-global-set-key state (kbd "SPC o O") 'find-secondary-proj)
+        (evil-global-set-key
+         state
+         (kbd "SPC o a")
+         (lambda ()
+           (interactive)
+           (find-file "~/prg/aoc2022/src/day.ts")))
         (evil-global-set-key state (kbd "SPC o c") 'find-compose)
         (evil-global-set-key state (kbd "SPC o C") 'find-compose2)
         (evil-global-set-key state (kbd "SPC o 1") 'find-1x1)
@@ -346,14 +359,15 @@
         (evil-global-set-key state (kbd "SPC j i") 'helm-imenu)
         (evil-global-set-key state (kbd "SPC j I") 'helm-imenu-in-all-buffers)
         (evil-global-set-key state (kbd "SPC j j") 'xref-find-definitions)
+        (evil-global-set-key state (kbd "SPC j b") 'xref-pop-marker-stack)
         (evil-global-set-key state (kbd "SPC j r") 'xref-find-references)
         (evil-global-set-key state (kbd "SPC j a") 'eglot-code-actions)
         (evil-global-set-key state (kbd "SPC j R") 'eglot-rename)
         (evil-global-set-key state (kbd "SPC j h") 'eldoc-doc-buffer)
         (evil-global-set-key state (kbd "SPC r l") 'helm-resume)
         (evil-global-set-key state (kbd "SPC r y") 'helm-show-kill-ring)
-        (evil-global-set-key state (kbd "SPC p f") 'project-find-file)
-        (evil-global-set-key state (kbd "SPC p F") 'projectile-find-file)
+        (evil-global-set-key state (kbd "SPC p f") 'projectile-find-file)
+        (evil-global-set-key state (kbd "SPC p F") 'mopro-find-file)
         (evil-global-set-key state (kbd "SPC f e d") 'find-init-el)
         (evil-global-set-key state (kbd "SPC f e m") 'find-my-functions)
         (evil-global-set-key state (kbd "SPC m c") 'cider-force-connect)
@@ -422,12 +436,18 @@
 			  eldoc-echo-area-use-multiline-p
 			  5)))
 
-(dolist (hook '(clojure-mode-hook))
+(dolist (hook '(clojure-mode-hook python-mode-hook typescript-mode-hook))
   (add-hook hook 'eglot-ensure))
 
-(add-hook 'project-find-functions #'project-find-deps-edn)
+(add-hook 'project-find-functions #'(lambda (file)
+                                    (let ((dir (find-enclosing-project dir)))
+                                      (if dir (cons 'vc dir) nil))))
 
 (add-to-list 'tgt-projects '((:root-dir "~/pitch/pitch-app/projects/pico")
+                             (:src-dirs "src")
+                             (:test-dirs "test")
+                             (:test-suffixes "_test")))
+(add-to-list 'tgt-projects '((:root-dir "~/pitch/pitch-app/services/backend")
                              (:src-dirs "src")
                              (:test-dirs "test")
                              (:test-suffixes "_test")))
@@ -443,5 +463,10 @@
 (dolist (hook '(text-mode-hook))
   (add-hook hook (lambda () (flyspell-mode 1))))
 
+(jarchive-setup)
+(jarchive-patch-eglot)
+
 (provide 'init)
 ;;; init.el ends here
+
+;; (require 'python-mode)

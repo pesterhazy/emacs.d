@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: print abracadabra in garish colors
+# key: abracadabra
+# This helps me easily find a string in a terminal or log. Works with many languages,
+# including Clojure, bash, node.js and python
+# --
+"\u001B[37m\u001B[45mabracadabra\u001B[0m"
