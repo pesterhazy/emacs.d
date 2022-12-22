@@ -299,11 +299,24 @@ npm i -g sql-formatter-cli"
   (save-excursion
     (shell-command-on-region (mark) (point) "zprint" (buffer-name) t)))
 
-(defun project-find-deps-edn (dir)
-  (let ((override (locate-dominating-file dir "deps.edn")))
-    (if override
-      (cons 'vc override)
-      nil)))
+(require 'cl-extra)
+
+(setq project-sentinels '("bb.edn" "deps.edn" "package.json" ".monorepo-project"))
+
+(defun find-enclosing-project (dir)
+  (locate-dominating-file
+   dir
+   (lambda (file)
+     (and (file-directory-p file)
+          (cl-some (lambda (sentinel)
+                     (file-exists-p (expand-file-name sentinel file)))
+                   project-sentinels)))))
+
+(defun project-find-file-in-repo ()
+  (interactive)
+  (let* ((pr (project-current t))
+         (dirs (list (locate-dominating-file default-directory ".git"))))
+    (project-find-file-in (thing-at-point 'filename) dirs pr)))
 
 (defun paste-as-comment ()
   (interactive)

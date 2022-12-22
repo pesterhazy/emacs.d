@@ -439,9 +439,10 @@
 (dolist (hook '(clojure-mode-hook python-mode-hook typescript-mode-hook))
   (add-hook hook 'eglot-ensure))
 
-(add-hook 'project-find-functions #'(lambda (file)
-                                    (let ((dir (find-enclosing-project dir)))
-                                      (if dir (cons 'vc dir) nil))))
+(add-hook 'project-find-functions
+          #'(lambda (d)
+              (let ((dir (find-enclosing-project d)))
+                (if dir (cons 'vc dir) nil))))
 
 (add-to-list 'tgt-projects '((:root-dir "~/pitch/pitch-app/projects/pico")
                              (:src-dirs "src")
