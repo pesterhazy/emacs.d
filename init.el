@@ -20,6 +20,8 @@
 (let ((package-list '(evil
                       evil-leader
                       evil-visualstar
+                      apheleia
+                      wgrep
                       eglot
                       jarchive
                       python-mode
@@ -92,7 +94,7 @@
  '(eglot-confirm-server-initiated-edits nil)
  '(eglot-connect-timeout 90)
  '(package-selected-packages
-   '(jarchive asdfasdf python-mode dockerfile-mode toggle-test zprint-mode groovy-mode eglot yasnippet csv-mode sqlformat bm company-mode which-key helm-lsp lsp-ui highlight-indentation-mode yaml-mode company tide prettier-js typescript-mode package-lint helm-unicode helm-chrome-control git-timemachine git-link diff-hl evil-visualstar js2-mode deadgrep smart-mode-line flycheck-jokeryy flycheck-joker cider aggressive-indent lsp-mode mode-line-bell helm-projectile markdown-mode helm-ag evil-lisp-state ws-butler evil-smartparens use-package smartparens evil-leader evil))
+   '(apheleia wgrep jarchive asdfasdf python-mode dockerfile-mode toggle-test zprint-mode groovy-mode eglot yasnippet csv-mode sqlformat bm company-mode which-key helm-lsp lsp-ui highlight-indentation-mode yaml-mode company tide prettier-js typescript-mode package-lint helm-unicode helm-chrome-control git-timemachine git-link diff-hl evil-visualstar js2-mode deadgrep smart-mode-line flycheck-jokeryy flycheck-joker cider aggressive-indent lsp-mode mode-line-bell helm-projectile markdown-mode helm-ag evil-lisp-state ws-butler evil-smartparens use-package smartparens evil-leader evil))
  '(safe-local-variable-values
    '((eval when
            (and
@@ -144,7 +146,7 @@
 
 (require 'helm-ag)
 (require 'helm-command)
-(setq helm-ag-base-command "rg --no-heading --smart-case -M100")
+(setq helm-ag-base-command "rg --no-heading -M100")
 (setq helm-M-x-fuzzy-match t)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -307,6 +309,8 @@
 (global-set-key (kbd "M--") (lambda () (interactive) (insert "–")))
 (global-set-key (kbd "M-8") (lambda () (interactive) (insert "•")))
 (global-set-key (kbd "M-*") (lambda () (interactive) (insert "°")))
+(global-set-key (kbd "C-;") 'winner-undo)
+(global-set-key (kbd "C-'") 'winner-redo)
 
 (evil-leader/set-leader ",")
 (evil-leader/set-key
@@ -327,7 +331,7 @@
         (evil-global-set-key state (kbd "SPC f f") 'helm-find-files)
         (evil-global-set-key state (kbd "SPC f d") 'projectile-find-file-dwim)
         (evil-global-set-key state (kbd "SPC /") 'helm-do-ag-project-root)
-        (evil-global-set-key state (kbd "SPC ?") 'helm-do-ag-buffers)
+        (evil-global-set-key state (kbd "SPC ?") 'mopro-helm-ag)
         (evil-global-set-key state "U" 'backward-up-list)
         (evil-global-set-key state "R" 'down-list)
         (evil-global-set-key state "L" 'sp-forward-sexp)
@@ -466,6 +470,11 @@
 
 (jarchive-setup)
 (jarchive-patch-eglot)
+
+(winner-mode 1)
+
+(require 'wgrep)
+(apheleia-global-mode +1)
 
 (provide 'init)
 ;;; init.el ends here

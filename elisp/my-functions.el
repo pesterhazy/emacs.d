@@ -81,11 +81,11 @@
 
 (defun find-primary-proj ()
   (interactive)
-  (find-file "~/pitch/pitch-app/desktop-app/dev/cljs/user.cljs"))
+  (find-file "~/pitch/pitch-app/projects/frontend/dev/cljs/user.cljs"))
 
 (defun find-secondary-proj ()
   (interactive)
-  (find-file "~/pitch/pitch-app/services/backend/dev/user.clj"))
+  (find-file "~/pitch/pitch-app/projects/backend/dev/user.clj"))
 
 (defun find-compose ()
   (interactive)
@@ -300,7 +300,6 @@ npm i -g sql-formatter-cli"
     (shell-command-on-region (mark) (point) "zprint" (buffer-name) t)))
 
 (require 'cl-extra)
-
 (setq project-sentinels '("bb.edn" "deps.edn" "package.json" ".monorepo-project"))
 
 (defun find-enclosing-project (dir)
@@ -334,9 +333,9 @@ npm i -g sql-formatter-cli"
     (when (consp word)
       (flyspell-do-correct 'save nil (car word) current-location (cadr word) (caddr word) current-location))))
 
-(defun ag-mopro-root (&optional query)
+(defun mopro-helm-ag (&optional query)
   (interactive)
-  (let ((dir (locate-dominating-file default-directory "deps.edn")))
+  (let ((dir (find-enclosing-project ".")))
     (unless dir
       (error "Could not find the root"))
     (helm-do-ag dir nil query)))
@@ -344,6 +343,6 @@ npm i -g sql-formatter-cli"
 (defun mopro-find-file ()
   (interactive)
   (let ((root (or
-               (locate-dominating-file "." "deps.edn")
+               (find-enclosing-project ".")
                projectile-project-root)))
     (projectile-find-file-in-directory root)))
