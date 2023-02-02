@@ -378,9 +378,6 @@
 
 (require 'apheleia)
 (apheleia-global-mode +1)
-
-(add-to-list 'apheleia-mode-alist '(clojure-mode . cljfmt))
-
 (add-hook 'clojure-mode-hook #'eglot-format-buffer nil 'local)
 
 ;; Example for elisp, could be any mode though.
