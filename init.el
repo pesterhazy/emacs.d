@@ -15,62 +15,20 @@
 (setq create-lockfiles nil)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; custom
+
+(setq custom-file (expand-file-name "~/emacs.d/emacs-custom.el"))
+(load custom-file)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; package configuration
 
-(let ((package-list '(evil
-                      evil-leader
-                      evil-visualstar
-                      apheleia
-                      wgrep
-                      eglot
-                      jarchive
-                      python-mode
-                      projectile
-                      dockerfile-mode
-                      diff-hl
-                      groovy-mode
-                      csv-mode
-                      toggle-test
-                      solarized-theme
-                      package-lint
-                      prettier-js
-                      typescript-mode
-                      which-key
-                      aggressive-indent
-                      clojure-mode
-                      prettier-js
-                      typescript-mode
-                      yasnippet
-                      git-link
-                      cider
-                      yaml-mode
-                      markdown-mode
-                      exec-path-from-shell
-                      js2-mode
-                      ws-butler
-                      helm
-                      helm-ag
-                      smart-mode-line
-                      mode-line-bell
-                      expand-region
-                      visual-fill-column
-                      simpleclip
-                      smooth-scrolling
-                      ;; parenthesis management
-                      smartparens
-                      evil-smartparens)))
-  (setq package-check-signature nil) ;; FIXME: do we need this?
-
-  (setq package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
-                           ("melpa" . "https://melpa.org/packages/")))
-
-  ;; Activate all the packages (in particular autoloads)
-  (package-initialize)
-  (unless package-archive-contents
-    (package-refresh-contents))
-  (dolist (package package-list)
-    (unless (package-installed-p package)
-      (package-install package))))
+(require 'package)
+(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
+(package-initialize)
+(unless package-archive-contents
+  (package-refresh-contents))
+(package-install-selected-packages)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; load extra files
@@ -82,66 +40,6 @@
 (add-to-list 'load-path (expand-file-name "~/emacs.d/vendor"))
 (add-to-list 'load-path (expand-file-name "~/emacs.d/elisp"))
 (load-file (expand-file-name "~/emacs.d/elisp/my-functions.el"))
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; custom
-
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(eglot-confirm-server-initiated-edits nil)
- '(eglot-connect-timeout 90)
- '(ignored-local-variable-values '((checkdoc-minor-mode . t)))
- '(package-selected-packages
-   '(0xc crux apheleia wgrep jarchive asdfasdf python-mode dockerfile-mode toggle-test zprint-mode groovy-mode eglot yasnippet csv-mode sqlformat bm company-mode which-key helm-lsp lsp-ui highlight-indentation-mode yaml-mode company tide prettier-js typescript-mode package-lint helm-unicode helm-chrome-control git-timemachine git-link diff-hl evil-visualstar js2-mode deadgrep smart-mode-line flycheck-jokeryy flycheck-joker cider aggressive-indent lsp-mode mode-line-bell helm-projectile markdown-mode helm-ag evil-lisp-state ws-butler evil-smartparens use-package smartparens evil-leader evil))
- '(safe-local-variable-values
-   '((eval when
-           (and
-            (buffer-file-name)
-            (not
-             (file-directory-p
-              (buffer-file-name)))
-            (string-match-p "^[^.]"
-                            (buffer-file-name)))
-           (unless
-               (featurep 'package-build)
-             (let
-                 ((load-path
-                   (cons "../package-build" load-path)))
-               (require 'package-build)))
-           (unless
-               (derived-mode-p 'emacs-lisp-mode)
-             (emacs-lisp-mode))
-           (package-build-minor-mode)
-           (setq-local flycheck-checkers nil)
-           (set
-            (make-local-variable 'package-build-working-dir)
-            (expand-file-name "../working/"))
-           (set
-            (make-local-variable 'package-build-archive-dir)
-            (expand-file-name "../packages/"))
-           (set
-            (make-local-variable 'package-build-recipes-dir)
-            default-directory))
-     (eval define-clojure-indent
-           (reg-cofx :defn)
-           (reg-event-db :defn)
-           (reg-event-fx :defn)
-           (reg-fx :defn)
-           (reg-sub :defn)
-           (reg-event-domain :defn)
-           (reg-block-event-fx :defn)
-           (reg-event-domain-fx :defn)
-           (reg-event-persistent-db :defn)
-           (this-as 0)))))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
 
 (setq helm-mode-fuzzy-match t)
 
