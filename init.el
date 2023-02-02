@@ -41,13 +41,6 @@
 (add-to-list 'load-path (expand-file-name "~/emacs.d/elisp"))
 (load-file (expand-file-name "~/emacs.d/elisp/my-functions.el"))
 
-(setq helm-mode-fuzzy-match t)
-
-(require 'helm-ag)
-(require 'helm-command)
-(setq helm-ag-base-command "rg --no-heading -M100")
-(setq helm-M-x-fuzzy-match t)
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; startup
 
@@ -56,6 +49,15 @@
 (setq inhibit-startup-screen t)
 ;; don't open new frames when accessed via open -a Emacs filename
 (setq ns-pop-up-frames nil)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; helm
+
+(setq helm-mode-fuzzy-match t)
+(require 'helm-ag)
+(require 'helm-command)
+(setq helm-ag-base-command "rg --no-heading -M100")
+(setq helm-M-x-fuzzy-match t)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; appearance
