@@ -89,10 +89,10 @@
 
 (defun find-compose ()
   (interactive)
-  (find-file "~/Dropbox/zettel/compose.txt"))
+  (find-file "~/Dropbox/zettel/compose.md"))
 (defun find-compose2 ()
   (interactive)
-  (find-file "~/Dropbox/zettel/compose2.txt"))
+  (find-file "~/Dropbox/zettel/compose2.md"))
 (defun find-1x1 ()
   (interactive)
   (find-file "~/Dropbox/zettel/1x1.txt"))
@@ -119,6 +119,9 @@
 (defun find-init-el ()
   (interactive)
   (find-file "~/emacs.d/init.el"))
+(defun find-zshrc ()
+  (interactive)
+  (find-file "~/.zshrc"))
 (defun find-my-functions ()
   (interactive)
   (find-file "~/emacs.d/elisp/my-functions.el"))
@@ -346,3 +349,74 @@ npm i -g sql-formatter-cli"
                (find-enclosing-project ".")
                projectile-project-root)))
     (projectile-find-file-in-directory root)))
+
+(defun magic-region ()
+  (interactive)
+  (save-excursion
+    (shell-command-on-region (mark) (point) "magic tokenize" (buffer-name) t)))
+
+;; (json-parse-string "[\"a\"]")
+;; (completing-read
+;;  "Complete a foo: "
+;;  '(("foobar1" 1) ("barfoo" 2) ("foobaz" 3) ("foobar2" 4))
+;;  nil t)
+
+(defun open-md ()
+  (interactive)
+  (save-excursion
+    (shell-command (concat "open-md " (buffer-file-name)))))
+
+(defun quote-js (s)
+  (with-temp-buffer
+       (insert s)
+       (shell-command-on-region (point-min) (point-max) "python -c \"import sys,json; sys.stdout.write(json.dumps(sys.stdin.read()))\"" nil 'replace)
+       (buffer-string)))
+
+(defun paste-quoted ()
+  (interactive "*")
+  (let ((str-val (quote-js (simpleclip-get-contents))))
+    (unless str-val
+      (error "No content to paste"))
+    (when (use-region-p)
+      (delete-region (region-beginning) (region-end)))
+    (push-mark (point) t)
+    (insert-for-yank str-val)
+    (when (and (not (minibufferp))
+               (not simpleclip-less-feedback)
+               (simpleclip-called-interactively-p 'interactive))
+      (message "pasted quoted from clipboard"))))
+
+(defun my--projectile-select-files (project-files &optional invalidate-cache)
+  "Select a list of files based on filename at point.
+
+With a prefix arg INVALIDATE-CACHE invalidates the cache first."
+  (projectile-maybe-invalidate-cache invalidate-cache)
+  (let* ((file (if (region-active-p)
+                   (buffer-substring (region-beginning) (region-end))
+                 (string-replace "../"
+                                 ""
+                                 (or (thing-at-point 'filename) ""))))
+         (files (if file
+                    (cl-remove-if-not
+                     (lambda (project-file)
+                       (string-match-p (regexp-quote file) project-file))
+                     project-files)
+                  nil)))
+    files))
+
+(defun my--find-monorepo-file (invalidate-cache)
+  (let* ((project-root (projectile-acquire-root))
+         (project-files (projectile-project-files project-root))
+         (files (my--projectile-select-files project-files invalidate-cache))
+         (file (cond ((= (length files) 1)
+                      (car files))
+                     ((> (length files) 1)
+                      (projectile-completing-read "Switch to: " files))
+                     (t
+                      (projectile-completing-read "Switch to: " project-files)))))
+    (message "%s" (expand-file-name file project-root))
+    (find-file (expand-file-name file project-root))))
+
+(defun find-monorepo-file (&optional invalidate-cache)
+  (interactive "P")
+  (my--find-monorepo-file invalidate-cache))

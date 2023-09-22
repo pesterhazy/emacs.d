@@ -14,6 +14,7 @@
 (setq read-process-output-max (* 1024 1024))
 (setq create-lockfiles nil)
 
+;; simpleclip-paste
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; custom
 
@@ -56,7 +57,7 @@
 (setq helm-mode-fuzzy-match t)
 (require 'helm-ag)
 (require 'helm-command)
-(setq helm-ag-base-command "rg --no-heading -M100")
+(setq helm-ag-base-command "rg --no-heading --hidden -M100")
 (setq helm-M-x-fuzzy-match t)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -110,10 +111,11 @@
 (smooth-scrolling-mode 1)
 (setq smooth-scroll-margin 5)
 
-;; whitespace
+;; general
 
 (require 'ws-butler)
 (add-hook 'prog-mode-hook #'ws-butler-mode)
+(global-display-line-numbers-mode)
 
 ;; expand-region
 
@@ -148,8 +150,6 @@
 (require 'cider)
 (setq cider-repl-pop-to-buffer-on-connect nil)
 
-;; lispy word characters
-
 ;; C-q: insert literal character
 ;; C-q C-j -> newline
 ;; delete a quote character without regard for balancing: C-u 0 BACKSPACE
@@ -173,6 +173,7 @@
 (require 'js2-mode)
 (add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
 (add-to-list 'auto-mode-alist '("\\.mjs\\'" . js2-mode))
+(setq js2-strict-missing-semi-warning nil)
 (setq-default js2-basic-offset 2)
 (setq-default js-indent-level 2)
 (setq-default typescript-indent-level 2)
@@ -186,9 +187,9 @@
 
 ;; text
 
-(add-hook 'visual-line-mode-hook 'visual-fill-column-mode)
 (add-hook 'visual-line-mode-hook (lambda () (setq fill-column 90)))
-(add-hook 'text-mode-hook 'turn-on-visual-line-mode)
+(add-hook 'markdown-mode-hook 'turn-on-visual-line-mode)
+(add-hook 'markdown-mode-hook 'visual-fill-column-mode)
 
 ;;;; yaml
 
@@ -212,6 +213,7 @@
 (global-set-key (kbd "M-*") (lambda () (interactive) (insert "°")))
 (global-set-key (kbd "C-;") 'winner-undo)
 (global-set-key (kbd "C-'") 'winner-redo)
+(global-set-key (kbd "s-V") 'paste-quoted)
 
 (evil-leader/set-leader ",")
 (evil-leader/set-key
@@ -231,6 +233,7 @@
         (evil-global-set-key state (kbd "SPC w m") 'delete-other-windows)
         (evil-global-set-key state (kbd "SPC f f") 'helm-find-files)
         (evil-global-set-key state (kbd "SPC f d") 'projectile-find-file-dwim)
+        (evil-global-set-key state (kbd "SPC j f") 'find-monorepo-file)
         (evil-global-set-key state (kbd "SPC /") 'helm-do-ag-project-root)
         (evil-global-set-key state (kbd "SPC ?") 'mopro-helm-ag)
         (evil-global-set-key state "U" 'backward-up-list)
@@ -241,6 +244,7 @@
         (evil-global-set-key state (kbd "SPC o f") 'fill-paragraph)
         (evil-global-set-key state (kbd "SPC o o") 'find-primary-proj)
         (evil-global-set-key state (kbd "SPC o O") 'find-secondary-proj)
+        (evil-global-set-key state (kbd "SPC s s") 'shell-command)
         (evil-global-set-key
          state
          (kbd "SPC o a")
@@ -271,9 +275,10 @@
         (evil-global-set-key state (kbd "SPC j h") 'eldoc-doc-buffer)
         (evil-global-set-key state (kbd "SPC r l") 'helm-resume)
         (evil-global-set-key state (kbd "SPC r y") 'helm-show-kill-ring)
-        (evil-global-set-key state (kbd "SPC p f") 'projectile-find-file)
+        (evil-global-set-key state (kbd "SPC p f") 'helm-projectile)
         (evil-global-set-key state (kbd "SPC p F") 'mopro-find-file)
         (evil-global-set-key state (kbd "SPC f e d") 'find-init-el)
+        (evil-global-set-key state (kbd "SPC f e z") 'find-zshrc)
         (evil-global-set-key state (kbd "SPC f e m") 'find-my-functions)
         (evil-global-set-key state (kbd "SPC m c") 'cider-force-connect)
         (evil-global-set-key state (kbd "SPC m k") 'cider-force-eval-buffer)
@@ -341,7 +346,7 @@
 			  eldoc-echo-area-use-multiline-p
 			  5)))
 
-(dolist (hook '(clojure-mode-hook python-mode-hook typescript-mode-hook))
+(dolist (hook '(clojure-mode-hook python-mode-hook typescript-mode-hook js2-mode-hook))
   (add-hook hook 'eglot-ensure))
 
 (add-hook 'project-find-functions
@@ -349,7 +354,47 @@
               (let ((dir (find-enclosing-project d)))
                 (if dir (cons 'vc dir) nil))))
 
+(add-to-list 'tgt-projects '((:root-dir "~/prg/elucidate")
+                             (:src-dirs "src")
+                             (:test-dirs "test")
+                             (:test-suffixes "_test")))
 (add-to-list 'tgt-projects '((:root-dir "~/pitch/pitch-app/projects/pico")
+                             (:src-dirs "src")
+                             (:test-dirs "test")
+                             (:test-suffixes "_test")))
+(add-to-list 'tgt-projects '((:root-dir "~/pitch/pitch-app/projects/pretzel")
+                             (:src-dirs "src")
+                             (:test-dirs "test")
+                             (:test-suffixes "_test")))
+(add-to-list 'tgt-projects '((:root-dir "~/pitch/pitch-app/projects/baselib")
+                             (:src-dirs "src")
+                             (:test-dirs "test")
+                             (:test-suffixes "_test")))
+(add-to-list 'tgt-projects '((:root-dir "~/pitch/pitch-app/projects/grasshopper")
+                             (:src-dirs "src")
+                             (:test-dirs "test")
+                             (:test-suffixes "_test")))
+(add-to-list 'tgt-projects '((:root-dir "~/pitch/pitch-app/projects/watchdog")
+                             (:src-dirs "src")
+                             (:test-dirs "test")
+                             (:test-suffixes "_test")))
+(add-to-list 'tgt-projects '((:root-dir "~/pitch/pitch-app/projects/pit")
+                             (:src-dirs "src")
+                             (:test-dirs "test")
+                             (:test-suffixes "_test")))
+(add-to-list 'tgt-projects '((:root-dir "~/pitch/pitch-app/projects/bblib")
+                             (:src-dirs "src")
+                             (:test-dirs "test")
+                             (:test-suffixes "_test")))
+(add-to-list 'tgt-projects '((:root-dir "~/pitch/pitch-app/projects/circle")
+                             (:src-dirs "src")
+                             (:test-dirs "test")
+                             (:test-suffixes "_test")))
+(add-to-list 'tgt-projects '((:root-dir "~/pitch/pitch-app/projects/rhino")
+                             (:src-dirs "src")
+                             (:test-dirs "test")
+                             (:test-suffixes "_test")))
+(add-to-list 'tgt-projects '((:root-dir "~/pitch/pitch-app/projects/devtools")
                              (:src-dirs "src")
                              (:test-dirs "test")
                              (:test-suffixes "_test")))
@@ -361,6 +406,10 @@
                              (:src-dirs "src")
                              (:test-dirs "test")
                              (:test-suffixes ".test")))
+(add-to-list 'tgt-projects '((:root-dir "~/prg/bash2bb")
+                             (:src-dirs "src")
+                             (:test-dirs "test")
+                             (:test-suffixes "_test")))
 (setq tgt-open-in-new-window nil)
 
 ;; (setq langtool-language-tool-jar "/Users/user/lagnguagetool/languagetool-commandline.jar")
@@ -378,9 +427,7 @@
 
 (require 'apheleia)
 (apheleia-global-mode +1)
-(add-hook 'clojure-mode-hook #'eglot-format-buffer nil 'local)
 
-;; Example for elisp, could be any mode though.
 (add-hook 'clojure-mode-hook
           (lambda () (add-hook 'before-save-hook #'eglot-format-buffer nil 'local)))
 
