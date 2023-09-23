@@ -316,9 +316,9 @@ npm i -g sql-formatter-cli"
 
 (defun project-find-file-in-repo ()
   (interactive)
-  (let* ((pr (project-current t))
-         (dirs (list (locate-dominating-file default-directory ".git"))))
-    (project-find-file-in (thing-at-point 'filename) dirs pr)))
+  (let* ((root (locate-dominating-file default-directory ".git"))
+         (pr (project-current nil root)))
+    (project-find-file-in nil (list root) pr nil)))
 
 (defun paste-as-comment ()
   (interactive)
