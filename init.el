@@ -352,7 +352,7 @@
 (add-hook 'project-find-functions
           #'(lambda (d)
               (let ((dir (find-enclosing-project d)))
-                (if dir (cons 'vc dir) nil))))
+                (if dir (list 'vc 'Git  dir) nil))))
 
 (add-to-list 'tgt-projects '((:root-dir "~/prg/elucidate")
                              (:src-dirs "src")

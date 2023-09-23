@@ -4,3 +4,5 @@ places
 .cache
 elpa
 projects
+auto-save-list
+eshell
