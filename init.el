@@ -214,6 +214,7 @@
 (global-set-key (kbd "C-;") 'winner-undo)
 (global-set-key (kbd "C-'") 'winner-redo)
 (global-set-key (kbd "s-V") 'paste-quoted)
+(global-set-key (kbd "s-q") 'kill-emacs)
 
 (evil-leader/set-leader ",")
 (evil-leader/set-key
@@ -228,8 +229,8 @@
         (evil-global-set-key state (kbd "SPC SPC") 'helm-M-x)
         (evil-global-set-key state (kbd "SPC b b") 'helm-mini)
         (evil-global-set-key state (kbd "SPC b d") 'kill-this-buffer)
-        (evil-global-set-key state (kbd "SPC b n") 'bm-next)
-        (evil-global-set-key state (kbd "SPC b t") 'bm-toggle)
+        (evil-global-set-key state (kbd "SPC b l") 'helm-bookmarks)
+        (evil-global-set-key state (kbd "SPC b t") 'bookmark-set)
         (evil-global-set-key state (kbd "SPC w m") 'delete-other-windows)
         (evil-global-set-key state (kbd "SPC f f") 'helm-find-files)
         (evil-global-set-key state (kbd "SPC f d") 'projectile-find-file-dwim)
@@ -430,6 +431,8 @@
 
 (add-hook 'clojure-mode-hook
           (lambda () (add-hook 'before-save-hook #'eglot-format-buffer nil 'local)))
+
+(setq bookmark-save-flag 1)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

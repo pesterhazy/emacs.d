@@ -5,6 +5,7 @@
  ;; If there is more than one, they won't work right.
  '(eglot-confirm-server-initiated-edits nil)
  '(eglot-connect-timeout 90)
+ '(eglot-sync-connect 0)
  '(evil-undo-system 'undo-redo)
  '(ignored-local-variable-values '((checkdoc-minor-mode . t)))
  '(package-selected-packages
