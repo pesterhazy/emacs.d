@@ -420,3 +420,12 @@ With a prefix arg INVALIDATE-CACHE invalidates the cache first."
 (defun find-monorepo-file (&optional invalidate-cache)
   (interactive "P")
   (my--find-monorepo-file invalidate-cache))
+
+(defun show-buffer-file-name ()
+  (interactive)
+  (let ((file-name (buffer-file-name)))
+    (if file-name
+        (progn
+          (message file-name)
+          (kill-new file-name))
+      (error "Buffer not visiting a file"))))
