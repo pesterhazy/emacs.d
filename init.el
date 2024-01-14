@@ -177,6 +177,9 @@
 (setq-default js2-basic-offset 2)
 (setq-default js-indent-level 2)
 (setq-default typescript-indent-level 2)
+(setq-default web-mode-markup-indent-offset 2)
+(setq-default web-mode-code-indent-offset 2)
+(setq-default web-mode-css-indent-offset 2)
 
 ;; aligns annotation to the right hand side
 (setq company-tooltip-align-annotations t)
@@ -433,6 +436,11 @@
           (lambda () (add-hook 'before-save-hook #'eglot-format-buffer nil 'local)))
 
 (setq bookmark-save-flag 1)
+
+(require 'eglot)
+(add-to-list 'auto-mode-alist '("\\.tsx?\\'" . web-mode))
+(add-to-list 'eglot-server-programs '(web-mode . ("typescript-language-server" "--stdio")))
+(add-hook 'web-mode-hook 'eglot-ensure)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
