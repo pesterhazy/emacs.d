@@ -9,7 +9,7 @@
  '(evil-undo-system 'undo-redo)
  '(ignored-local-variable-values '((checkdoc-minor-mode . t)))
  '(package-selected-packages
-   '(helm-projectile yaml-mode vundo flyspell-correct evil evil-leader evil-visualstar apheleia wgrep eglot jarchive python-mode projectile dockerfile-mode diff-hl csv-mode toggle-test solarized-theme package-lint prettier-js typescript-mode which-key aggressive-indent clojure-mode prettier-js typescript-mode yasnippet git-link cider markdown-mode exec-path-from-shell js2-mode ws-butler helm helm-ag smart-mode-line mode-line-bell expand-region visual-fill-column simpleclip smooth-scrolling smartparens evil-smartparens))
+   '(helm-projectile yaml-mode vundo flyspell-correct evil evil-leader evil-visualstar apheleia wgrep eglot jarchive python-mode projectile dockerfile-mode diff-hl csv-mode toggle-test solarized-theme package-lint prettier-js which-key aggressive-indent clojure-mode prettier-js yasnippet git-link cider markdown-mode exec-path-from-shell js2-mode ws-butler helm helm-ag smart-mode-line mode-line-bell expand-region visual-fill-column simpleclip smooth-scrolling smartparens evil-smartparens))
  '(safe-local-variable-values
    '((eval when
            (and

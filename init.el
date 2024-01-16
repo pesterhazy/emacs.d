@@ -350,7 +350,10 @@
 			  eldoc-echo-area-use-multiline-p
 			  5)))
 
-(dolist (hook '(clojure-mode-hook python-mode-hook typescript-mode-hook js2-mode-hook))
+(dolist (hook '(clojure-mode-hook
+                python-mode-hook
+                typescript-ts-mode-hook
+                js2-mode-hook))
   (add-hook hook 'eglot-ensure))
 
 (add-hook 'project-find-functions
@@ -422,8 +425,8 @@
 (dolist (hook '(text-mode-hook))
   (add-hook hook (lambda () (flyspell-mode 1))))
 
-(jarchive-setup)
-(jarchive-patch-eglot)
+;; (jarchive-setup)
+;; (jarchive-patch-eglot)
 
 (winner-mode 1)
 
@@ -437,10 +440,25 @@
 
 (setq bookmark-save-flag 1)
 
-(require 'eglot)
-(add-to-list 'auto-mode-alist '("\\.tsx?\\'" . web-mode))
-(add-to-list 'eglot-server-programs '(web-mode . ("typescript-language-server" "--stdio")))
-(add-hook 'web-mode-hook 'eglot-ensure)
+(setq treesit-language-source-alist
+      '((bash "https://github.com/tree-sitter/tree-sitter-bash")
+        (cmake "https://github.com/uyha/tree-sitter-cmake")
+        (css "https://github.com/tree-sitter/tree-sitter-css")
+        (elisp "https://github.com/Wilfred/tree-sitter-elisp")
+        (go "https://github.com/tree-sitter/tree-sitter-go")
+        (html "https://github.com/tree-sitter/tree-sitter-html")
+        (javascript "https://github.com/tree-sitter/tree-sitter-javascript" "master" "src")
+        (json "https://github.com/tree-sitter/tree-sitter-json")
+        (make "https://github.com/alemuller/tree-sitter-make")
+        (markdown "https://github.com/ikatyang/tree-sitter-markdown")
+        (python "https://github.com/tree-sitter/tree-sitter-python")
+        (toml "https://github.com/tree-sitter/tree-sitter-toml")
+        (tsx "https://github.com/tree-sitter/tree-sitter-typescript" "master" "tsx/src")
+        (typescript "https://github.com/tree-sitter/tree-sitter-typescript" "master" "typescript/src")
+        (yaml "https://github.com/ikatyang/tree-sitter-yaml")))
+
+(add-to-list 'auto-mode-alist '("\\.ts\\'" . typescript-ts-mode))
+(add-to-list 'auto-mode-alist '("\\.tsx\\'" . tsx-ts-mode))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
