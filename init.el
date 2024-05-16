@@ -57,7 +57,7 @@
 (setq helm-mode-fuzzy-match t)
 (require 'helm-ag)
 (require 'helm-command)
-(setq helm-ag-base-command "rg --no-heading --hidden -M100")
+(setq helm-ag-base-command "rg --no-heading --color=never --hidden -M150")
 (setq helm-M-x-fuzzy-match t)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -267,7 +267,8 @@
         (evil-global-set-key state (kbd "SPC t o") 'iterm-open)
         (evil-global-set-key state (kbd "SPC t r") 'iterm-repeat-last-command)
 
-        (evil-global-set-key state (kbd "SPC t t") 'tgt-toggle)
+        ;; (evil-global-set-key state (kbd "SPC t t") 'tgt-toggle)
+        (evil-global-set-key state (kbd "SPC t t") 'projectile-toggle-between-implementation-and-test)
 
         (evil-global-set-key state (kbd "SPC j i") 'helm-imenu)
         (evil-global-set-key state (kbd "SPC j I") 'helm-imenu-in-all-buffers)
@@ -305,6 +306,10 @@
         (evil-global-set-key state (kbd "SPC o t") 'touch)
         (evil-global-set-key state (kbd "SPC c c") 'clojure-comment-dwim)
 
+        (evil-global-set-key state (kbd "SPC e e") 'flymake-goto-next-error)
+        (evil-global-set-key state (kbd "SPC e p") 'flymake-goto-prev-error)
+        (evil-global-set-key state (kbd "SPC e l") 'flymake-show-buffer-diagnostics)
+
         (evil-global-set-key state (kbd "SPC i b") 'insert-bar)
 
         ;; (evil-global-set-key state (kbd "SPC t t") 'projectile-toggle-between-implementation-and-test)
@@ -331,6 +336,11 @@
 (evil-define-minor-mode-key 'motion 'visual-line-mode (kbd "<up>") 'evil-previous-visual-line)
 (evil-define-minor-mode-key 'motion 'visual-line-mode "0" 'evil-beginning-of-visual-line)
 (evil-define-minor-mode-key 'motion 'visual-line-mode "$" 'evil-end-of-visual-line)
+
+(with-eval-after-load 'git-timemachine
+  (evil-make-overriding-map git-timemachine-mode-map 'normal)
+  ;; force update evil keymaps after git-timemachine-mode loaded
+  (add-hook 'git-timemachine-mode-hook #'evil-normalize-keymaps))
 
 (require 'yasnippet)
 (yas-global-mode 1)
@@ -417,6 +427,10 @@
                              (:src-dirs "src")
                              (:test-dirs "test")
                              (:test-suffixes "_test")))
+(add-to-list 'tgt-projects '((:root-dir "~/prg/pgltest")
+                             (:src-dirs "lib")
+                             (:test-dirs "test")
+                             (:test-suffixes ".test")))
 (setq tgt-open-in-new-window nil)
 
 ;; (setq langtool-language-tool-jar "/Users/user/lagnguagetool/languagetool-commandline.jar")
@@ -446,6 +460,7 @@
         (css "https://github.com/tree-sitter/tree-sitter-css")
         (elisp "https://github.com/Wilfred/tree-sitter-elisp")
         (go "https://github.com/tree-sitter/tree-sitter-go")
+        (gomod "https://github.com/camdencheek/tree-sitter-go-mod")
         (html "https://github.com/tree-sitter/tree-sitter-html")
         (javascript "https://github.com/tree-sitter/tree-sitter-javascript" "master" "src")
         (json "https://github.com/tree-sitter/tree-sitter-json")
@@ -459,6 +474,11 @@
 
 (add-to-list 'auto-mode-alist '("\\.ts\\'" . typescript-ts-mode))
 (add-to-list 'auto-mode-alist '("\\.tsx\\'" . tsx-ts-mode))
+
+(add-hook 'go-mode-hook
+          (lambda ()
+            (add-hook 'before-save-hook 'gofmt-before-save)
+            (setq tab-width 2)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

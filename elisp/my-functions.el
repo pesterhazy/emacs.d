@@ -81,7 +81,7 @@
 
 (defun find-primary-proj ()
   (interactive)
-  (find-file "~/pitch/pitch-app/projects/frontend/dev/cljs/user.cljs"))
+  (find-file "~/prg/linear-app/package.json"))
 
 (defun find-secondary-proj ()
   (interactive)
@@ -89,19 +89,19 @@
 
 (defun find-compose ()
   (interactive)
-  (find-file "~/Dropbox/zettel/compose.md"))
+  (find-file "~/zettel/compose.md"))
 (defun find-compose2 ()
   (interactive)
-  (find-file "~/Dropbox/zettel/compose2.md"))
+  (find-file "~/zettel/compose2.md"))
 (defun find-1x1 ()
   (interactive)
-  (find-file "~/Dropbox/zettel/1x1.txt"))
+  (find-file "~/zettel/1x1.txt"))
 (defun find-reading ()
   (interactive)
-  (find-file "~/Dropbox/zettel/reading.md"))
+  (find-file "~/zettel/reading.md"))
 (defun find-writing ()
   (interactive)
-  (find-file "~/Dropbox/zettel/writing.md"))
+  (find-file "~/zettel/writing.md"))
 (defun find-scraps ()
   (interactive)
   (find-file "/Users/user/prg/cljs-scrap/src/main/scrap/scrap.cljs"))
@@ -111,10 +111,10 @@
   (find-file "~/arena/bin/it"))
 (defun find-diary ()
   (interactive)
-  (find-file "~/Dropbox/zettel/diary.md"))
+  (find-file "~/zettel/diary.md"))
 (defun find-worktodo ()
   (interactive)
-  (find-file "~/Dropbox/zettel/worktodo.md"))
+  (find-file "~/zettel/worktodo.md"))
 
 (defun find-init-el ()
   (interactive)
@@ -128,7 +128,7 @@
 
 (defun find-work ()
   (interactive)
-  (find-file "~/Dropbox/zettel/work.org"))
+  (find-file "~/zettel/work.org"))
 
 (defun run-current-shell-buffer ()
   (interactive)
@@ -332,7 +332,7 @@ npm i -g sql-formatter-cli"
 (defun flyspell-save-word ()
   (interactive)
   (let ((current-location (point))
-         (word (flyspell-get-word)))
+        (word (flyspell-get-word)))
     (when (consp word)
       (flyspell-do-correct 'save nil (car word) current-location (cadr word) (caddr word) current-location))))
 
@@ -368,9 +368,9 @@ npm i -g sql-formatter-cli"
 
 (defun quote-js (s)
   (with-temp-buffer
-       (insert s)
-       (shell-command-on-region (point-min) (point-max) "python -c \"import sys,json; sys.stdout.write(json.dumps(sys.stdin.read()))\"" nil 'replace)
-       (buffer-string)))
+    (insert s)
+    (shell-command-on-region (point-min) (point-max) "python3 -c \"import sys,json; sys.stdout.write(json.dumps(sys.stdin.read()))\"" nil 'replace)
+    (buffer-string)))
 
 (defun paste-quoted ()
   (interactive "*")
