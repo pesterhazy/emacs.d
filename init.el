@@ -18,7 +18,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; custom
 
-(setq custom-file (expand-file-name "~/emacs.d/emacs-custom.el"))
+(setq custom-file (expand-file-name "~/.emacs.d/emacs-custom.el"))
 (load custom-file)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
