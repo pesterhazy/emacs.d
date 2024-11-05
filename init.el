@@ -68,7 +68,7 @@
 (which-key-mode)
 ;; brew tap homebrew/cask-fonts
 ;; brew install --cask font-iosevka
-(setq default-frame-alist '((font . "Iosevka-15")))
+;; (setq default-frame-alist '((font . "Iosevka-15")))
 ;; (setq default-frame-alist '((font . "Menlo-15")))
 
 ;; maximize vertically
@@ -80,6 +80,7 @@
 ;; behavior
 
 (save-place-mode 1)
+(setq confirm-nonexistent-file-or-buffer nil)
 
 ;; git
 
@@ -116,6 +117,7 @@
 (require 'ws-butler)
 (add-hook 'prog-mode-hook #'ws-butler-mode)
 (global-display-line-numbers-mode)
+(recentf-mode 1)
 
 ;; expand-region
 
@@ -185,8 +187,10 @@
 (setq company-tooltip-align-annotations t)
 (setq-default typescript-indent-level 2)
 
-(add-hook 'typescript-mode-hook #'prettier-js-mode)
-
+(add-hook 'typescript-ts-mode-hook #'prettier-js-mode)
+(add-hook 'json-ts-mode-hook #'prettier-js-mode)
+(add-hook 'yaml-mode-hook #'prettier-js-mode)
+(add-hook 'json-ts-mode-hook #'prettier-js-mode)
 
 ;; text
 
@@ -201,9 +205,12 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; keyboard
 
+
+(setq evil-want-keybinding nil)
 (require 'evil)
 (evil-mode t)
 (global-evil-visualstar-mode)
+(evil-collection-init)
 
 (require 'evil-leader)
 (global-evil-leader-mode)
@@ -214,8 +221,7 @@
 (global-set-key (kbd "M--") (lambda () (interactive) (insert "–")))
 (global-set-key (kbd "M-8") (lambda () (interactive) (insert "•")))
 (global-set-key (kbd "M-*") (lambda () (interactive) (insert "°")))
-(global-set-key (kbd "C-;") 'winner-undo)
-(global-set-key (kbd "C-'") 'winner-redo)
+(global-set-key (kbd "C-;") 'yas-insert-snippet)
 (global-set-key (kbd "s-V") 'paste-quoted)
 (global-set-key (kbd "s-q") 'kill-emacs)
 
@@ -237,6 +243,10 @@
         (evil-global-set-key state (kbd "SPC w m") 'delete-other-windows)
         (evil-global-set-key state (kbd "SPC f f") 'helm-find-files)
         (evil-global-set-key state (kbd "SPC f d") 'projectile-find-file-dwim)
+        (evil-global-set-key state (kbd "SPC f s") 'show-file-name)
+        (evil-global-set-key state (kbd "SPC f c") 'copy-filename-relative-to-git-root)
+        (evil-global-set-key state (kbd "SPC f g") (lambda ()
+                                                     (interactive) (projectile-find-file-in-directory "/Users/paulusesterhazy/prg/telli/gizmos")))
         (evil-global-set-key state (kbd "SPC j f") 'find-monorepo-file)
         (evil-global-set-key state (kbd "SPC /") 'helm-do-ag-project-root)
         (evil-global-set-key state (kbd "SPC ?") 'mopro-helm-ag)
@@ -257,6 +267,7 @@
            (find-file "~/prg/aoc2022/src/day.ts")))
         (evil-global-set-key state (kbd "SPC o c") 'find-compose)
         (evil-global-set-key state (kbd "SPC o C") 'find-compose2)
+        (evil-global-set-key state (kbd "SPC o n") 'find-notes)
         (evil-global-set-key state (kbd "SPC o 1") 'find-1x1)
         (evil-global-set-key state (kbd "SPC o r") 'find-reading)
         (evil-global-set-key state (kbd "SPC o w") 'find-writing)
@@ -270,18 +281,18 @@
         ;; (evil-global-set-key state (kbd "SPC t t") 'tgt-toggle)
         (evil-global-set-key state (kbd "SPC t t") 'projectile-toggle-between-implementation-and-test)
 
-        (evil-global-set-key state (kbd "SPC j i") 'helm-imenu)
-        (evil-global-set-key state (kbd "SPC j I") 'helm-imenu-in-all-buffers)
         (evil-global-set-key state (kbd "SPC j j") 'xref-find-definitions)
         (evil-global-set-key state (kbd "SPC j b") 'xref-pop-marker-stack)
+        (evil-global-set-key state (kbd "SPC j t") 'eglot-find-typeDefinition)
+        (evil-global-set-key state (kbd "SPC j i") 'eglot-find-implementation)
         (evil-global-set-key state (kbd "SPC j r") 'xref-find-references)
         (evil-global-set-key state (kbd "SPC j a") 'eglot-code-actions)
         (evil-global-set-key state (kbd "SPC j R") 'eglot-rename)
         (evil-global-set-key state (kbd "SPC j h") 'eldoc-doc-buffer)
         (evil-global-set-key state (kbd "SPC r l") 'helm-resume)
         (evil-global-set-key state (kbd "SPC r y") 'helm-show-kill-ring)
-        (evil-global-set-key state (kbd "SPC p f") 'helm-projectile)
-        (evil-global-set-key state (kbd "SPC p F") 'mopro-find-file)
+        (evil-global-set-key state (kbd "SPC p F") 'helm-projectile)
+        (evil-global-set-key state (kbd "SPC p f") 'project-find-file)
         (evil-global-set-key state (kbd "SPC f e d") 'find-init-el)
         (evil-global-set-key state (kbd "SPC f e z") 'find-zshrc)
         (evil-global-set-key state (kbd "SPC f e m") 'find-my-functions)
@@ -308,12 +319,18 @@
 
         (evil-global-set-key state (kbd "SPC e e") 'flymake-goto-next-error)
         (evil-global-set-key state (kbd "SPC e p") 'flymake-goto-prev-error)
-        (evil-global-set-key state (kbd "SPC e l") 'flymake-show-buffer-diagnostics)
+        (evil-global-set-key state (kbd "SPC e l") 'my-buffer-diagnostics)
+        (evil-global-set-key state (kbd "SPC e L") 'my-project-diagnostics)
 
         (evil-global-set-key state (kbd "SPC i b") 'insert-bar)
 
         ;; (evil-global-set-key state (kbd "SPC t t") 'projectile-toggle-between-implementation-and-test)
 
+        (evil-global-set-key state (kbd "SPC g g") 'open-in-goland)
+        (evil-global-set-key state (kbd "SPC g w") 'open-in-webstorm)
+        (evil-global-set-key state (kbd "SPC g c") 'open-in-cursor)
+        (evil-global-set-key state (kbd "SPC g r") 'open-in-rubymine)
+        (evil-global-set-key state (kbd "SPC g v") 'open-in-vscode)
         (evil-global-set-key state (kbd "SPC g l l") 'git-link)
         (evil-global-set-key state (kbd "SPC g t m") 'git-timemachine)
         (evil-global-set-key state (kbd "SPC g ]") 'diff-hl-next-hunk)
@@ -337,6 +354,16 @@
 (evil-define-minor-mode-key 'motion 'visual-line-mode "0" 'evil-beginning-of-visual-line)
 (evil-define-minor-mode-key 'motion 'visual-line-mode "$" 'evil-end-of-visual-line)
 
+(defun my-project-diagnostics ()
+  (interactive)
+  (flymake-show-project-diagnostics)
+  (other-window 1))
+
+(defun my-buffer-diagnostics ()
+  (interactive)
+  (flymake-show-buffer-diagnostics)
+  (other-window 1))
+
 (with-eval-after-load 'git-timemachine
   (evil-make-overriding-map git-timemachine-mode-map 'normal)
   ;; force update evil keymaps after git-timemachine-mode loaded
@@ -345,8 +372,14 @@
 (require 'yasnippet)
 (yas-global-mode 1)
 
-(setq tab-always-indent 'complete)
+
+
+;; (setq tab-always-indent 'complete)
+;; (global-company-mode)
+(global-set-key (kbd "<tab>") #'company-indent-or-complete-common)
+
 (helm-mode 1)
+
 
 ;; eglot
 
@@ -363,6 +396,7 @@
 (dolist (hook '(clojure-mode-hook
                 python-mode-hook
                 typescript-ts-mode-hook
+                go-mode-hook
                 js2-mode-hook))
   (add-hook hook 'eglot-ensure))
 
@@ -446,11 +480,13 @@
 
 (require 'wgrep)
 
-(require 'apheleia)
-(apheleia-global-mode +1)
+;; (require 'apheleia)
+;; (apheleia-global-mode +1)
 
 (add-hook 'clojure-mode-hook
           (lambda () (add-hook 'before-save-hook #'eglot-format-buffer nil 'local)))
+
+(add-hook 'go-mode-hook 'hs-minor-mode)
 
 (setq bookmark-save-flag 1)
 
@@ -474,11 +510,20 @@
 
 (add-to-list 'auto-mode-alist '("\\.ts\\'" . typescript-ts-mode))
 (add-to-list 'auto-mode-alist '("\\.tsx\\'" . tsx-ts-mode))
+(add-to-list 'auto-mode-alist '("\\.json\\'" . json-ts-mode))
 
+(defun eglot-format-buffer-before-save ()
+  (add-hook 'before-save-hook #'eglot-format-buffer -10 t))
+(add-hook 'go-mode-hook #'eglot-format-buffer-before-save)
 (add-hook 'go-mode-hook
           (lambda ()
-            (add-hook 'before-save-hook 'gofmt-before-save)
             (setq tab-width 2)))
+(add-hook 'go-mode-hook
+          (lambda ()
+            (add-hook 'before-save-hook
+                      (lambda ()
+                        (call-interactively 'eglot-code-action-organize-imports))
+                      nil t)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -489,3 +534,8 @@
 ;;; init.el ends here
 
 ;; (require 'python-mode)
+
+
+(defun my-fun () (interactive)
+       (switch-to-prev-buffer-skip (lambda (win buf &rest args)
+				     (not (buffer-modified-p buf)))))

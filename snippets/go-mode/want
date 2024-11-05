@@ -1,0 +1,10 @@
+# -*- mode: snippet -*-
+# name: want
+# key: want
+# --
+want := _want
+got := _got
+
+if want != got {
+  t.Errorf("want %v, got %v", want, got)
+}

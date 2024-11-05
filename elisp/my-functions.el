@@ -81,7 +81,7 @@
 
 (defun find-primary-proj ()
   (interactive)
-  (find-file "~/prg/linear-app/package.json"))
+  (find-file "~/prg/telli/README.md"))
 
 (defun find-secondary-proj ()
   (interactive)
@@ -93,6 +93,9 @@
 (defun find-compose2 ()
   (interactive)
   (find-file "~/zettel/compose2.md"))
+(defun find-notes ()
+  (interactive)
+  (find-file "/Users/paulusesterhazy/prg/telli/gizmos/notes.txt"))
 (defun find-1x1 ()
   (interactive)
   (find-file "~/zettel/1x1.txt"))
@@ -104,7 +107,7 @@
   (find-file "~/zettel/writing.md"))
 (defun find-scraps ()
   (interactive)
-  (find-file "/Users/user/prg/cljs-scrap/src/main/scrap/scrap.cljs"))
+  (find-file "~/zettel/scrap.dat"))
 
 (defun find-it ()
   (interactive)
@@ -303,7 +306,7 @@ npm i -g sql-formatter-cli"
     (shell-command-on-region (mark) (point) "zprint" (buffer-name) t)))
 
 (require 'cl-extra)
-(setq project-sentinels '("bb.edn" "deps.edn" "package.json" ".monorepo-project"))
+(setq project-sentinels '("bb.edn" "deps.edn" "package.json" ".monorepo-project" ".git"))
 
 (defun find-enclosing-project (dir)
   (locate-dominating-file
@@ -350,10 +353,17 @@ npm i -g sql-formatter-cli"
                projectile-project-root)))
     (projectile-find-file-in-directory root)))
 
-(defun magic-region ()
+(defun magic-tokenize ()
   (interactive)
   (save-excursion
     (shell-command-on-region (mark) (point) "magic tokenize" (buffer-name) t)))
+
+(defun magic-go-locate ()
+  (interactive)
+  (save-excursion
+    (let* ((command (format "magic go-locate %s" (shell-quote-argument (buffer-file-name))))
+          (result (shell-command-to-string command)))
+      (message result))))
 
 ;; (json-parse-string "[\"a\"]")
 ;; (completing-read
@@ -429,3 +439,83 @@ With a prefix arg INVALIDATE-CACHE invalidates the cache first."
           (message file-name)
           (kill-new file-name))
       (error "Buffer not visiting a file"))))
+
+(defun copy-filename-relative-to-git-root ()
+  "Copy the current buffer's filename relative to the Git repository root to the system clipboard."
+  (interactive)
+  (let* ((filename (buffer-file-name))
+         (git-root (locate-dominating-file filename ".git"))
+         (relative-filename (if git-root
+                                (file-relative-name filename git-root)
+                              (user-error "Not inside a Git repository"))))
+    (kill-new relative-filename)
+    (cond
+     ((eq system-type 'darwin) ;; macOS
+      (call-process-region relative-filename nil "pbcopy"))
+     ((or (eq system-type 'gnu/linux) (eq system-type 'linux)) ;; Linux
+      (call-process-region relative-filename nil "xclip" nil nil nil "-selection" "clipboard"))
+     ((eq system-type 'windows-nt) ;; Windows
+      (with-temp-buffer
+        (insert relative-filename)
+        (call-process-region (point-min) (point-max) "clip")))
+     (t
+      (user-error "Unsupported system type")))
+    (message "Copied: %s" relative-filename)))
+
+(defun open-in-goland ()
+  (interactive)
+  (save-excursion
+    (call-process "open" nil "*Messages*" nil "-a" "GoLand" (buffer-file-name))))
+
+(defun open-in-webstorm ()
+  (interactive)
+  (save-excursion
+    (call-process "/Applications/WebStorm.app/Contents/MacOS/webstorm" nil "*Messages*" nil "--line" (number-to-string (line-number-at-pos)) (buffer-file-name))))
+
+(defun open-in-cursor ()
+  (interactive)
+  (save-excursion
+    (call-process "cursor" nil "*Messages*" nil "-g" (concat (buffer-file-name) ":" (number-to-string (line-number-at-pos))))))
+
+(defun open-in-rubymine ()
+  (interactive)
+  (save-excursion
+    (call-process "open" nil "*Messages*" nil "-a" "RubyMine" (buffer-file-name))))
+
+(defun open-in-vscode ()
+  (interactive)
+  (save-excursion
+    (call-process "open" nil "*Messages*" nil "-a" "Visual Studio Code" (buffer-file-name))))
+
+(defun revert-all-file-buffers ()
+  "Refresh all open file buffers without confirmation.
+Buffers in modified (not yet saved) state in emacs will not be reverted. They
+will be reverted though if they were modified outside emacs.
+Buffers visiting files which do not exist any more or are no longer readable
+will be killed."
+  (interactive)
+  (dolist (buf (buffer-list))
+    (let ((filename (buffer-file-name buf)))
+      ;; Revert only buffers containing files, which are not modified;
+      ;; do not try to revert non-file buffers like *Messages*.
+      (when (and filename
+                 (not (buffer-modified-p buf)))
+        (if (file-readable-p filename)
+            ;; If the file exists and is readable, revert the buffer.
+            (with-current-buffer buf
+              (revert-buffer :ignore-auto :noconfirm :preserve-modes))
+          ;; Otherwise, kill the buffer.
+          (let (kill-buffer-query-functions) ; No query done when killing buffer
+            (kill-buffer buf)
+            (message "Killed non-existing/unreadable file buffer: %s" filename))))))
+  (message "Finished reverting buffers containing unmodified files."))
+
+(defun show-file-name ()
+  "Show the full path file name in the minibuffer."
+  (interactive)
+  (message (buffer-file-name)))
+
+(defun sql-format ()
+  (interactive)
+  (save-excursion
+    (shell-command-on-region (point-min) (point-max) (expand-file-name "~/arena/vendor/pgFormatter-5.5/pg_format") (buffer-name) t)))
