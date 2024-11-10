@@ -38,9 +38,9 @@
         (expand-file-name "~/.rgconfig"))
 (exec-path-from-shell-initialize)
 
-(add-to-list 'load-path (expand-file-name "~/emacs.d/vendor"))
-(add-to-list 'load-path (expand-file-name "~/emacs.d/elisp"))
-(load-file (expand-file-name "~/emacs.d/elisp/my-functions.el"))
+(add-to-list 'load-path (expand-file-name "~/.emacs.d/vendor"))
+(add-to-list 'load-path (expand-file-name "~/.emacs.d/elisp"))
+(load-file (expand-file-name "~/.emacs.d/elisp/my-functions.el"))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; startup
@@ -376,7 +376,7 @@
 
 ;; (setq tab-always-indent 'complete)
 ;; (global-company-mode)
-(global-set-key (kbd "<tab>") #'company-indent-or-complete-common)
+;; (global-set-key (kbd "<tab>") #'company-indent-or-complete-common)
 
 (helm-mode 1)
 
@@ -524,6 +524,31 @@
                       (lambda ()
                         (call-interactively 'eglot-code-action-organize-imports))
                       nil t)))
+
+(use-package corfu
+  :ensure t
+  ;; Optional customizations
+  :custom
+  (corfu-cycle t)                ;; Enable cycling for `corfu-next/previous'
+  (corfu-auto t)                 ;; Enable auto completion
+  ;; (corfu-separator ?\s)          ;; Orderless field separator
+  ;; (corfu-quit-at-boundary nil)   ;; Never quit at completion boundary
+  ;; (corfu-quit-no-match nil)      ;; Never quit, even if there is no match
+  ;; (corfu-preview-current nil)    ;; Disable current candidate preview
+  ;; (corfu-preselect 'prompt)      ;; Preselect the prompt
+  ;; (corfu-on-exact-match nil)     ;; Configure handling of exact matches
+  ;; (corfu-scroll-margin 5)        ;; Use scroll margin
+
+  ;; Enable Corfu only for certain modes.
+  ;; :hook ((prog-mode . corfu-mode)
+  ;;        (shell-mode . corfu-mode)
+  ;;        (eshell-mode . corfu-mode))
+
+  ;; Recommended: Enable Corfu globally.
+  ;; This is recommended since Dabbrev can be used globally (M-/).
+  ;; See also `corfu-excluded-modes'.
+  :init
+  (global-corfu-mode))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

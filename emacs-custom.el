@@ -10,7 +10,7 @@
  '(helm-minibuffer-history-key "M-p")
  '(ignored-local-variable-values '((checkdoc-minor-mode . t)))
  '(package-selected-packages
-   '(dotenv-mode prettier-js json-mode company evil-collection go-mode git-timemachine helm-projectile yaml-mode vundo flyspell-correct evil evil-leader evil-visualstar apheleia wgrep eglot jarchive python-mode projectile dockerfile-mode diff-hl csv-mode toggle-test solarized-theme package-lint which-key aggressive-indent clojure-mode yasnippet git-link cider markdown-mode exec-path-from-shell js2-mode ws-butler helm helm-ag smart-mode-line mode-line-bell expand-region visual-fill-column simpleclip smooth-scrolling smartparens evil-smartparens))
+   '(corfu dotenv-mode prettier-js json-mode company evil-collection go-mode git-timemachine helm-projectile yaml-mode vundo flyspell-correct evil evil-leader evil-visualstar apheleia wgrep eglot jarchive python-mode projectile dockerfile-mode diff-hl csv-mode toggle-test solarized-theme package-lint which-key aggressive-indent clojure-mode yasnippet git-link cider markdown-mode exec-path-from-shell js2-mode ws-butler helm helm-ag smart-mode-line mode-line-bell expand-region visual-fill-column simpleclip smooth-scrolling smartparens evil-smartparens))
  '(recentf-max-saved-items 200)
  '(safe-local-variable-values
    '((projectile-project-type . go)

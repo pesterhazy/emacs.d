@@ -121,13 +121,13 @@
 
 (defun find-init-el ()
   (interactive)
-  (find-file "~/emacs.d/init.el"))
+  (find-file "~/.emacs.d/init.el"))
 (defun find-zshrc ()
   (interactive)
   (find-file "~/.zshrc"))
 (defun find-my-functions ()
   (interactive)
-  (find-file "~/emacs.d/elisp/my-functions.el"))
+  (find-file "~/.emacs.d/elisp/my-functions.el"))
 
 (defun find-work ()
   (interactive)
