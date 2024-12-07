@@ -236,6 +236,7 @@
         (evil-global-set-key state (kbd "s-+") (lambda () (interactive) (text-scale-increase 1)))
         (evil-global-set-key state (kbd "s--") (lambda () (interactive) (text-scale-increase -1)))
         (evil-global-set-key state (kbd "SPC SPC") 'helm-M-x)
+        (evil-global-set-key state (kbd "SPC i i") 'helm-imenu)
         (evil-global-set-key state (kbd "SPC b b") 'helm-mini)
         (evil-global-set-key state (kbd "SPC b d") 'kill-this-buffer)
         (evil-global-set-key state (kbd "SPC b l") 'helm-bookmarks)
@@ -246,7 +247,7 @@
         (evil-global-set-key state (kbd "SPC f s") 'show-file-name)
         (evil-global-set-key state (kbd "SPC f c") 'copy-filename-relative-to-git-root)
         (evil-global-set-key state (kbd "SPC f g") (lambda ()
-                                                     (interactive) (projectile-find-file-in-directory "/Users/paulusesterhazy/prg/telli/gizmos")))
+                                                     (interactive) (projectile-find-file-in-directory "/Users/user/prg/telli/gizmos")))
         (evil-global-set-key state (kbd "SPC j f") 'find-monorepo-file)
         (evil-global-set-key state (kbd "SPC /") 'helm-do-ag-project-root)
         (evil-global-set-key state (kbd "SPC ?") 'mopro-helm-ag)
@@ -258,7 +259,8 @@
         (evil-global-set-key state (kbd "SPC o f") 'fill-paragraph)
         (evil-global-set-key state (kbd "SPC o o") 'find-primary-proj)
         (evil-global-set-key state (kbd "SPC o O") 'find-secondary-proj)
-        (evil-global-set-key state (kbd "SPC s s") 'shell-command)
+        (evil-global-set-key state (kbd "SPC s a") 'save-as)
+        (evil-global-set-key state (kbd "SPC s s") 'save-some-buffers)
         (evil-global-set-key
          state
          (kbd "SPC o a")
@@ -382,6 +384,10 @@
 
 
 ;; eglot
+
+(use-package eglot-booster
+	:after eglot
+	:config	(eglot-booster-mode))
 
 (add-hook 'eglot-managed-mode-hook
 	  ;; This displays full docs for clojure functions.

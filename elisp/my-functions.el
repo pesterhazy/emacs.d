@@ -95,7 +95,7 @@
   (find-file "~/zettel/compose2.md"))
 (defun find-notes ()
   (interactive)
-  (find-file "/Users/paulusesterhazy/prg/telli/gizmos/notes.txt"))
+  (find-file "/Users/user/prg/telli/gizmos/notes.txt"))
 (defun find-1x1 ()
   (interactive)
   (find-file "~/zettel/1x1.txt"))
