@@ -284,8 +284,8 @@
         ;; (evil-global-set-key state (kbd "SPC t t") 'tgt-toggle)
         (evil-global-set-key state (kbd "SPC t t") 'projectile-toggle-between-implementation-and-test)
 
-        (evil-global-set-key state (kbd "SPC j j") 'xref-find-definitions)
-        (evil-global-set-key state (kbd "SPC j b") 'xref-pop-marker-stack)
+        (evil-global-set-key state (kbd "SPC j j") 'lsp-bridge-find-def)
+        (evil-global-set-key state (kbd "SPC j b") 'lsp-bridge-find-def-return)
         (evil-global-set-key state (kbd "SPC j t") 'eglot-find-typeDefinition)
         (evil-global-set-key state (kbd "SPC j i") 'eglot-find-implementation)
         (evil-global-set-key state (kbd "SPC j r") 'xref-find-references)
@@ -384,28 +384,12 @@
 (helm-mode 1)
 
 
-;; eglot
-
-(use-package eglot-booster
-	:after eglot
-	:config	(eglot-booster-mode))
-
-(add-hook 'eglot-managed-mode-hook
-	  ;; This displays full docs for clojure functions.
-	  ;; See https://github.com/joaotavora/eglot/discussions/894
-	  #'(lambda ()
-	      (setq-local eldoc-documentation-strategy
-			  #'eldoc-documentation-compose
-
-			  eldoc-echo-area-use-multiline-p
-			  5)))
-
-(dolist (hook '(clojure-mode-hook
-                python-mode-hook
-                typescript-ts-mode-hook
-                go-mode-hook
-                js2-mode-hook))
-  (add-hook hook 'eglot-ensure))
+;; (dolist (hook '(clojure-mode-hook
+;;                 python-mode-hook
+;;                 typescript-ts-mode-hook
+;;                 go-mode-hook
+;;                 js2-mode-hook))
+;;   (add-hook hook 'eglot-ensure))
 
 (add-hook 'project-find-functions
           #'(lambda (d)
@@ -480,18 +464,12 @@
 (dolist (hook '(text-mode-hook))
   (add-hook hook (lambda () (flyspell-mode 1))))
 
-;; (jarchive-setup)
-;; (jarchive-patch-eglot)
-
 (winner-mode 1)
 
 (require 'wgrep)
 
 ;; (require 'apheleia)
 ;; (apheleia-global-mode +1)
-
-(add-hook 'clojure-mode-hook
-          (lambda () (add-hook 'before-save-hook #'eglot-format-buffer nil 'local)))
 
 (add-hook 'go-mode-hook 'hs-minor-mode)
 
@@ -519,45 +497,8 @@
 (add-to-list 'auto-mode-alist '("\\.tsx\\'" . tsx-ts-mode))
 (add-to-list 'auto-mode-alist '("\\.json\\'" . json-ts-mode))
 
-(defun eglot-format-buffer-before-save ()
-  (add-hook 'before-save-hook #'eglot-format-buffer -10 t))
-(add-hook 'go-mode-hook #'eglot-format-buffer-before-save)
-(add-hook 'go-mode-hook
-          (lambda ()
-            (setq tab-width 2)))
-(add-hook 'go-mode-hook
-          (lambda ()
-            (add-hook 'before-save-hook
-                      (lambda ()
-                        (call-interactively 'eglot-code-action-organize-imports))
-                      nil t)))
-
-(use-package corfu
-  :ensure t
-  ;; Optional customizations
-  :custom
-  (corfu-cycle t)                ;; Enable cycling for `corfu-next/previous'
-  (corfu-auto t)                 ;; Enable auto completion
-  ;; (corfu-separator ?\s)          ;; Orderless field separator
-  ;; (corfu-quit-at-boundary nil)   ;; Never quit at completion boundary
-  ;; (corfu-quit-no-match nil)      ;; Never quit, even if there is no match
-  ;; (corfu-preview-current nil)    ;; Disable current candidate preview
-  ;; (corfu-preselect 'prompt)      ;; Preselect the prompt
-  ;; (corfu-on-exact-match nil)     ;; Configure handling of exact matches
-  ;; (corfu-scroll-margin 5)        ;; Use scroll margin
-
-  ;; Enable Corfu only for certain modes.
-  ;; :hook ((prog-mode . corfu-mode)
-  ;;        (shell-mode . corfu-mode)
-  ;;        (eshell-mode . corfu-mode))
-
-  ;; Recommended: Enable Corfu globally.
-  ;; This is recommended since Dabbrev can be used globally (M-/).
-  ;; See also `corfu-excluded-modes'.
-  :init
-  (global-corfu-mode))
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; lsp bridge
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (add-to-list 'load-path (expand-file-name "~/.emacs.d/lsp-bridge"))
@@ -567,6 +508,8 @@
 
 (require 'lsp-bridge)
 (global-lsp-bridge-mode)
+
+(setq lsp-bridge-python-command "/usr/bin/python3")
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
