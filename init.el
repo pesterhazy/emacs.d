@@ -246,6 +246,7 @@
         (evil-global-set-key state (kbd "SPC f d") 'projectile-find-file-dwim)
         (evil-global-set-key state (kbd "SPC f s") 'show-file-name)
         (evil-global-set-key state (kbd "SPC f c") 'copy-filename-relative-to-git-root)
+        (evil-global-set-key state (kbd "SPC f r") 'rename-file-and-buffer)
         (evil-global-set-key state (kbd "SPC f g") (lambda ()
                                                      (interactive) (projectile-find-file-in-directory "/Users/user/prg/telli/gizmos")))
         (evil-global-set-key state (kbd "SPC j f") 'find-monorepo-file)
@@ -558,6 +559,17 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(add-to-list 'load-path (expand-file-name "~/.emacs.d/lsp-bridge"))
+
+(require 'yasnippet)
+(yas-global-mode 1)
+
+(require 'lsp-bridge)
+(global-lsp-bridge-mode)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -565,6 +577,14 @@
 ;;; init.el ends here
 
 ;; (require 'python-mode)
+
+(use-package lazy-ruff
+  :ensure t
+  :hook ((python-mode . lazy-ruff-mode))
+  :config
+  (setq lazy-ruff-format-command "ruff format")
+  (setq lazy-ruff-check-command "ruff check --select I")
+  (lazy-ruff-global-mode t))
 
 
 (defun my-fun () (interactive)
