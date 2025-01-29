@@ -286,12 +286,12 @@
 
         (evil-global-set-key state (kbd "SPC j j") 'lsp-bridge-find-def)
         (evil-global-set-key state (kbd "SPC j b") 'lsp-bridge-find-def-return)
-        (evil-global-set-key state (kbd "SPC j t") 'eglot-find-typeDefinition)
-        (evil-global-set-key state (kbd "SPC j i") 'eglot-find-implementation)
-        (evil-global-set-key state (kbd "SPC j r") 'xref-find-references)
-        (evil-global-set-key state (kbd "SPC j a") 'eglot-code-actions)
-        (evil-global-set-key state (kbd "SPC j R") 'eglot-rename)
-        (evil-global-set-key state (kbd "SPC j h") 'eldoc-doc-buffer)
+        (evil-global-set-key state (kbd "SPC j t") 'lsp-bridge-find-type-def)
+        (evil-global-set-key state (kbd "SPC j i") 'lsp-bridge-find-impl)
+        (evil-global-set-key state (kbd "SPC j r") 'lsp-bridge-find-references)
+        (evil-global-set-key state (kbd "SPC j a") 'lsp-bridge-code-action)
+        (evil-global-set-key state (kbd "SPC j R") 'lsp-bridge-rename)
+        (evil-global-set-key state (kbd "SPC j h") 'lsp-bridge-show-documentation)
         (evil-global-set-key state (kbd "SPC r l") 'helm-resume)
         (evil-global-set-key state (kbd "SPC r y") 'helm-show-kill-ring)
         (evil-global-set-key state (kbd "SPC p F") 'helm-projectile)
@@ -320,8 +320,8 @@
         (evil-global-set-key state (kbd "SPC o t") 'touch)
         (evil-global-set-key state (kbd "SPC c c") 'clojure-comment-dwim)
 
-        (evil-global-set-key state (kbd "SPC e e") 'flymake-goto-next-error)
-        (evil-global-set-key state (kbd "SPC e p") 'flymake-goto-prev-error)
+        (evil-global-set-key state (kbd "SPC e e") 'lsp-bridge-diagnostic-jump-next)
+        (evil-global-set-key state (kbd "SPC e p") 'lsp-bridge-diagnostic-jump-prev)
         (evil-global-set-key state (kbd "SPC e l") 'my-buffer-diagnostics)
         (evil-global-set-key state (kbd "SPC e L") 'my-project-diagnostics)
 
@@ -356,16 +356,6 @@
 (evil-define-minor-mode-key 'motion 'visual-line-mode (kbd "<up>") 'evil-previous-visual-line)
 (evil-define-minor-mode-key 'motion 'visual-line-mode "0" 'evil-beginning-of-visual-line)
 (evil-define-minor-mode-key 'motion 'visual-line-mode "$" 'evil-end-of-visual-line)
-
-(defun my-project-diagnostics ()
-  (interactive)
-  (flymake-show-project-diagnostics)
-  (other-window 1))
-
-(defun my-buffer-diagnostics ()
-  (interactive)
-  (flymake-show-buffer-diagnostics)
-  (other-window 1))
 
 (with-eval-after-load 'git-timemachine
   (evil-make-overriding-map git-timemachine-mode-map 'normal)
