@@ -211,6 +211,7 @@
 (evil-mode t)
 (global-evil-visualstar-mode)
 (evil-collection-init)
+(evil-set-initial-state 'lsp-bridge-ref-mode 'emacs)
 
 (require 'evil-leader)
 (global-evil-leader-mode)
@@ -292,6 +293,8 @@
         (evil-global-set-key state (kbd "SPC j a") 'lsp-bridge-code-action)
         (evil-global-set-key state (kbd "SPC j R") 'lsp-bridge-rename)
         (evil-global-set-key state (kbd "SPC j h") 'lsp-bridge-show-documentation)
+        (evil-global-set-key state (kbd "SPC j s") 'lsp-bridge-workspace-list-symbol-at-point)
+        (evil-global-set-key state (kbd "SPC j l") 'lsp-bridge-workspace-list-symbols)
         (evil-global-set-key state (kbd "SPC r l") 'helm-resume)
         (evil-global-set-key state (kbd "SPC r y") 'helm-show-kill-ring)
         (evil-global-set-key state (kbd "SPC p F") 'helm-projectile)
