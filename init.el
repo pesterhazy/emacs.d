@@ -187,6 +187,7 @@
 (setq company-tooltip-align-annotations t)
 (setq-default typescript-indent-level 2)
 
+(add-to-list 'auto-mode-alist '("\\.mts\\'" . typescript-ts-mode))
 (add-hook 'typescript-ts-mode-hook #'prettier-js-mode)
 (add-hook 'json-ts-mode-hook #'prettier-js-mode)
 (add-hook 'yaml-mode-hook #'prettier-js-mode)
@@ -239,7 +240,7 @@
         (evil-global-set-key state (kbd "SPC SPC") 'helm-M-x)
         (evil-global-set-key state (kbd "SPC i i") 'helm-imenu)
         (evil-global-set-key state (kbd "SPC b b") 'helm-mini)
-        (evil-global-set-key state (kbd "SPC b d") 'kill-this-buffer)
+        (evil-global-set-key state (kbd "SPC b d") 'kill-current-buffer)
         (evil-global-set-key state (kbd "SPC b l") 'helm-bookmarks)
         (evil-global-set-key state (kbd "SPC b t") 'bookmark-set)
         (evil-global-set-key state (kbd "SPC w m") 'delete-other-windows)
@@ -502,7 +503,7 @@
 (require 'lsp-bridge)
 (global-lsp-bridge-mode)
 
-(setq lsp-bridge-python-command "/usr/bin/python3")
+(setq lsp-bridge-python-command "/opt/homebrew/bin/python3")
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
