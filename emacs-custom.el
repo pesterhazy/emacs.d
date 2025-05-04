@@ -10,48 +10,45 @@
  '(helm-minibuffer-history-key "M-p")
  '(ignored-local-variable-values '((checkdoc-minor-mode . t)))
  '(package-selected-packages
-   '(lazy-ruff corfu dotenv-mode prettier-js json-mode company evil-collection go-mode git-timemachine helm-projectile yaml-mode vundo flyspell-correct evil evil-leader evil-visualstar apheleia wgrep eglot jarchive python-mode projectile dockerfile-mode diff-hl csv-mode toggle-test solarized-theme package-lint which-key aggressive-indent clojure-mode yasnippet git-link cider markdown-mode exec-path-from-shell js2-mode ws-butler helm helm-ag smart-mode-line mode-line-bell expand-region visual-fill-column simpleclip smooth-scrolling smartparens evil-smartparens))
+   '(add-node-modules-path aggressive-indent apheleia cider clojure-mode
+                           company corfu csv-mode diff-hl
+                           dockerfile-mode dotenv-mode eglot evil
+                           evil-collection evil-leader
+                           evil-smartparens evil-visualstar
+                           exec-path-from-shell expand-region
+                           flyspell-correct git-link git-timemachine
+                           go-mode helm helm-ag helm-projectile
+                           jarchive js2-mode json-mode lazy-ruff
+                           markdown-mode mode-line-bell package-lint
+                           prettier-js projectile python-mode
+                           simpleclip smart-mode-line smartparens
+                           smooth-scrolling solarized-theme
+                           toggle-test visual-fill-column vundo wgrep
+                           which-key ws-butler yaml-mode yasnippet))
  '(recentf-max-saved-items 200)
  '(safe-local-variable-values
    '((projectile-project-type . go)
      (eval when
-           (and
-            (buffer-file-name)
-            (not
-             (file-directory-p
-              (buffer-file-name)))
-            (string-match-p "^[^.]"
-                            (buffer-file-name)))
-           (unless
-               (featurep 'package-build)
-             (let
-                 ((load-path
-                   (cons "../package-build" load-path)))
+           (and (buffer-file-name)
+                (not (file-directory-p (buffer-file-name)))
+                (string-match-p "^[^.]" (buffer-file-name)))
+           (unless (featurep 'package-build)
+             (let ((load-path (cons "../package-build" load-path)))
                (require 'package-build)))
-           (unless
-               (derived-mode-p 'emacs-lisp-mode)
+           (unless (derived-mode-p 'emacs-lisp-mode)
              (emacs-lisp-mode))
            (package-build-minor-mode)
            (setq-local flycheck-checkers nil)
-           (set
-            (make-local-variable 'package-build-working-dir)
-            (expand-file-name "../working/"))
-           (set
-            (make-local-variable 'package-build-archive-dir)
-            (expand-file-name "../packages/"))
-           (set
-            (make-local-variable 'package-build-recipes-dir)
-            default-directory))
-     (eval define-clojure-indent
-           (reg-cofx :defn)
-           (reg-event-db :defn)
-           (reg-event-fx :defn)
-           (reg-fx :defn)
-           (reg-sub :defn)
-           (reg-event-domain :defn)
-           (reg-block-event-fx :defn)
-           (reg-event-domain-fx :defn)
-           (reg-event-persistent-db :defn)
+           (set (make-local-variable 'package-build-working-dir)
+                (expand-file-name "../working/"))
+           (set (make-local-variable 'package-build-archive-dir)
+                (expand-file-name "../packages/"))
+           (set (make-local-variable 'package-build-recipes-dir)
+                default-directory))
+     (eval define-clojure-indent (reg-cofx :defn) (reg-event-db :defn)
+           (reg-event-fx :defn) (reg-fx :defn) (reg-sub :defn)
+           (reg-event-domain :defn) (reg-block-event-fx :defn)
+           (reg-event-domain-fx :defn) (reg-event-persistent-db :defn)
            (this-as 0)))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.

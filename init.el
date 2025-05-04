@@ -504,9 +504,57 @@
 (dolist (hook '(python-mode-hook
                 typescript-ts-mode-hook
                 tsx-ts-mode-hook))
+  (add-hook hook #'add-node-modules-path)
   (add-hook hook #'lsp-bridge-mode))
 
+(defun my/project-node-bin ()
+  "Return the nearest node_modules/.bin directory, or nil."
+  (let* ((root (locate-dominating-file default-directory "node_modules"))
+         (bin  (and root (expand-file-name "node_modules/.bin" root))))
+    (when (file-directory-p bin) bin)))
+
+(defun my/use-project-node-bin ()
+  "Prepend the project’s node_modules/.bin to exec-path & PATH **for this buffer only**."
+  (when-let ((bin (my/project-node-bin)))
+    ;; Make PATH & exec‑path buffer‑local so we don't leak into other projects
+    (make-local-variable 'exec-path)
+    (cl-pushnew bin exec-path :test #'string-equal)
+
+    (make-local-variable 'process-environment)
+    (let* ((path (getenv "PATH"))
+           (new  (concat bin path-separator path)))
+      (setenv "PATH" new))))
+
+(defun my/project-venv-bin ()
+  "Return the closest .venv/*bin directory, or nil if none is found."
+  (let* ((root (locate-dominating-file default-directory ".venv"))
+         (bin  (and root
+                    (expand-file-name
+                     (if (eq system-type 'windows-nt)
+                         ".venv/Scripts"      ; Windows uses Scripts\
+                       ".venv/bin")          ; POSIX uses bin/
+                     root))))
+    (when (file-directory-p bin) bin)))
+
+(defun my/use-project-venv-bin ()
+  "Prepend the project’s .venv/*bin to exec-path & PATH **for this buffer only**."
+  (when-let ((bin (my/project-venv-bin)))
+    ;; Don’t leak to other buffers
+    (make-local-variable 'exec-path)
+    (cl-pushnew bin exec-path :test #'string-equal)
+
+    (make-local-variable 'process-environment)
+    (setenv "PATH" (concat bin path-separator (getenv "PATH")))))
+
+(dolist (hook '(python-mode-hook
+                typescript-mode-hook
+                tsx-ts-mode-hook
+                js-mode-hook))
+  (add-hook hook #'my/use-project-node-bin)
+  (add-hook hook #'my/use-project-venv-bin))
+
 (setq lsp-bridge-python-command "/opt/homebrew/bin/python3")
+(setq lsp-bridge-python-lsp-server "pyright")
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
