@@ -501,7 +501,10 @@
 (yas-global-mode 1)
 
 (require 'lsp-bridge)
-(global-lsp-bridge-mode)
+(dolist (hook '(python-mode-hook
+                typescript-ts-mode-hook
+                tsx-ts-mode-hook))
+  (add-hook hook #'lsp-bridge-mode))
 
 (setq lsp-bridge-python-command "/opt/homebrew/bin/python3")
 

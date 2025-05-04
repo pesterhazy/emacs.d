@@ -81,7 +81,7 @@
 
 (defun find-primary-proj ()
   (interactive)
-  (find-file "~/prg/telli/README.md"))
+  (find-file "~/prg/telli/backend/package.json"))
 
 (defun find-secondary-proj ()
   (interactive)
